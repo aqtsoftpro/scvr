@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        $table->drop('general_service');
+        Schema::drop('general_service');
     }
 };

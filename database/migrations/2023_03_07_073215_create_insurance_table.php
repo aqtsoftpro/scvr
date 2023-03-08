@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('insurance', function (Blueprint $table) {
+        Schema::create('insurance', function (Blueprint $table) {
             $table->id();
             $table->string('company_name');
             $table->unsignedBigInteger('policy_type_id');
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('demage_details');
             $table->timestamps();
 
-            $table->foreign('policy_type_id')->references('id')->on('PolicyType');
+            $table->foreign('policy_type_id')->references('id')->on('policy_types')->onDelete('cascade');
         });
     }
 
@@ -32,8 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('insurance', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('insurance');
     }
 };

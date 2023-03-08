@@ -9,6 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class RepairJob extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'part_replaced',
+        'cost',
+        'place',
+        'mechanic_name',
+        'comments'
+    ];
 
     public function service_type(): MorphOne
     {
