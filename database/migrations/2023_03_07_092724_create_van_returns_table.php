@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('condition');
             //bolean
             $table->boolean('demage_caused_by_customer');
-            $table->string('demage_picture');
-            $table->text('demage_text');
+            $table->string('demage_picture')->nullable();
+            $table->text('demage_text')->nullable();
             $table->timestamps();
 
             $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');

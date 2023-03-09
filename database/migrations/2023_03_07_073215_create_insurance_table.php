@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('policy_start_date');
             $table->string('policy_end_date');
             $table->integer('road_side_assistance');
-            $table->integer('road_side_assistance_start_date');
-            $table->integer('road_side_assistance_end_date');
-            $table->integer('demage_details');
+            $table->string('road_side_assistance_start_date')->nullable();
+            $table->string('road_side_assistance_end_date')->nullable();
+            $table->string('demage_details')->nullable();
             $table->timestamps();
 
             $table->foreign('policy_type_id')->references('id')->on('policy_types')->onDelete('cascade');
