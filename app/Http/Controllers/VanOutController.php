@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\VanOut;
 use Illuminate\Http\Request;
+use App\Http\Resources\VanOutResource;
 
 class VanOutController extends Controller
 {
@@ -13,7 +14,7 @@ class VanOutController extends Controller
     }
 
     public function index(VanOut $vanOut){
-        return response()->json($vanOut->all());
+        return response()->json(VanOutResource::collection($vanOut->all()));
     }
 
     public function show(VanOut $vanOut){

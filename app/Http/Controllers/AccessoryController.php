@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Accessory;
 use Illuminate\Http\Request;
+use App\Http\Resources\AccessoryResource;
 
 class AccessoryController extends Controller
 {
@@ -12,7 +13,7 @@ class AccessoryController extends Controller
     }
 
     public function index(Accessory $accessory){
-        return $accessory->all();
+        return response()->json(AccessoryResource::collection($accessory->all()));
     }
 
     public function store(Request $request, Accessory $accessory){
@@ -21,7 +22,7 @@ class AccessoryController extends Controller
     }
 
     public function show(Accessory $accessory, int $id){
-        return $accessory->find($id);
+        return response()->json(new AccessoryResource($accessory->find($id)));
     }
 
     public function update(Request $request, Accessory $accessory, int $id){

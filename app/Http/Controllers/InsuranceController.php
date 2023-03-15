@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Insurance;
 use Illuminate\Http\Request;
+use App\Http\Resources\InsuranceResource;
 
 class InsuranceController extends Controller
 {
@@ -13,7 +14,7 @@ class InsuranceController extends Controller
     }
 
     public function index(Insurance $insurance){
-        return $insurance->all();
+        return response()->json(InsuranceResource::collection($insurance->all()));
     }
 
     public function store(Request $request, Insurance $insurance){

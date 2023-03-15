@@ -17,11 +17,11 @@ class GeneralServiceController extends Controller
 
     public function store(Request $request, GeneralService $general_service){
         $general_service->create($request->all());
-        return $general_service;
+        return response()->json($general_service);
     }
 
     public function show(GeneralService $general_service, int $id){
-        return $general_service->find($id);
+        return response()->json($general_service->find($id));
     }
 
     public function update(Request $request, GeneralService $general_service, int $id){

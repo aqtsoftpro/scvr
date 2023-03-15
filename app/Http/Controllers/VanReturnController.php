@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\VanReturn;
 use Illuminate\Http\Request;
+use App\Http\Resources\VanReturnResource;
 
 class VanReturnController extends Controller
 {
@@ -12,7 +13,7 @@ class VanReturnController extends Controller
     }
 
     public function index(VanReturn $vanReturn){
-        return response()->json($vanReturn->all());
+        return response()->json(VanReturnResource::collection($vanReturn->all()));
     }
 
     public function show(VanReturn $vanReturn){

@@ -20,4 +20,8 @@ class Insurance extends Model
         'road_side_assistance_end_date',
         'demage_details'
     ];
+
+    public function policy_type(){
+        return $this->belongsTo(PolicyType::class);
+    }
 }

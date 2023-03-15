@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('van_returns', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('location_id');
+            $table->unsignedBigInteger('vanout_id');
             $table->integer('mileage');
             $table->string('fuel_tank');
             $table->string('condition');
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
+            $table->foreign('vanout_id')->references('id')->on('van_outs')->onDelete('cascade');
         });
     }
 

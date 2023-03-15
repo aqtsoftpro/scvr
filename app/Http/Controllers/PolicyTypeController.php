@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\PolicyType;
 use Illuminate\Http\Request;
+use App\Http\Resources\PolicyTypeResource;
 
 class PolicyTypeController extends Controller
 {
@@ -13,7 +14,7 @@ class PolicyTypeController extends Controller
     }
 
     public function index(PolicyType $policyType){
-        return $policyType->all();
+        return response()->json(PolicyTypeResource::collection($policyType->all()));
     }
 
     public function store(Request $request, PolicyType $policyType){

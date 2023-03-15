@@ -17,4 +17,12 @@ class VanReturn extends Model
       'demage_picture',
       'demage_text'
     ];
+
+    public function location(){
+      return $this->belongsTo(Location::class);
+    }
+
+    public function van_out(){
+        return $this->belongsTo(VanOut::class, 'van_out_id');
+    }
 }

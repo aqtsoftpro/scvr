@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ServiceType;
 use Illuminate\Http\Request;
+use App\Http\Resources\ServiceTypeResource;
 
 class ServiceTypeController extends Controller
 {
@@ -13,7 +14,7 @@ class ServiceTypeController extends Controller
     }
 
     public function index(ServiceType $serviceType){
-        return $serviceType->all();
+        return response()->json(ServiceTypeResource::collection($serviceType->all()));
     }
 
     public function store(Request $request, ServiceType $serviceType){

@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VanOutController;
@@ -12,13 +13,13 @@ use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\RepairJobController;
 use App\Http\Controllers\TaxRecordController;
 use App\Http\Controllers\VanReturnController;
-use Illuminate\Validation\InsuranceContoller;
 use App\Http\Controllers\PolicyTypeController;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\ServiceTypeController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\GeneralServiceController;
+use App\Http\Controllers\InsuranceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,15 @@ use App\Http\Controllers\GeneralServiceController;
 |
 */
 
-Route::post('/sanctum/token', function (Request $request) {
+Route::post('logout/{user}', function(User $user){
+    return response()->json($user->tokens);
+    $user->tokens()->delete();
+    return response()->json([
+        'message' => 'Logged out'
+    ]);
+});
+
+Route::post('/login/token', function (Request $request) {
     $request->validate([
         'email' => 'required|email',
         'password' => 'required',
@@ -52,7 +61,7 @@ Route::post('/sanctum/token', function (Request $request) {
 Route::resource('users', UserController::class);
 Route::resource('accessory', AccessoryController::class);
 Route::resource('general_service', GeneralServiceController::class);
-Route::resource('insurance', InsuranceContoller::class);
+Route::resource('insurance', InsuranceController::class);
 Route::resource('location', LocationController::class);
 Route::resource('maintenance', MaintenanceController::class);
 Route::resource('policy_type', PolicyTypeController::class);
