@@ -33,4 +33,8 @@ class AccessoryController extends Controller
     public function destroy(Accessory $accessory, int $id){
         $accessory->find($id)->delete();
     }
+
+    public function accessory_options(Accessory $accessory){
+        return response()->json($accessory->all(['id', 'name']));
+    }
 }

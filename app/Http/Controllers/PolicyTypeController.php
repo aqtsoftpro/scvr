@@ -32,4 +32,7 @@ class PolicyTypeController extends Controller
         return $policyType;
     }
 
+    public function policy_type_options(PolicyType $policyType){
+        return response()->json($policyType->all(['id', 'name']));
+    }
 }

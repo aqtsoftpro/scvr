@@ -37,4 +37,8 @@ class RepairJobController extends Controller
         $repairJob->delete();
         return $repairJob;
     }
+
+    public function repair_job_options(RepairJob $repairJob){
+        return response()->json($repairJob->all(['id', 'mechanic_name']));
+    }
 }

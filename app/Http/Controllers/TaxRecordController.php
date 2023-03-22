@@ -33,4 +33,8 @@ class TaxRecordController extends Controller
         $taxRecord->delete();
         return $taxRecord;
     }
+
+    public function tax_record_options(TaxRecord $taxRecord){
+        return response()->json($taxRecord->all(['id', 'name']));
+    }
 }

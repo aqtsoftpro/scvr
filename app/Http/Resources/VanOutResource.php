@@ -17,14 +17,14 @@ class VanOutResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->user,
-            'vehicle' => $this->vehicle,
-            'location' => $this->location,
+            'user' => $this->user->name,
+            'vehicle' => $this->vehicle->make,
+            'location' => $this->location->name,
             'reason_of_renting' => $this->reason_of_renting,
-            'swap_with' => $this->swapWith,
+            'swap_with' => $this->swapWith->make,
             'rental_period' => $this->rental_priod,
             'mileage' => $this->mileage,
-            'accessory' => $this->accessory,
+            'accessory' => $this->accessory->name,
             'due_return' => Carbon::parse($this->due_return)->format('d M, Y'),
             'date' => Carbon::parse($this->created_at)->format('d M, Y'),
 

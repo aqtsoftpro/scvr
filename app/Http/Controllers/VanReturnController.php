@@ -21,8 +21,7 @@ class VanReturnController extends Controller
     }
 
     public function store(Request $request, VanReturn $vanReturn){
-        $vanReturn->fill($request->all());
-        $vanReturn->save();
+        $vanReturn->create($request->all());
         return response()->json($vanReturn);
     }
 
@@ -35,5 +34,9 @@ class VanReturnController extends Controller
     public function destroy(VanReturn $vanReturn){
         $vanReturn->delete();
         return response()->json(null, 204);
+    }
+
+    public function van_return_options(VanReturn $vanReturn){
+        return response()->json($vanReturn->all(['id', 'condition']));
     }
 }

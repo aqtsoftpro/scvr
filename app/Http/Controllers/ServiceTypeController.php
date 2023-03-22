@@ -35,4 +35,8 @@ class ServiceTypeController extends Controller
         $serviceType->delete();
         return $serviceType->all();
     }
+
+    public function service_type_options(ServiceType $serviceType){
+        return response()->json($serviceType->all(['id', 'name']));
+    }
 }

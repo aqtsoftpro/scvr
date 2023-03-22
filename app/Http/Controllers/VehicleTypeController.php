@@ -35,4 +35,9 @@ class VehicleTypeController extends Controller
         $vehicleType->delete();
         return $vehicleType;
     }
+
+    public function vehicle_type_options(VehicleType $vehicleType){
+        return response()->json($vehicleType->all(['id', 'name']));
+    }
+
 }

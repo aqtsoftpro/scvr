@@ -5,11 +5,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VanOutController;
 use App\Http\Controllers\TaxTypeController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\AccessoryController;
+use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\RepairJobController;
 use App\Http\Controllers\TaxRecordController;
 use App\Http\Controllers\VanReturnController;
@@ -19,7 +21,7 @@ use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\ServiceTypeController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\GeneralServiceController;
-use App\Http\Controllers\InsuranceController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,29 +52,55 @@ Route::post('/login/token', function (Request $request) {
     $user = User::where('email', $request->email)->first();
 
     if (! $user || ! Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
+        return response()->json([
+            'status' => 'error',
+            'message' => 'The provided credentials are incorrect.'
+        ], 401);
     }
 
-    return $user->createToken($request->device_name)->plainTextToken;
+    return response()->json([
+        'status' => 'success',
+        'token' => $user->createToken($request->device_name)->plainTextToken,
+    ]);
+});
+
+Route::get('dashboard_data', 'App\Http\Controllers\DashboardController@index');
+
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
 });
 
 Route::resource('users', UserController::class);
+Route::get('customer_options', 'App\Http\Controllers\UserController@customer_options');
 Route::resource('accessory', AccessoryController::class);
+Route::get('accessory_options', 'App\Http\Controllers\AccessoryController@accessory_options');
 Route::resource('general_service', GeneralServiceController::class);
+Route::get('general_service_options', 'App\Http\Controllers\GeneralServiceController@general_service_options');
 Route::resource('insurance', InsuranceController::class);
+Route::get('insurance_options', 'App\Http\Controllers\InsuranceController@insurance_options');
 Route::resource('location', LocationController::class);
+Route::get('location_options', 'App\Http\Controllers\LocationController@location_options');
 Route::resource('maintenance', MaintenanceController::class);
+Route::get('maintenance_options', 'App\Http\Controllers\MaintenanceController@maintenance_options');
 Route::resource('policy_type', PolicyTypeController::class);
+Route::get('policy_type_options', 'App\Http\Controllers\PolicyTypeController@policy_type_options');
 Route::resource('repair_job', RepairJobController::class);
+Route::get('repair_job_options', 'App\Http\Controllers\RepairJobController@repair_job_options');
 Route::resource('service_type', ServiceTypeController::class);
+Route::get('service_type_options', 'App\Http\Controllers\ServiceTypeController@service_type_options');
 Route::resource('tax_record', TaxRecordController::class);
+Route::get('tax_record_options', 'App\Http\Controllers\TaxRecordController@tax_record_options');
 Route::resource('tax_type', TaxTypeController::class);
+Route::get('tax_type_options', 'App\Http\Controllers\TaxTypeController@tax_type_options');
 Route::resource('vanout', VanOutController::class);
+Route::get('van_out_options', 'App\Http\Controllers\VanOutController@van_out_options');
 Route::resource('van_return', VanReturnController::class);
+Route::get('van_return_options', 'App\Http\Controllers\VanReturnController@van_return_options');
 Route::resource('vehicle_type', VehicleTypeController::class);
+Route::get('vehicle_type_options', 'App\Http\Controllers\VehicleTypeController@vehicle_type_options');
 Route::resource('vehicle', VehicleController::class);
+Route::get('vehicle_options', 'App\Http\Controllers\VehicleController@vehicle_options');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

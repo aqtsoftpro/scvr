@@ -2,8 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\VehicleType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Vehicle extends Model
 {
@@ -22,7 +23,8 @@ class Vehicle extends Model
         'seller_contact_number'
     ];
 
-    public function type(){
-        return $this->hasOne(VehicleType::class);
+    public function vehicle_type(){
+        return $this->belongsTo(VehicleType::class);
     }
+
 }

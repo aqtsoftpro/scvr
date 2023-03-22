@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources;
 
-use App\VanOut;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VanReturnResource extends JsonResource
+class VanReturnDashboardResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,14 +16,12 @@ class VanReturnResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'rental_info' => $this->van_out->reason_of_renting,
+            'img' => '/assets/img/van-white.jpg',
             'location' => $this->location->name,
             'mileage' => $this->mileage,
             'fuel_tank' => $this->fuel_tank,
             'condition' => $this->condition,
-            'demage_caused_by_customer' => $this->demage_caused_by_customer,
-            'demage_picture' => $this->demage_picture,
-            'demage_text' => $this->demage_text,
+            'date' => Carbon::parse($this->created_at)->format('M d, Y'),
         ];
     }
 }

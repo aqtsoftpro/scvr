@@ -34,4 +34,8 @@ class TaxTypeController extends Controller
         $taxType->delete();
         return $taxType;
     }
+
+    public function tax_type_options(TaxType $taxType){
+        return response()->json($taxType->all(['id', 'name']));
+    }
 }

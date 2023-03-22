@@ -31,4 +31,8 @@ class MaintenanceController extends Controller
         return $maintenance->all();
     }
 
+    public function maintenance_options(Maintenance $maintenance){
+        return response()->json($maintenance->all(['id', 'mechanic_name']));
+    }
+
 }

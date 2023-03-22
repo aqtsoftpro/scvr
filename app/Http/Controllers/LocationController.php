@@ -33,4 +33,8 @@ class LocationController extends Controller
         $location->delete();
         return $location;
     }
+
+    public function location_options(Location $location){
+        return response()->json($location->all(['id', 'name']));
+    }
 }

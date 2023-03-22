@@ -37,4 +37,8 @@ class VanOutController extends Controller
         $vanOut->delete();
         return response()->json(null, 204);
     }
+
+    public function van_out_options(VanOut $vanOut){
+        return response()->json($vanOut->all(['id', 'reason_of_renting']));
+    }
 }

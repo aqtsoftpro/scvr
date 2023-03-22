@@ -9,6 +9,7 @@ class VanReturn extends Model
 {
     use HasFactory;
     protected $fillable = [
+      'van_out_id',
       'location_id',
       'mileage',
       'fuel_tank',

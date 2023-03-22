@@ -32,4 +32,8 @@ class GeneralServiceController extends Controller
     public function destroy(GeneralService $general_service, int $id){
         $general_service->find($id)->delete();
     }
+
+    public function general_service_options(GeneralService $general_service){
+        return response()->json($general_service->all());
+    }
 }

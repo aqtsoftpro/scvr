@@ -33,4 +33,8 @@ class InsuranceController extends Controller
     public function destroy(Insurance $insurance){
         return $insurance->delete();
     }
+
+    public function insurance_options(Insurance $insurance){
+        return response()->json($insurance->all(['id', 'name']));
+    }
 }

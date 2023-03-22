@@ -17,6 +17,11 @@ class UserController extends Controller
         return $user->all();
     }
 
+    public function customer_options(User $user)
+    {
+        return response()->json($user->all(['id', 'name']));
+    }
+
     public function store(Request $request, User $user)
     {
         $user->create($request->all());
@@ -38,5 +43,9 @@ class UserController extends Controller
     {
         $user->find($id)->delete();
 
+    }
+
+    public function user_options(User $user){
+        return response()->json($user->all(['id', 'name']));
     }
 }
