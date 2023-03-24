@@ -11,6 +11,7 @@ class Insurance extends Model
     protected $table = 'insurance';
 
     protected $fillable = [
+        'vehicle_id',
         'company_name',
         'policy_type_id',
         'policy_start_date',

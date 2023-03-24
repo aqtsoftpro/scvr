@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Maintenance;
 use Illuminate\Http\Request;
+use App\Http\Resources\MaintenanceResource;
 
 class MaintenanceController extends Controller
 {
@@ -13,7 +14,7 @@ class MaintenanceController extends Controller
     }
 
     public function index(Maintenance $maintenance){
-        return $maintenance->all();
+        return response()->json(MaintenanceResource::collection($maintenance->all()));
     }
 
     public function store(Request $request, Maintenance $maintenance){

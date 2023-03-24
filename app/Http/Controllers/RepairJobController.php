@@ -13,7 +13,7 @@ class RepairJobController extends Controller
     }
 
     public function index(RepairJob $repairJob){
-        return $repairJob->with('vehicle')->get();
+        return response()->json($repairJob->all());
     }
 
     public function store(Request $request, RepairJob $repairJob){

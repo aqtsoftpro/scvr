@@ -16,7 +16,7 @@ class ServiceTypeResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'service_type' => $this->serviceable, // get_class($this->resource)
+            'name' => $this->name
         ];
     }
 }

@@ -12,9 +12,10 @@ class Vehicle extends Model
     protected $fillable = [
         'picture',
         'vehicle_type_id',
+        'reg_plate_number',
         'model',
         'make',
-        'VIN',
+        'vin',
         'mileage',
         'purchase_date',
         'purchase_price',
