@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,7 +19,7 @@ class MaintenanceResource extends JsonResource
             'id' => $this->id,
             'vehicle' => $this->vehicle->reg_plate_number,
             'mileage' => $this->mileage,
-            'date' => $this->date,
+            'date' => Carbon::parse($this->date)->format('M d, Y'),
             'service_type' => $this->service_type->name,
             'cost' => $this->cost,
             'place' => $this->place,

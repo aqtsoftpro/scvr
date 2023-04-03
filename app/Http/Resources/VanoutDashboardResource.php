@@ -27,7 +27,7 @@ class VanoutDashboardResource extends JsonResource
           *stock: 62
         **/
         return [
-            'img' => '/assets/img/van-white.jpg',
+            'img' => $this->vehicle->picture,
             'id' => $this->id,
             'title' => $this->vehicle->make . '-' . $this->vehicle->model,
             'category' => 'Rented Out',

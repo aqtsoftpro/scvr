@@ -5,23 +5,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VanOutController;
 use App\Http\Controllers\TaxTypeController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\MechanicController;
 use App\Http\Controllers\AccessoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\RepairJobController;
 use App\Http\Controllers\TaxRecordController;
 use App\Http\Controllers\VanReturnController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PolicyTypeController;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\ServiceTypeController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\GeneralServiceController;
-use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,6 +104,12 @@ Route::resource('vehicle_type', VehicleTypeController::class);
 Route::get('vehicle_type_options', 'App\Http\Controllers\VehicleTypeController@vehicle_type_options');
 Route::resource('vehicle', VehicleController::class);
 Route::get('vehicle_options', 'App\Http\Controllers\VehicleController@vehicle_options');
+Route::resource('mechanic', MechanicController::class);
+Route::get('vehicle_options', 'App\Http\Controllers\MechanicController@mechanic_options');
+Route::resource('role', RoleController::class);
+Route::get('role_options', 'App\Http\Controllers\RoleController@role_options');
+Route::resource('permission', PermissionController::class);
+Route::get('permission_options', 'App\Http\Controllers\PermissionController@permission_options');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

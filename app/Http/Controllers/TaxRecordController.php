@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TaxRecordResource;
 use App\TaxRecord;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class TaxRecordController extends Controller
     }
 
     public function index(TaxRecord $taxRecord){
-        return $taxRecord->all();
+        return TaxRecordResource::collection($taxRecord->all());
     }
 
     public function show(TaxRecord $taxRecord){

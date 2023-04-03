@@ -17,11 +17,12 @@ class VanOutResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->user->name,
+            'reg_number' => $this->vehicle->reg_plate_number,
+            'customer' => $this->user->name,
             'vehicle' => $this->vehicle->make,
             'location' => $this->location->name,
             'reason_of_renting' => $this->reason_of_renting,
-            'swap_with' => $this->swapWith->make,
+            'swap_with' => $this->swap_with,
             'rental_period' => $this->rental_priod,
             'mileage' => $this->mileage,
             'accessory' => $this->accessory->name,

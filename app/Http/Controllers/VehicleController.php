@@ -25,10 +25,20 @@ class VehicleController extends Controller
     }
 
     public function store(Request $request, Vehicle $vehicle){
+
+        //upload image
+        if($request->hasFile('picture')){
+            $image = $request->file('picture');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $filename);
+        }
+        // get storage path
+        $uploaded_image_path = url('/images/' . $filename);
+
         $new_vehicle = $vehicle->create(
             [
                 //Basic Vehicle Info
-                'picture' => $request->picture,
+                'picture' => $uploaded_image_path,
                 'vin' => $request->vin,
                 'reg_plate_number' => $request->reg_plate_number,
                 'mileage' => $request->mileage,
@@ -96,6 +106,6 @@ class VehicleController extends Controller
     }
 
     public function vehicle_options(Vehicle $vehicle){
-        return response()->json($vehicle->all(['id', 'make', 'model']));
+        return response()->json($vehicle->all(['id', 'reg_plate_number']));
     }
 }

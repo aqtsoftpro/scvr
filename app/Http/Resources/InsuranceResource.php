@@ -18,7 +18,7 @@ class InsuranceResource extends JsonResource
         return [
             'id' => $this->id,
             'company_name' => $this->company_name,
-            'policy_type_id' => $this->policy_type,
+            'policy_type' => $this->policy_type->name,
             'policy_start_date' => Carbon::parse($this->policy_start_date)->format('d M, Y'),
             'policy_end_date' => Carbon::parse($this->policy_end_date)->format('d M, Y'),
             'road_side_assistance' => $this->road_side_assistance,

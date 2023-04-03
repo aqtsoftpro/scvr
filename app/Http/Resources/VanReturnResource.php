@@ -16,8 +16,12 @@ class VanReturnResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'rental_info' => $this->van_out->reason_of_renting,
+            'id' => $this->id,
+            'vehicle' => $this->van_out->vehicle->reg_plate_number,
+            'customer' => $this->van_out->user->name,
             'location' => $this->location->name,
+            'van_out_id' => $this->van_out->id,
+            'location_id' => $this->location->id,
             'mileage' => $this->mileage,
             'fuel_tank' => $this->fuel_tank,
             'condition' => $this->condition,

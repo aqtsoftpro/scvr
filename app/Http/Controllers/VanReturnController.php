@@ -13,7 +13,7 @@ class VanReturnController extends Controller
     }
 
     public function index(VanReturn $vanReturn){
-        return response()->json(VanReturnResource::collection($vanReturn->all()));
+        return response()->json(VanReturnResource::collection($vanReturn->orderBy('id', 'desc')->get()));
     }
 
     public function show(VanReturn $vanReturn){
@@ -22,18 +22,29 @@ class VanReturnController extends Controller
 
     public function store(Request $request, VanReturn $vanReturn){
         $vanReturn->create($request->all());
-        return response()->json($vanReturn);
+        $res = [
+            'message' => 'Van return record created',
+            'data' => $vanReturn
+        ];
+        return response()->json($res);
     }
 
     public function update(Request $request, VanReturn $vanReturn){
         $vanReturn->fill($request->all());
         $vanReturn->save();
-        return response()->json($vanReturn);
+        $res = [
+            'message' => 'Van return record updated',
+            'data' => $vanReturn
+        ];
+        return response()->json($res);
     }
 
     public function destroy(VanReturn $vanReturn){
         $vanReturn->delete();
-        return response()->json(null, 204);
+        $res = [
+            'message' => 'Van return record deleted',
+        ];
+        return response()->json($res, 204);
     }
 
     public function van_return_options(VanReturn $vanReturn){

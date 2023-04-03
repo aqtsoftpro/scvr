@@ -16,7 +16,7 @@ class VanReturnDashboardResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'img' => '/assets/img/van-white.jpg',
+            'img' => $this->van_out->vehicle->picture,
             'location' => $this->location->name,
             'mileage' => $this->mileage,
             'fuel_tank' => $this->fuel_tank,

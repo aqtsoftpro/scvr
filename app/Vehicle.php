@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Maintenance;
 use App\VehicleType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +27,14 @@ class Vehicle extends Model
 
     public function vehicle_type(){
         return $this->belongsTo(VehicleType::class);
+    }
+
+    public function maintenance(){
+        return $this->hasMany(Maintenance::class);
+    }
+
+    public function insurance(){
+        return $this->hasOne(Insurance::class, 'vehicle_id');
     }
 
 }
