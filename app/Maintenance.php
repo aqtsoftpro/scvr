@@ -2,13 +2,15 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Maintenance extends Model
 {
 
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $table = 'maintenance';
     protected $fillable = [
@@ -29,5 +31,11 @@ class Maintenance extends Model
 
     public function service_type(){
         return $this->belongsTo(ServiceType::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions    {
+        return LogOptions::defaults()
+            ->logOnly(['id', 'name'])
+            ->logUnguarded();
     }
 }

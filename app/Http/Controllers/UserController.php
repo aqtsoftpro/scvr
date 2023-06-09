@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -14,7 +16,7 @@ class UserController extends Controller
 
     public function index(User $user)
     {
-        return $user->all();
+        return response()->json(UserResource::collection($user->all()));
     }
 
     public function customer_options(User $user)
@@ -24,25 +26,55 @@ class UserController extends Controller
 
     public function store(Request $request, User $user)
     {
-        $user->create($request->all());
+        $role = Role::find($request->role_id);
+
+        $newUser = $user->create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+
+        $newUser->assignRole($role->name);
+
+        return response()->json($user);
+    }
+
+    public function show(User $user)
+    {
+        return response()->json(new UserResource($user));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        if($request->password) {
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+        } else {
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+            ]);
+        }
+
+        if(isset($request->rold_id)){
+            if(count($user->roles) > 0){
+                $role = $user->roles->first();
+                $user->removeRole($role);
+            }
+            $newRole = Role::find($request->role_id);
+            $user->assignRole($newRole->name);
+        }
+
         return $user;
     }
 
-    public function show(User $user, int $id)
+    public function destroy(User $user)
     {
-        return $user->find($id);
-    }
-
-    public function update(Request $request, User $user, int $id)
-    {
-        $user->find($id)->update($request->all());
-        return $user;
-    }
-
-    public function destroy(User $user, int $id)
-    {
-        $user->find($id)->delete();
-
+        $user->delete();
     }
 
     public function user_options(User $user){

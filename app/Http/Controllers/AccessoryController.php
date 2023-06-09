@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Accessory;
 use Illuminate\Http\Request;
 use App\Http\Resources\AccessoryResource;
+use Spatie\Activitylog\Models\Activity;
 
 class AccessoryController extends Controller
 {
@@ -18,6 +19,7 @@ class AccessoryController extends Controller
 
     public function store(Request $request, Accessory $accessory){
         $accessory->create($request->all());
+
         return $accessory;
     }
 
@@ -30,8 +32,8 @@ class AccessoryController extends Controller
         return $accessory;
     }
 
-    public function destroy(Accessory $accessory, int $id){
-        $accessory->find($id)->delete();
+    public function destroy(Accessory $accessory){
+        $accessory->delete();
     }
 
     public function accessory_options(Accessory $accessory){

@@ -18,7 +18,8 @@ class VanOutResource extends JsonResource
         return [
             'id' => $this->id,
             'reg_number' => $this->vehicle->reg_plate_number,
-            'customer' => $this->user->name,
+            'customer' => $this->customer->first_name . ' ' . $this->customer->last_name,
+            'customer_id' => $this->customer->id,
             'vehicle' => $this->vehicle->make,
             'location' => $this->location->name,
             'reason_of_renting' => $this->reason_of_renting,

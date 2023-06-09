@@ -24,8 +24,8 @@ class GeneralServiceController extends Controller
         return response()->json($general_service->find($id));
     }
 
-    public function update(Request $request, GeneralService $general_service, int $id){
-        $general_service->find($id)->update($request->all());
+    public function update(Request $request, GeneralService $general_service){
+        $general_service->update($request->all());
         return $general_service;
     }
 

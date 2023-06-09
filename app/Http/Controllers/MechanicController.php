@@ -42,4 +42,8 @@ class MechanicController extends Controller
         ];
         return response()->json($res, 204);
     }
+
+    public function mechanic_options(Mechanic $mechanic){
+        return response()->json($mechanic->all());
+    }
 }

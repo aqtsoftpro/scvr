@@ -2,12 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TaxRecord extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $fillable = [
         'tax_type_id',
@@ -21,5 +23,11 @@ class TaxRecord extends Model
 
     public function tax_type(){
         return $this->belongsTo(TaxType::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions    {
+        return LogOptions::defaults()
+            ->logOnly(['id', 'name'])
+            ->logUnguarded();
     }
 }

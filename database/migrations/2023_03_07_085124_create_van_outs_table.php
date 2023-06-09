@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('van_outs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('vehicle_id');
             $table->unsignedBigInteger('location_id');
             $table->string('reason_of_renting');
@@ -24,9 +24,10 @@ return new class extends Migration
             $table->integer('mileage');
             $table->unsignedBigInteger('accessory_id');
             $table->string('due_return');
+            $table->integer('status');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
             $table->foreign('swap_with')->references('id')->on('vehicles')->onDelete('cascade');
             $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');

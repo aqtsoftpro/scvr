@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VanOutController;
 use App\Http\Controllers\TaxTypeController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MechanicController;
 use App\Http\Controllers\AccessoryController;
@@ -24,7 +25,9 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\ServiceTypeController;
 use App\Http\Controllers\VehicleTypeController;
+use App\Http\Controllers\VehicleStatusController;
 use App\Http\Controllers\GeneralServiceController;
+use App\Http\Controllers\ReportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +39,9 @@ use App\Http\Controllers\GeneralServiceController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::get('search', 'App\Http\Controllers\SearchController@search');
+
 
 Route::post('logout/{user}', function(User $user){
     return response()->json($user->tokens);
@@ -105,11 +111,20 @@ Route::get('vehicle_type_options', 'App\Http\Controllers\VehicleTypeController@v
 Route::resource('vehicle', VehicleController::class);
 Route::get('vehicle_options', 'App\Http\Controllers\VehicleController@vehicle_options');
 Route::resource('mechanic', MechanicController::class);
-Route::get('vehicle_options', 'App\Http\Controllers\MechanicController@mechanic_options');
+Route::get('mechanic_options', 'App\Http\Controllers\MechanicController@mechanic_options');
 Route::resource('role', RoleController::class);
 Route::get('role_options', 'App\Http\Controllers\RoleController@role_options');
 Route::resource('permission', PermissionController::class);
 Route::get('permission_options', 'App\Http\Controllers\PermissionController@permission_options');
+Route::resource('vehicle_status', VehicleStatusController::class);
+Route::get('vehicle_status_options', 'App\Http\Controllers\VehicleStatusController@vehicle_status_options');
+Route::resource('customer', CustomerController::class);
+Route::get('customer_options', 'App\Http\Controllers\CustomerController@customer_options');
+
+Route::get('reports/earnings', 'App\Http\Controllers\ReportsController@earnings');
+Route::get('reports/maintenance_cost', 'App\Http\Controllers\ReportsController@maintenance_cost');
+Route::get('reports/maintenance_list', 'App\Http\Controllers\ReportsController@maintenance_list');
+Route::get('reports/rental_history', 'App\Http\Controllers\ReportsController@rental_history');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

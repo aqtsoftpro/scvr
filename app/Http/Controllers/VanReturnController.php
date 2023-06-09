@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\VanOut;
 use App\VanReturn;
 use Illuminate\Http\Request;
 use App\Http\Resources\VanReturnResource;
@@ -21,7 +22,15 @@ class VanReturnController extends Controller
     }
 
     public function store(Request $request, VanReturn $vanReturn){
-        $vanReturn->create($request->all());
+        $newVanReturn = $vanReturn->create($request->all());
+
+        $booking = VanOut::find($newVanReturn->van_out_id);
+        $booking->vehicle()->update([
+            'status_id' => 3
+        ]);
+        $booking->status = 0;
+        $booking->save();
+
         $res = [
             'message' => 'Van return record created',
             'data' => $vanReturn
@@ -30,7 +39,7 @@ class VanReturnController extends Controller
     }
 
     public function update(Request $request, VanReturn $vanReturn){
-        $vanReturn->fill($request->all());
+        $vanReturn->update($request->all());
         $vanReturn->save();
         $res = [
             'message' => 'Van return record updated',

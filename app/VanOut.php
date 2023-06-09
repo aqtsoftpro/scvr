@@ -5,15 +5,17 @@ namespace App;
 use App\Vehicle;
 use App\Location;
 use App\Accessory;
-use App\Models\User;
+use App\Models\Customer;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class VanOut extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     protected $fillable = [
-        'user_id',
+        'customer_id',
         'vehicle_id',
         'location_id',
         'reason_of_renting',
@@ -23,10 +25,15 @@ class VanOut extends Model
         'mileage',
         'accessory_id',
         'due_return',
+        'status'
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function van_return(){
+        return $this->hasOne(VanReturn::class);
+    }
+
+    public function customer(){
+        return $this->belongsTo(Customer::class);
     }
 
     public function vehicle(){
@@ -43,6 +50,12 @@ class VanOut extends Model
 
     public function swapWith(){
         return $this->belongsTo(Vehicle::class, 'swap_with');
+    }
+
+    public function getActivitylogOptions(): LogOptions    {
+        return LogOptions::defaults()
+            ->logOnly(['id', 'name'])
+            ->logUnguarded();
     }
 
 }
