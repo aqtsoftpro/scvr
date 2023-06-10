@@ -28,7 +28,8 @@ class Vehicle extends Model
         'seller_name',
         'seller_address',
         'seller_contact_number',
-        'status_id'
+        'status_id',
+        'next_maintenance_due_date'
     ];
 
     public function vehicle_type(){

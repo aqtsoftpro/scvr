@@ -20,6 +20,7 @@ class Insurance extends Model
         'policy_start_date',
         'policy_end_date',
         'road_side_assistance',
+        'road_side_assistance_company',
         'road_side_assistance_start_date',
         'road_side_assistance_end_date',
         'demage_details'
