@@ -76,9 +76,9 @@ Route::post('/login/token', function (Request $request) {
 Route::get('dashboard_data', 'App\Http\Controllers\DashboardController@index');
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::resource('users', UserController::class);
 Route::get('customer_options', 'App\Http\Controllers\UserController@customer_options');
@@ -127,5 +127,7 @@ Route::get('reports/maintenance_list', 'App\Http\Controllers\ReportsController@m
 Route::get('reports/rental_history', 'App\Http\Controllers\ReportsController@rental_history');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    $user_id = $request->user()->id;
+    $user = User::where('id', $user_id)->with('roles')->first();
+    return $user;
 });
