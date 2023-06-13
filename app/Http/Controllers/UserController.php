@@ -60,7 +60,7 @@ class UserController extends Controller
             ]);
         }
 
-        if(isset($request->rold_id)){
+        if(isset($request->role_id)){
             if(count($user->roles) > 0){
                 $role = $user->roles->first();
                 $user->removeRole($role);
@@ -69,7 +69,8 @@ class UserController extends Controller
             $user->assignRole($newRole->name);
         }
 
-        return $user;
+        return response()->json(UserResource::collection($user->with("roles")->get()));
+
     }
 
     public function destroy(User $user)

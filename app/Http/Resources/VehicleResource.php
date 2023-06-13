@@ -35,7 +35,8 @@ class VehicleResource extends JsonResource
             'insurance' => new InsuranceResource($this->insurance),
             'maintenance' => MaintenanceResource::collection($this->maintenance),
             'status' => $this->status->name,
-            'status_id' => $this->status_id
+            'status_id' => $this->status_id,
+            'next_maintenance_due_date' => Carbon::parse($this->next_maintenance_due_date)->format('M d, Y')
         ];
     }
 }

@@ -31,6 +31,9 @@ class VanOutController extends Controller
         /*
         Create a new booking
         */
+
+        return $request->all();
+
         $vanOut->fill($request->all());
         $vanOut->save();
 

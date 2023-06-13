@@ -50,8 +50,11 @@ class VehicleController extends Controller
                 // Seller's Info
                 'seller_name' => $request->seller_name,
                 'seller_address' => $request->seller_address,
-                'seller_contact_number' => $request->seller_contact_number
-                ]
+                'seller_contact_number' => $request->seller_contact_number,
+
+                //'Next maintenenace ddud'
+                'next_maintenance_due_date' => $request->next_maintenance_due_date
+            ]
         );
 
         //Create Insurace Record
@@ -76,7 +79,7 @@ class VehicleController extends Controller
                 'cost' => $maintanance['maintenance_cost'],
                 'place' => $maintanance['maintenance_place'],
                 'date' => $maintanance['maintenance_date'],
-                'part_replaced' => $maintanance['part_replaced'],
+                'part_replaced' => (isset($maintanance['part_replaced'])) ? $maintanance['part_replaced'] : '',
                 'comments' => $maintanance['comments']
             ]);
         }
@@ -105,7 +108,12 @@ class VehicleController extends Controller
 
     }
 
-    public function vehicle_options(Vehicle $vehicle){
-        return response()->json($vehicle->all(['id', 'reg_plate_number']));
+    public function vehicle_options(Vehicle $vehicle, Request $request){
+
+        if($request->mode == 'active'){
+            return response()->json($vehicle->where('status_id', 1)->get(['id', 'reg_plate_number']));
+        } else {
+            return response()->json($vehicle->all(['id', 'reg_plate_number']));
+        }
     }
 }
