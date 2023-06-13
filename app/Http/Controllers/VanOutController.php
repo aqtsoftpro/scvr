@@ -23,7 +23,7 @@ class VanOutController extends Controller
     }
 
     public function show($vanOut){
-        return response()->json(Vanout::find($vanOut));
+        return response()->json(new VanOutResource(Vanout::find($vanOut)));
     }
 
     public function store(Request $request, VanOut $vanOut){
@@ -32,10 +32,17 @@ class VanOutController extends Controller
         Create a new booking
         */
 
-        return $request->all();
+
+
+
 
         $vanOut->fill($request->all());
         $vanOut->save();
+
+        /*
+        Add assign accessories to vanout
+        */
+        $vanOut->accessories()->attach($request->accessories);
 
         /*
         Update the vehicle status to rented out

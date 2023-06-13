@@ -5,6 +5,8 @@ namespace App;
 use App\Vehicle;
 use App\Location;
 use App\Accessory;
+use App\Http\Resources\AccessoryResource;
+use App\Models\AccessoryVanout;
 use App\Models\Customer;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -23,9 +25,10 @@ class VanOut extends Model
         'rental_priod',
         'rental_amount',
         'mileage',
-        'accessory_id',
         'due_return',
-        'status'
+        'status',
+        'van_out_date',
+        'van_out_time'
     ];
 
     public function van_return(){
@@ -44,9 +47,9 @@ class VanOut extends Model
         return $this->belongsTo(Location::class);
     }
 
-    public function accessory(){
-        return $this->belongsTo(Accessory::class);
-    }
+    // public function accessory(){
+    //     return $this->belongsTo(Accessory::class);
+    // }
 
     public function swapWith(){
         return $this->belongsTo(Vehicle::class, 'swap_with');
@@ -56,6 +59,10 @@ class VanOut extends Model
         return LogOptions::defaults()
             ->logOnly(['id', 'name'])
             ->logUnguarded();
+    }
+
+    public function accessories(){
+        return $this->belongsToMany(Accessory::class, 'accessory_van_out');
     }
 
 }

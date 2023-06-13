@@ -111,9 +111,25 @@ class VehicleController extends Controller
     public function vehicle_options(Vehicle $vehicle, Request $request){
 
         if($request->mode == 'active'){
-            return response()->json($vehicle->where('status_id', 1)->get(['id', 'reg_plate_number']));
+            $vehicles = $vehicle->where('status_id', 1)->get();
+            $options = [];
+
+            foreach($vehicles as $key => $vehicle){
+                $options[$key]['id'] = $vehicle->id;
+                $options[$key]['name'] = $vehicle->make . ' ' . $vehicle->model . ' (' . $vehicle->reg_plate_number . ')';
+            }
+
+            return response()->json($options);
+
         } else {
-            return response()->json($vehicle->all(['id', 'reg_plate_number']));
+            $vehicles = $vehicle->where('status_id', 1)->get();
+            $options = [];
+
+            foreach($vehicles as $key => $vehicle){
+                $options[$key]['id'] = $vehicle->id;
+                $options[$key]['name'] = $vehicle->make . ' ' . $vehicle->model . ' (' . $vehicle->reg_plate_number . ')';
+            }
+            return response()->json($options);
         }
     }
 }
