@@ -58,6 +58,15 @@ class VehicleController extends Controller
         );
 
         //Create Insurace Record
+
+        if($request->hasFile('damage_picture')){
+            $image = $request->file('damage_picture');
+            $filename = 'damage-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/insurance'), $filename);
+        }
+        // get storage path
+        $uploaded_image_path = url('/images/insurance' . $filename);
+
         Insurance::create([
             'vehicle_id' => $new_vehicle->id,
             'company_name' => $request->company_name,
@@ -67,7 +76,8 @@ class VehicleController extends Controller
             'road_side_assistance' => $request->road_side_assistance,
             'road_side_assistance_start_date' => $request->road_side_assistance_start_date,
             'road_side_assistance_end_date' => $request->road_side_assistance_end_date,
-            'demage_details' => $request->demage_details
+            'demage_details' => $request->demage_details,
+            'damage_picture' => $uploaded_image_path
         ]);
 
         foreach($request->maintenance_records as $maintanance){

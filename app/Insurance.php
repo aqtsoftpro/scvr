@@ -23,7 +23,8 @@ class Insurance extends Model
         'road_side_assistance_company',
         'road_side_assistance_start_date',
         'road_side_assistance_end_date',
-        'demage_details'
+        'demage_details',
+        'damage_picture'
     ];
 
     public function policy_type(){
