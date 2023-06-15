@@ -14,5 +14,6 @@ class Mechanic extends Model
         'workshop_contact',
         'workshop_address',
         'expertise',
+        'comments'
     ];
 }

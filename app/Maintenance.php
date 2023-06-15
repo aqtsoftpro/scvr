@@ -22,7 +22,9 @@ class Maintenance extends Model
         'place',
         'mechanic_name',
         'comments',
-        'part_replaced'
+        'part_replaced',
+        'part_repaired',
+        'tyre_replaced'
     ];
 
     public function vehicle(){

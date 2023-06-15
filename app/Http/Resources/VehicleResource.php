@@ -36,7 +36,9 @@ class VehicleResource extends JsonResource
             'maintenance' => MaintenanceResource::collection($this->maintenance),
             'status' => $this->status->name,
             'status_id' => $this->status_id,
-            'next_maintenance_due_date' => Carbon::parse($this->next_maintenance_due_date)->format('M d, Y')
+            'next_maintenance_due_date' => Carbon::parse($this->next_maintenance_due_date)->format('M d, Y'),
+            'next_maintenance_service' => $this->next_maintenance_service,
+            'next_maintenance_comments' => $this->next_maintenance_comments,
         ];
     }
 }

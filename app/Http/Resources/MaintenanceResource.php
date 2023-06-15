@@ -25,7 +25,9 @@ class MaintenanceResource extends JsonResource
             'place' => $this->place,
             'mechanic_name' => $this->mechanic_name,
             'comments' => $this->comments,
-            'part_replaced' => $this->part_replaced
+            'part_replaced' => $this->part_replaced,
+            'part_repaired' => $this->part_repaired,
+            'tyre_replaced' => $this->tyre_replaced
         ];
     }
 }

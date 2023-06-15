@@ -53,7 +53,9 @@ class VehicleController extends Controller
                 'seller_contact_number' => $request->seller_contact_number,
 
                 //'Next maintenenace ddud'
-                'next_maintenance_due_date' => $request->next_maintenance_due_date
+                'next_maintenance_due_date' => $request->next_maintenance_due_date,
+                'next_maintenance_service' => $request->next_maintenance_service,
+                'next_maintenance_comments' => $request->next_maintenance_comments
             ]
         );
 
@@ -83,14 +85,16 @@ class VehicleController extends Controller
         foreach($request->maintenance_records as $maintanance){
             Maintenance::create([
                 'vehicle_id' => $new_vehicle->id,
-                'mileage' => $maintanance['maintenance_mileage'],
+                'mileage' => isset($maintanance['maintenance_mileage']) ? $maintanance['maintenance_mileage'] : '',
                 'service_type_id' => $maintanance['maintenance_type_id'],
-                'mechanic_name' => $maintanance['mechanic_name'],
-                'cost' => $maintanance['maintenance_cost'],
-                'place' => $maintanance['maintenance_place'],
+                'mechanic_name' => isset($maintanance['mechanic_name']) ? $maintanance['mechanic_name'] : '',
+                'cost' => isset($maintanance['maintenance_cost']) ? $maintanance['maintenance_cost'] : '',
+                'place' => isset($maintanance['maintenance_place']) ? $maintanance['maintenance_place'] : '',
                 'date' => $maintanance['maintenance_date'],
                 'part_replaced' => (isset($maintanance['part_replaced'])) ? $maintanance['part_replaced'] : '',
-                'comments' => $maintanance['comments']
+                'part_repaired' => (isset($maintanance['part_repaired'])) ? $maintanance['part_repaired'] : '',
+                'tyre_replaced' => (isset($maintanance['tyre_replaced'])) ? $maintanance['tyre_replaced'] : '',
+                'comments' => (isset($maintanance['comments'])) ? $maintanance['comments'] : ''
             ]);
         }
 
