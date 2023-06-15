@@ -1,13 +1,16 @@
 <?php
 
+use App\Models\Toll;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TollController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VanOutController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\TaxTypeController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\CustomerController;
@@ -27,7 +30,6 @@ use App\Http\Controllers\ServiceTypeController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\VehicleStatusController;
 use App\Http\Controllers\GeneralServiceController;
-use App\Http\Controllers\ReportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,6 +122,8 @@ Route::resource('vehicle_status', VehicleStatusController::class);
 Route::get('vehicle_status_options', 'App\Http\Controllers\VehicleStatusController@vehicle_status_options');
 Route::resource('customer', CustomerController::class);
 Route::get('customer_options', 'App\Http\Controllers\CustomerController@customer_options');
+Route::resource('toll', TollController::class);
+Route::get('toll_options', 'App\Http\Controllers\TollController@toll_options');
 
 Route::get('reports/earnings', 'App\Http\Controllers\ReportsController@earnings');
 Route::get('reports/maintenance_cost', 'App\Http\Controllers\ReportsController@maintenance_cost');

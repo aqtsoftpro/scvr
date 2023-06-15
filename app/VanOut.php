@@ -24,6 +24,7 @@ class VanOut extends Model
         'swap_with',
         'rental_priod',
         'rental_amount',
+        'amount_frequency',
         'mileage',
         'due_return',
         'status',
