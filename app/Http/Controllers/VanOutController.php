@@ -31,7 +31,25 @@ class VanOutController extends Controller
         /*
         Create a new booking
         */
-
+        $validation = $request->validate([
+            'customer_id' => 'required|integer',
+            'vehicle_id' => 'required|integer',
+            'location_id' => 'required|integer',
+            'reason_of_renting' => 'required',
+            'rental_priod' => 'required',
+            'rental_amount' => 'required',
+            'amount_frequency' => 'required',
+            'mileage' => 'required',
+            'van_out_date' => 'required',
+            'van_out_time' => 'required',
+            'due_return' => 'required',
+            'accessories' => 'required'
+        ],
+    [
+        'customer_id.integer' => 'Select Customer',
+        'vehicle_id.integer' => 'Select Vehicle ',
+        'location_id.integer' => 'Select Location',
+    ]);
 
 
 
@@ -55,6 +73,7 @@ class VanOutController extends Controller
         Send the success message and created object
         */
         $res = [
+            'status' => 'success',
             'message' => 'Booking created',
             'data' => $vanOut
         ];

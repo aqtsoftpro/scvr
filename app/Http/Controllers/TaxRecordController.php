@@ -22,17 +22,46 @@ class TaxRecordController extends Controller
     }
 
     public function store(Request $request, TaxRecord $taxRecord){
-        $taxRecord->create($request->all());
-        return $taxRecord;
+        if($taxRecord->create($request->all())){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Tax record created',
+                'data' => $taxRecord
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Tax creation error'
+            ]);
+        }
     }
 
     public function update(Request $request, TaxRecord $taxRecord){
-        $taxRecord->update($request->all());
-        return $taxRecord;
+        if($taxRecord->update($request->all())){
+            return response()->json([
+               'status' => 'success',
+               'message' => 'Tax record updated!',
+               'data' => $taxRecord
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Tax record update error'
+            ]);
+        }
     }
     public function destroy(TaxRecord $taxRecord){
-        $taxRecord->delete();
-        return $taxRecord;
+        if($taxRecord->delete()){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Tax record deleted!',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Tax record deletion error'
+            ]);
+        }
     }
 
     public function tax_record_options(TaxRecord $taxRecord){

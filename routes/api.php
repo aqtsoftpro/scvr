@@ -3,12 +3,15 @@
 use App\Models\Toll;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TollController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\VanOutController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\TaxTypeController;
@@ -129,6 +132,9 @@ Route::get('reports/earnings', 'App\Http\Controllers\ReportsController@earnings'
 Route::get('reports/maintenance_cost', 'App\Http\Controllers\ReportsController@maintenance_cost');
 Route::get('reports/maintenance_list', 'App\Http\Controllers\ReportsController@maintenance_list');
 Route::get('reports/rental_history', 'App\Http\Controllers\ReportsController@rental_history');
+
+Route::post('password-reset', 'App\Http\Controllers\Auth\PasswordResetLinkController@store');
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $user_id = $request->user()->id;

@@ -16,31 +16,66 @@ class MechanicController extends Controller
     }
 
     public function store(Request $request, Mechanic $mechanic){
-        $newMechanic = $mechanic->create($request->all());
-        $res = [
-            'message' => 'Mechanic record created',
-            'data' => $newMechanic
-        ];
-        return response()->json($res);
+
+        $validation = $request->validate([
+           'name' => 'required',
+           'workshop_contact' => 'required',
+           'workshop_address' => 'required',
+           'expertise' => 'required',
+           'comments' => 'required'
+        ]);
+
+        if($newMechanic = $mechanic->create($request->all())){
+            $res = [
+                'status' => 'success',
+                'message' => 'Mechanic record created',
+                'data' => $newMechanic
+            ];
+            return response()->json($res);
+        } else {
+            $res = [
+                'status' => 'error',
+                'message' => 'Mechanic record not created',
+            ];
+            return response()->json($res);
+        }
     }
 
     public function update(Request $request, Mechanic $mechanic){
-        $mechanic->fill($request->all());
-        $mechanic->save();
-        $res = [
-            'message' => 'Mechanic record updated',
-            'data' => $mechanic
-        ];
-        return response()->json($res);
+        $mechanic->update($request->all());
+        if($mechanic->save()){
+            $res = [
+                'status' => 'success',
+                'message' => 'Mechanic record updated',
+                'data' => $mechanic
+            ];
+            return response()->json($res);
+        } else {
+            $res = [
+                'status' => 'error',
+                'message' => 'Mechanic record not updated',
+            ];
+            return response()->json($res);
+        }
+
     }
 
     public function destroy(Mechanic $mechanic){
 
-        $mechanic->delete();
-        $res = [
-            'message' => 'Mechanic record deleted',
-        ];
-        return response()->json($res, 204);
+        if($mechanic->delete()){
+            $res = [
+                'status' => 'success',
+                'message' => 'Mechanic record deleted',
+            ];
+            return response()->json($res);
+        } else {
+            $res = [
+                'status' => 'error',
+                'message' => 'Mechanic record not deleted',
+            ];
+            return response()->json($res);
+        }
+
     }
 
     public function mechanic_options(Mechanic $mechanic){

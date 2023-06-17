@@ -13,11 +13,16 @@ class TollController extends Controller
     }
 
     public function show(Toll $toll){
-        return response()->json(new Toll($toll->find($toll->id)));
+        return response()->json(new TollResource($toll->find($toll->id)));
     }
 
     public function store(Request $request, Toll $toll){
 
+        $validation = $request->validate([
+            'toll_number' => 'required',
+            'date' => 'required|date',
+            'toll_image' => 'required'
+        ]);
 
         //upload image
         if($request->hasFile('toll_image')){
@@ -34,6 +39,7 @@ class TollController extends Controller
             'toll_image' => $uploaded_image_path
         ]);
         $res = [
+            'status' => 'success',
             'message' => 'Toll record created',
             'data' => $newToll
         ];
@@ -42,26 +48,30 @@ class TollController extends Controller
 
     public function update(Request $request, Toll $toll){
 
-        $uploaded_image_path = $request->toll_image;
-        //upload image
+        $tollImage = $request->toll_image;
+
         if($request->hasFile('toll_image')){
             $image = $request->file('toll_image');
             $filename = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images/toll'), $filename);
-            $uploaded_image_path = url('/images/toll/' . $filename);
+            $tollImage = url('/images/toll/' . $filename);
         }
 
-        $request['toll_image'] = $uploaded_image_path;
-
-        $toll->update($request->all());
+        $toll->update([
+            'toll_number' => $request->toll_number,
+            'date' => $request->date,
+            'toll_image' => $tollImage
+        ]);
         $toll->save();
 
         $res = [
+            'status' => 'success',
             'message' => 'Toll record updated',
             'data' => $toll
         ];
 
         return response()->json($res);
+
     }
 
     public function destroy(Toll $toll){

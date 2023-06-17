@@ -16,7 +16,7 @@ class UserController extends Controller
 
     public function index(User $user)
     {
-        return response()->json(UserResource::collection($user->with("roles")->get()));
+        return response()->json(UserResource::collection($user->with("roles")->orderBy('id', 'desc')->get()));
     }
 
     public function customer_options(User $user)
