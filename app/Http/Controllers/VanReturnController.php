@@ -22,6 +22,21 @@ class VanReturnController extends Controller
     }
 
     public function store(Request $request, VanReturn $vanReturn){
+
+        $validation = $request->validate([
+            'van_out_id' => 'required|integer',
+            'location_id' => 'required|integer',
+            'mileage' => 'required',
+            'fuel_tank' => 'required',
+            'condition' => 'required',
+            'require_maintenance' => 'required',
+            'demage_caused_by_customer' => 'required',
+            'return_date' => 'required',
+        ],[
+            'van_out_id.integer' => 'Select Booking ID from list',
+            'location_id.integer' => 'Select Location',
+        ]);
+
         $newVanReturn = $vanReturn->create($request->all());
 
         $booking = VanOut::find($newVanReturn->van_out_id);
@@ -32,6 +47,7 @@ class VanReturnController extends Controller
         $booking->save();
 
         $res = [
+            'status' => 'success',
             'message' => 'Van return record created',
             'data' => $vanReturn
         ];

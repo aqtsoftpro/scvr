@@ -16,6 +16,8 @@ class VanReturn extends Model
       'mileage',
       'fuel_tank',
       'condition',
+      'require_maintenance',
+      'require_maintanance_text',
       'demage_caused_by_customer',
       'demage_picture',
       'demage_text',
