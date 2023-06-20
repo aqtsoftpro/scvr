@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class CustomerController extends Controller
 {
     public function index(Customer $customer){
-        return response()->json($customer->all());
+        return response()->json($customer->orderBy('id', 'desc')->get());
     }
 
     public function show(Customer $customer){
@@ -22,10 +22,69 @@ class CustomerController extends Controller
             'last_name' => 'required',
             'email' => 'required|unique:customers,email',
             'phone_number' => 'required',
-            'address' => 'required'
+            'address' => 'required',
+            'driver_licence_number' => 'required',
+            'driver_licence_front_picture' => 'required',
+            'driver_licence_back_picture' => 'required',
+            'driver_licence_expiry' => 'required',
+            'secondary_id_number' => 'required',
+            'secondary_id_front_picture' => 'required',
+            'secondary_id_back_picture' => 'required',
+            'secondary_id_expiry' => 'required',
+            'nationality' => 'required',
         ]);
 
-        if($newCustomer = $customer->create($request->all())){
+
+        //driver licence front picture
+        if($request->hasFile('driver_licence_front_picture')){
+            $image = $request->file('driver_licence_front_picture');
+            $filename = 'dlf-' . $request->email . '-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/customer'), $filename);
+            $dlfImage = url('/images/customer/' . $filename);
+        }
+        // driver licence back picture
+        if($request->hasFile('driver_licence_back_picture')){
+            $image = $request->file('driver_licence_back_picture');
+            $filename = 'dlb-' . $request->email . '-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/customer'), $filename);
+            $dlbImage = url('/images/customer/' . $filename);
+        }
+
+        //secondary id front picture
+        if($request->hasFile('secondary_id_front_picture')){
+            $image = $request->file('secondary_id_front_picture');
+            $filename = 'sidf-' . $request->email . '-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/customer'), $filename);
+            $sidfImage = url('/images/customer/' . $filename);
+        }
+
+        //secondary id back picture
+        if($request->hasFile('secondary_id_back_picture')){
+            $image = $request->file('secondary_id_back_picture');
+            $filename = 'sidb-' . $request->email . '-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/customer'), $filename);
+            $sidbImage = url('/images/customer/' . $filename);
+        }
+
+        if($newCustomer = $customer->create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'address' => $request->address,
+            'dob' => $request->dob,
+            'gender' => $request->gender,
+            'occupation' => $request->occupation,
+            'driver_licence_number' => $request->driver_licence_number,
+            'driver_licence_front_picture' => $dlfImage,
+            'driver_licence_back_picture' => $dlbImage,
+            'driver_licence_expiry' => $request->driver_licence_expiry,
+            'nationality' => $request->nationality,
+            'secondary_id_number' => $request->secondary_id_number,
+            'secondary_id_front_picture' => $sidfImage,
+            'secondary_id_back_picture' => $sidbImage,
+            'secondary_id_expiry' => $request->secondary_id_expiry
+        ])){
             return response()->json([
                 'status' => 'success',
                 'message' => 'Customer created!',
@@ -35,7 +94,61 @@ class CustomerController extends Controller
     }
 
     public function update(Request $request, Customer $customer){
-        if($customer->update($request->all())){
+
+        $dlfImage = $request->driver_licence_front_picture;
+        $dlbImage = $request->driver_licence_back_picture;
+        $sidfImage = $request->secondary_id_front_picture;
+        $sidbImage = $request->secondary_id_back_picture;
+
+        if($request->hasFile('driver_licence_front_picture')){
+            $image = $request->file('driver_licence_front_picture');
+            $filename = 'dlf-' . $request->email . '-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/customer'), $filename);
+            $dlfImage = url('/images/customer/' . $filename);
+        }
+        // driver licence back picture
+        if($request->hasFile('driver_licence_back_picture')){
+            $image = $request->file('driver_licence_back_picture');
+            $filename = 'dlb-' . $request->email . '-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/customer'), $filename);
+            $dlbImage = url('/images/customer/' . $filename);
+        }
+
+        //secondary id front picture
+        if($request->hasFile('secondary_id_front_picture')){
+            $image = $request->file('secondary_id_front_picture');
+            $filename = 'sidf-' . $request->email . '-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/customer'), $filename);
+            $sidfImage = url('/images/customer/' . $filename);
+        }
+
+        //secondary id back picture
+        if($request->hasFile('secondary_id_back_picture')){
+            $image = $request->file('secondary_id_back_picture');
+            $filename = 'sidb-' . $request->email . '-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/customer'), $filename);
+            $sidbImage = url('/images/customer/' . $filename);
+        }
+
+        if($customer->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'address' => $request->address,
+            'dob' => $request->dob,
+            'gender' => $request->gender,
+            'occupation' => $request->occupation,
+            'driver_licence_number' => $request->driver_licence_number,
+            'driver_licence_front_picture' => $dlfImage,
+            'driver_licence_back_picture' => $dlbImage,
+            'driver_licence_expiry' => $request->driver_licence_expiry,
+            'nationality' => $request->nationality,
+            'secondary_id_number' => $request->secondary_id_number,
+            'secondary_id_front_picture' => $sidfImage,
+            'secondary_id_back_picture' => $sidbImage,
+            'secondary_id_expiry' => $request->secondary_id_expiry
+        ])){
             return response()->json([
                 'status' => 'success',
                 'message' => 'Customer updated!',
