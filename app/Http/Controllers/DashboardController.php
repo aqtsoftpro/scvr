@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\VanOut;
 use App\Vehicle;
 use App\VanReturn;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\VanoutDashboardResource;
 use App\Http\Resources\VanReturnDashboardResource;
@@ -23,7 +24,7 @@ class DashboardController extends Controller
         $available_cars = Vehicle::where('vehicle_type_id', 1)->where('status_id', 1)->count();
         $vanoutCount = VanOut::where('status', 1)->count();
         $vanreturnsCount = VanReturn::count();
-        $vanouts = VanoutDashboardResource::collection(VanOut::where('status', 1)->get());
+        $vanouts = VanoutDashboardResource::collection(VanOut::whereBetween('due_return', [Carbon::now(), Carbon::now()->addDays(7)])->where('status', 1)->get());
         $vanins = VanReturnDashboardResource::collection(VanReturn::all());
 
         $data = [

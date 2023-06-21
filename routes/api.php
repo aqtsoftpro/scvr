@@ -134,7 +134,8 @@ Route::get('reports/maintenance_list', 'App\Http\Controllers\ReportsController@m
 Route::get('reports/rental_history', 'App\Http\Controllers\ReportsController@rental_history');
 
 Route::post('password-reset', 'App\Http\Controllers\Auth\PasswordResetLinkController@store');
-
+Route::post('invite-customer', 'App\Http\Controllers\CustomerController@invite');
+Route::post('register-customer', 'App\Http\Controllers\CustomerController@store');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $user_id = $request->user()->id;

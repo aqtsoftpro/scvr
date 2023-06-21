@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Mail\Customer as CustomerMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -167,5 +169,19 @@ class CustomerController extends Controller
 
     public function customer_options(Customer $customer){
         return response()->json($customer->all(['id', 'first_name']));
+    }
+
+    public function invite(Request $request){
+        $validator = $request->validate([
+            'email' => 'required|email|unique:customers'
+        ]);
+
+        $email = $request->email;
+
+        if(Mail::to($email)->send(new CustomerMail($email))){
+            return response()->json([
+                ['status' => 'success', 'message' => 'The invication email has been sent']
+            ]);
+        }
     }
 }

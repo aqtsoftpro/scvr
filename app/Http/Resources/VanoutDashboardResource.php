@@ -31,8 +31,8 @@ class VanoutDashboardResource extends JsonResource
             'id' => $this->id,
             'vehicle_id' => $this->vehicle->id,
             'title' => $this->vehicle->make . '-' . $this->vehicle->model,
-            'category' => 'Rented Out',
-            'description' => $this->reason_of_renting,
+            'category' => $this->vehicle->status->name,
+            'description' => $this->vehicle->reg_plate_number,
             'createDate' => Carbon::parse($this->created_at)->format('M d, Y'),
             'dueReturn' => Carbon::parse($this->due_return)->format('M d, Y'),
         ];
