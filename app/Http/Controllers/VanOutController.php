@@ -17,7 +17,7 @@ class VanOutController extends Controller
 
     public function index(Request $request, VanOut $vanOut){
         if(isset($request->mode) && $request->mode == 'active'){
-            return response()->json(VanOutResource::collection($vanOut->where('status', 1)->get()));
+            return response()->json(VanOutResource::collection($vanOut->where('status', 1)->orderBy('id', 'desc')->get()));
         }
         return response()->json(VanOutResource::collection($vanOut->orderBy('id','desc')->get()));
     }
@@ -93,6 +93,11 @@ class VanOutController extends Controller
 
     public function destroy($vanOut){
         Vanout::find($vanOut)->delete();
+
+        Vanout::find($vanOut)->vehicle()->update([
+            'status_id' => 1
+        ]);
+
         $res = [
             'message' => 'Booking deleted',
         ];

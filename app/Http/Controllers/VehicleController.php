@@ -17,7 +17,7 @@ class VehicleController extends Controller
     }
 
     public function index(Vehicle $vehicle){
-        return response()->json(VehicleResource::collection($vehicle->all()));
+        return response()->json(VehicleResource::collection($vehicle->orderBy('id', 'desc')->get()));
     }
 
     public function show(Vehicle $vehicle){
