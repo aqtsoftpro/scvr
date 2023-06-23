@@ -63,7 +63,7 @@ class VehicleController extends Controller
 
         if($request->hasFile('damage_picture')){
             $image = $request->file('damage_picture');
-            $filename = 'damage-' . time() . '.' . $image->getClientOriginalExtension();
+            $filename = '/damage-' . time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images/insurance'), $filename);
         }
         // get storage path
