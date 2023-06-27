@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Mail\Customer as CustomerMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\Customer as CustomerMail;
+use App\Http\Resources\CustomerResource;
 
 class CustomerController extends Controller
 {
     public function index(Customer $customer){
-        return response()->json($customer->orderBy('id', 'desc')->get());
+        return response()->json(CustomerResource::collection($customer->orderBy('id', 'desc')->get()));
     }
 
     public function show(Customer $customer){
