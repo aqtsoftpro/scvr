@@ -23,7 +23,7 @@ class CustomerResource extends JsonResource
             'phone_number' => $this->phone_number,
             'address' => $this->address,
             'dob' => Carbon::parse($this->dob)->format('d M, Y'),
-            'gender' => ($this->gender == 1) ? "Male" : "Female",
+            'gender' => $this->gender,
             'occupation' => $this->occupation,
             'driver_licence_number' => $this->driver_licence_number,
             'driver_licence_front_picture' => $this->driver_licence_front_picture,
@@ -31,8 +31,8 @@ class CustomerResource extends JsonResource
             'driver_licence_expiry' => Carbon::parse($this->driver_licence_expiry)->format('d M, Y'),
             'nationality' => $this->nationality,
             'secondary_id_number' => $this->secondary_id_number,
-            'secondary_id_front' => $this->secondary_id_front,
-            'secondary_id_back' => $this->secondary_id_back,
+            'secondary_id_front_picture' => $this->secondary_id_front_picture,
+            'secondary_id_back_picture' => $this->secondary_id_back_picture,
             'secondary_id_expiry' => Carbon::parse($this->secondary_id_expiry)->format('d M, Y'),
         ];
     }
