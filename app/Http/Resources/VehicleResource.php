@@ -27,7 +27,7 @@ class VehicleResource extends JsonResource
             'mileage' => $this->mileage,
             'purchase_date' => Carbon::parse($this->purchase_date)->format('M d, Y'),
             // currency format purchase price
-            'purchase_price' => number_format($this->purchase_price, 2),
+            'purchase_price' => $this->purchase_price,
             'vehicle_condition' => $this->vehicle_condition,
             'seller_name' => $this->seller_name,
             'seller_address' => $this->seller_address,
