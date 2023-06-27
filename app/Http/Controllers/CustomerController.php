@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use App\Mail\Customer as CustomerMail;
 use Illuminate\Http\Request;
@@ -11,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 class CustomerController extends Controller
 {
     public function index(Customer $customer){
-        return response()->json(CustomerResource::collection($customer->orderBy('id', 'desc')->get()));
+        return response()->json($customer->orderBy('id', 'desc')->get());
     }
 
     public function show(Customer $customer){
@@ -98,10 +97,10 @@ class CustomerController extends Controller
 
     public function update(Request $request, Customer $customer){
 
-        $dlfImage = ($request->driver_licence_front_picture == null) ? 'liecence_front_picture' : $customer->driver_licence_front_picture;
-        $dlbImage = ($request->driver_licence_back_picture == null) ? 'licence_back_picture' : $customer->driver_licence_back_picture;
-        $sidfImage = ($request->secondary_id_front_picture == null) ? 'secondary_id_front_picture' : $customer->secondary_id_front_picture;
-        $sidbImage = ($request->secondary_id_back_picture == null) ? 'secondary_id_back_picture' : $customer->secondary_id_back_picture;
+        $dlfImage = $request->driver_licence_front_picture;
+        $dlbImage = $request->driver_licence_back_picture;
+        $sidfImage = $request->secondary_id_front_picture;
+        $sidbImage = $request->secondary_id_back_picture;
 
         if($request->hasFile('driver_licence_front_picture')){
             $image = $request->file('driver_licence_front_picture');

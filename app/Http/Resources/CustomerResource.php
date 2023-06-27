@@ -31,8 +31,8 @@ class CustomerResource extends JsonResource
             'driver_licence_expiry' => Carbon::parse($this->driver_licence_expiry)->format('d M, Y'),
             'nationality' => $this->nationality,
             'secondary_id_number' => $this->secondary_id_number,
-            'secondary_id_front_picture' => $this->secondary_id_front_picture,
-            'secondary_id_back_picture' => $this->secondary_id_back_picture,
+            'secondary_id_front' => $this->secondary_id_front,
+            'secondary_id_back' => $this->secondary_id_back,
             'secondary_id_expiry' => Carbon::parse($this->secondary_id_expiry)->format('d M, Y'),
         ];
     }
