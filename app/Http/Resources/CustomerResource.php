@@ -23,7 +23,7 @@ class CustomerResource extends JsonResource
             'phone_number' => $this->phone_number,
             'address' => $this->address,
             'dob' => Carbon::parse($this->dob)->format('d M, Y'),
-            'gender' => $this->gender,
+            'gender' => ($this->gender == 1) ? "Male" : "Female",
             'occupation' => $this->occupation,
             'driver_licence_number' => $this->driver_licence_number,
             'driver_licence_front_picture' => $this->driver_licence_front_picture,
