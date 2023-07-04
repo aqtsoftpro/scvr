@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Channels\Messages\WhatsAppMessage;
+use App\Channels\WhatsAppChannel;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Customer as CustomerMail;
 use App\Http\Resources\CustomerResource;
+use Twilio\Rest\Client;
 
 class CustomerController extends Controller
 {
@@ -184,5 +187,30 @@ class CustomerController extends Controller
                 ['status' => 'success', 'message' => 'The invication email has been sent']
             ]);
         }
+    }
+
+
+    public function whatsapp_invite(Request $request){
+
+        $sid = env("TWILIO_AUTH_SID");
+        $token = env("TWILIO_AUTH_TOKEN");
+        $from = env("TWILIO_WHATSAPP_FROM");
+        $phoneNumber = $request->phone_number;
+
+        $twilio = new Client($sid, $token);
+
+        $message = $twilio->messages
+          ->create("whatsapp:" . $phoneNumber, // to
+            array(
+              "from" => "whatsapp:" . $from,
+              "body" => "please click on the link to register yourself on 'Super Cheap Van Rental ':" .  "scvrapp.aqtdemos.com/user/register"
+            )
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'sid' => $message->sid,
+            'message' => 'Your whatsapp client invitation has been sent to number ' . $phoneNumber
+        ]);
     }
 }

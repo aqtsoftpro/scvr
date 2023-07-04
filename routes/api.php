@@ -135,6 +135,7 @@ Route::get('reports/rental_history', 'App\Http\Controllers\ReportsController@ren
 
 Route::post('password-reset', 'App\Http\Controllers\Auth\PasswordResetLinkController@store');
 Route::post('invite-customer', 'App\Http\Controllers\CustomerController@invite');
+Route::post('whatsapp-invite-customer', 'App\Http\Controllers\CustomerController@whatsapp_invite');
 Route::post('register-customer', 'App\Http\Controllers\CustomerController@store');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
