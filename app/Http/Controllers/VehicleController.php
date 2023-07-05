@@ -72,6 +72,7 @@ class VehicleController extends Controller
         Insurance::create([
             'vehicle_id' => $new_vehicle->id,
             'company_name' => $request->company_name,
+            'policy_number' => $request->policy_number,
             'policy_type_id' => $request->policy_type_id,
             'policy_start_date' => $request->policy_start_date,
             'policy_end_date' => $request->policy_end_date,
