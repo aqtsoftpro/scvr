@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\VanOut;
 use Carbon\Carbon;
 use App\Maintenance;
+use App\TaxRecord;
 use App\VanReturn;
 use Illuminate\Http\Request;
 
@@ -81,5 +82,64 @@ class ReportsController extends Controller
 
         return response()->json($rental_history);
 
+    }
+
+    public function profit_loss(){
+
+        $final = [];
+        $pnl = [];
+
+        $sub_total = 0;
+        $sub_total_final = 0;
+
+        $index = 0;
+
+        $vanouts = VanOut::all();
+        $tax_records = TaxRecord::all();
+        $maintenance_records = Maintenance::all();
+
+        //Add rental amounts
+
+        foreach($vanouts as $vanout){
+            $pnl[$index]['date'] = Carbon::parse($vanout->created_at)->format('Y-m-d');
+            $pnl[$index]['notes'] = 'Rented out ' . $vanout->vehicle->vehicle_type->name .  ' with reg# '. $vanout->vehicle->reg_plate_number;
+            $pnl[$index]['cost'] = $vanout->rental_amount;
+            $pnl[$index]['operation'] = 'add';
+
+            $index += 1;
+        }
+
+        //subtact tax payed
+
+        foreach($tax_records as $tax){
+            $pnl[$index]['date'] = Carbon::parse($tax->created_at)->format('Y-m-d');
+            $pnl[$index]['notes'] = 'Subtracted Tax Payed';
+            $pnl[$index]['cost'] = $tax->amount;
+            $pnl[$index]['operation'] = 'subtract';
+
+            $index += 1;
+        }
+
+        //subtract maintenance cost
+        foreach($maintenance_records as $maintenance){
+            $pnl[$index]['date'] = Carbon::parse($maintenance->created_at)->format('Y-m-d');
+            $pnl[$index]['notes'] = 'Subtracted Maintenance Cost';
+            $pnl[$index]['cost'] = $maintenance->cost;
+            $pnl[$index]['operation'] = 'subtract';
+
+            $index += 1;
+        }
+
+
+        $sorted_tax_records = collect($pnl)->sortBy('date')->values();
+
+        foreach($sorted_tax_records as $index => $record){
+            $final[$index]['date'] = $record['date'];
+            $final[$index]['notes'] = $record['notes'];
+            $final[$index]['cost'] = $record['cost'];
+            $final[$index]['sub_total'] = ($record['operation'] == 'add') ? $sub_total_final += $record['cost'] : $sub_total_final     -= $record['cost'];
+        }
+
+        return response()->json($final);
     }
 }

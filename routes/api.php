@@ -132,6 +132,7 @@ Route::get('reports/earnings', 'App\Http\Controllers\ReportsController@earnings'
 Route::get('reports/maintenance_cost', 'App\Http\Controllers\ReportsController@maintenance_cost');
 Route::get('reports/maintenance_list', 'App\Http\Controllers\ReportsController@maintenance_list');
 Route::get('reports/rental_history', 'App\Http\Controllers\ReportsController@rental_history');
+Route::get('reports/profit_loss', 'App\Http\Controllers\ReportsController@profit_loss');
 
 Route::post('password-reset', 'App\Http\Controllers\Auth\PasswordResetLinkController@store');
 Route::post('invite-customer', 'App\Http\Controllers\CustomerController@invite');
