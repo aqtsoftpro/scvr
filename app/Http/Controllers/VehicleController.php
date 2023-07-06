@@ -103,7 +103,59 @@ class VehicleController extends Controller
     }
 
     public function update(Request $request, Vehicle $vehicle){
-        $vehicle->update($request->all());
+
+        $vehicle->update([
+            'picture' => $request->picture,
+            'vin' => $request->vin,
+            'reg_plate_number' => $request->reg_plate_number,
+            'mileage' => $request->mileage,
+            'make' => $request->make,
+            'model' => $request->model,
+            'vehicle_type_id' => $request->vehicle_type_id,
+            'purchase_date' => $request->purchase_date,
+            'purchase_price' => $request->purchase_price,
+
+            'seller_name' => $request->seller_name,
+            'seller_address' => $request->seller_address,
+            'seller_contact_number' => $request->seller_contact_number,
+
+            'next_maintenance_due_date' => $request->next_maintenance_due_date,
+            'next_maintenance_service' => $request->next_maintenance_service,
+            'next_maintenance_comments' => $request->next_maintenance_comments
+        ]);
+
+        $vehicle->insurance->update(
+            [
+                'company_name' => $request->company_name,
+                'policy_number' => $request->policy_number,
+                'policy_type_id' => $request->policy_type_id,
+                'policy_start_date' => $request->policy_start_date,
+                'policy_end_date' => $request->policy_end_date,
+                'road_side_assistance' => $request->road_side_assistance,
+                'road_side_assistance_start_date' => $request->road_side_assistance_start_date,
+                'road_side_assistance_end_date' => $request->road_side_assistance_end_date,
+                'demage_details' => $request->demage_details,
+                'damage_picture' => $request->damage_picture,
+                'damage_picture' => $request->damage_picture,
+            ]
+        );
+
+        foreach($vehicle->maintenance as $maintanance_record){
+            $maintanance_record->update([
+                'vehicle_id' => $maintanance_record->vehicle_id,
+                'mileage' => $maintanance_record->mileage,
+                'service_type_id' => $maintanance_record->service_type_id,
+                'mechanic_name' => $maintanance_record->mechanic_name,
+                'cost' => $maintanance_record->cost,
+                'place' => $maintanance_record->place,
+                'date' => $maintanance_record->date,
+                'part_replaced' => $maintanance_record->part_replaced,
+                'part_repaired' => $maintanance_record->part_repaired,
+                'tyre_replaced' => $maintanance_record->tyre_replaced,
+                'comments' => $maintanance_record->comments
+            ]);
+        }
+
         return response()->json($vehicle);
     }
 
