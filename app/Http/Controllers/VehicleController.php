@@ -144,20 +144,21 @@ class VehicleController extends Controller
             ]
         );
 
-        foreach($vehicle->maintenance as $maintanance_record){
-            if($maintanance_record->date != '' && $maintanance_record->date != null){
-                $maintanance_record->update([
-                    'vehicle_id' => $maintanance_record->vehicle_id,
-                    'mileage' => $maintanance_record->mileage,
-                    'service_type_id' => $maintanance_record->service_type_id,
-                    'mechanic_name' => $maintanance_record->mechanic_name,
-                    'cost' => $maintanance_record->cost,
-                    'place' => $maintanance_record->place,
-                    'date' => $maintanance_record->date,
-                    'part_replaced' => $maintanance_record->part_replaced,
-                    'part_repaired' => $maintanance_record->part_repaired,
-                    'tyre_replaced' => $maintanance_record->tyre_replaced,
-                    'comments' => $maintanance_record->comments
+
+        foreach($request->maintenance_records as $maintanance){
+            if($maintanance['maintenance_date'] != '' && $maintanance['maintenance_date'] != null){
+                Maintenance::create([
+                    'vehicle_id' => $vehicle->id,
+                    'mileage' => isset($maintanance['maintenance_mileage']) ? $maintanance['maintenance_mileage'] : '',
+                    'service_type_id' => $maintanance['maintenance_type_id'],
+                    'mechanic_name' => isset($maintanance['mechanic_name']) ? $maintanance['mechanic_name'] : '',
+                    'cost' => isset($maintanance['maintenance_cost']) ? $maintanance['maintenance_cost'] : '',
+                    'place' => isset($maintanance['maintenance_place']) ? $maintanance['maintenance_place'] : '',
+                    'date' => $maintanance['maintenance_date'],
+                    'part_replaced' => (isset($maintanance['part_replaced'])) ? $maintanance['part_replaced'] : '',
+                    'part_repaired' => (isset($maintanance['part_repaired'])) ? $maintanance['part_repaired'] : '',
+                    'tyre_replaced' => (isset($maintanance['tyre_replaced'])) ? $maintanance['tyre_replaced'] : '',
+                    'comments' => (isset($maintanance['comments'])) ? $maintanance['comments'] : ''
                 ]);
             }
         }
