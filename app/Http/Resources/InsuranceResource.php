@@ -23,7 +23,7 @@ class InsuranceResource extends JsonResource
             'policy_type_id' => $this->policy_type->id,
             'policy_start_date' => Carbon::parse($this->policy_start_date)->format('d M, Y'),
             'policy_end_date' => Carbon::parse($this->policy_end_date)->format('d M, Y'),
-            'road_side_assistance' => ($this->road_side_assistance == true) ? 'Yes' : 'No',
+            'road_side_assistance' => $this->road_side_assistance,
             'road_side_assistance_company' => $this->road_side_assistance_company,
             'road_side_assistance_start_date' => Carbon::parse($this->road_side_assistance_start_date)->format('d M, Y'),
             'road_side_assistance_end_date' => Carbon::parse($this->road_side_assistance_end_date)->format('d M, Y'),
