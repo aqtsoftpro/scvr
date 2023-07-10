@@ -36,6 +36,8 @@ class TollController extends Controller
         $newToll = $toll->create([
             'toll_number' => $request->toll_number,
             'date' => $request->date,
+            'reg_plate_number' => $request->reg_plate_number,
+            'customer_id' => $request->customer_id,
             'toll_image' => $uploaded_image_path
         ]);
         $res = [
@@ -60,6 +62,8 @@ class TollController extends Controller
         $toll->update([
             'toll_number' => $request->toll_number,
             'date' => $request->date,
+            'reg_plate_number' => $request->reg_plate_number,
+            'customer_id' => $request->customer_id,
             'toll_image' => $tollImage
         ]);
         $toll->save();

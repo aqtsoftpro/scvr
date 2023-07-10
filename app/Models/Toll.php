@@ -11,6 +11,12 @@ class Toll extends Model
     protected $fillable = [
         'toll_number',
         'date',
+        'reg_plate_number',
+        'customer_id',
         'toll_image'
     ];
+
+    public function customer(){
+        return $this->belongsTo(Customer::class);
+    }
 }

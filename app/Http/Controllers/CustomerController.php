@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Channels\Messages\WhatsAppMessage;
-use App\Channels\WhatsAppChannel;
+use Twilio\Rest\Client;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Channels\WhatsAppChannel;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Customer as CustomerMail;
 use App\Http\Resources\CustomerResource;
-use Twilio\Rest\Client;
+use App\Channels\Messages\WhatsAppMessage;
+use App\Http\Resources\CustomerOptionResource;
 
 class CustomerController extends Controller
 {
@@ -172,7 +173,8 @@ class CustomerController extends Controller
     }
 
     public function customer_options(Customer $customer){
-        return response()->json($customer->all(['id', 'first_name']));
+
+        return response()->json(CustomerOptionResource::collection($customer->all()));
     }
 
     public function invite(Request $request){

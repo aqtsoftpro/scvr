@@ -29,4 +29,8 @@ class Customer extends Model
         'secondary_id_expiry'    //date
     ];
 
+
+    public function tolls(){
+        return $this->hasMany(Toll::class);
+    }
 }
