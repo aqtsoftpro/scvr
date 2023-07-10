@@ -25,6 +25,7 @@ class DashboardController extends Controller
         $vanoutCount = VanOut::where('status', 1)->count();
         $vanreturnsCount = VanReturn::count();
         $vanouts = VanoutDashboardResource::collection(VanOut::whereBetween('due_return', [Carbon::now(), Carbon::now()->addDays(7)])->where('status', 1)->get());
+
         $vanins = VanReturnDashboardResource::collection(VanReturn::all());
 
         $data = [

@@ -106,6 +106,14 @@ class VehicleController extends Controller
         return response()->json($vehicle);
     }
 
+    public function updateStatus(Request $request, Vehicle $vehicle){
+        $vehicle->update([
+            'status_id' => $request->status_id,
+        ]);
+
+        return response()->json($vehicle);
+    }
+
     public function update(Request $request, Vehicle $vehicle){
 
         $vehicle->update([
@@ -216,7 +224,7 @@ class VehicleController extends Controller
             return response()->json($options);
 
         } else {
-            $vehicles = $vehicle->where('status_id', 1)->get();
+            $vehicles = $vehicle->all();
             $options = [];
 
             foreach($vehicles as $key => $vehicle){

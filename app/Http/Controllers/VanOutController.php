@@ -36,7 +36,7 @@ class VanOutController extends Controller
             'vehicle_id' => 'required|integer',
             'location_id' => 'required|integer',
             'reason_of_renting' => 'required',
-            'rental_priod' => 'required',
+            'rental_period' => 'required',
             'rental_amount' => 'required',
             'amount_frequency' => 'required',
             'mileage' => 'required',
@@ -92,9 +92,10 @@ class VanOutController extends Controller
     }
 
     public function destroy($vanOut){
+        $vehicle_id = VanOut::find($vanOut)->vehicle_id;
         Vanout::find($vanOut)->delete();
 
-        Vanout::find($vanOut)->vehicle()->update([
+        Vehicle::find($vehicle_id)->update([
             'status_id' => 1
         ]);
 

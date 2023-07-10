@@ -25,7 +25,7 @@ class VanReturnDashboardResource extends JsonResource
             'fuel_tank' => $this->fuel_tank,
             'condition' => $this->condition,
             'vehicle_reg_number' => ($this->van_out) ? $this->van_out->vehicle->reg_plate_number : '',
-            'date' => Carbon::parse($this->created_at)->format('M d, Y'),
+            'date' => Carbon::parse($this->return_date)->format('Y-m-d'),
         ];
     }
 }

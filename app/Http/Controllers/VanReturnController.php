@@ -56,7 +56,6 @@ class VanReturnController extends Controller
 
     public function update(Request $request, VanReturn $vanReturn){
         $vanReturn->update($request->all());
-        $vanReturn->save();
         $res = [
             'message' => 'Van return record updated',
             'data' => $vanReturn

@@ -33,8 +33,9 @@ class VanoutDashboardResource extends JsonResource
             'title' => $this->vehicle->make . '-' . $this->vehicle->model,
             'category' => $this->vehicle->status->name,
             'description' => $this->vehicle->reg_plate_number,
-            'createDate' => Carbon::parse($this->created_at)->format('M d, Y'),
-            'dueReturn' => Carbon::parse($this->due_return)->format('M d, Y'),
+            'createDate' => Carbon::parse($this->created_at)->format('Y-m-d'),
+            'vanOutDate' => Carbon::parse($this->van_out_date)->format('Y-m-d'),
+            'dueReturn' => Carbon::parse($this->due_return)->format('Y-m-d'),
         ];
     }
 }

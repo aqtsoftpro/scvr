@@ -22,7 +22,7 @@ class VanOut extends Model
         'location_id',
         'reason_of_renting',
         'swap_with',
-        'rental_priod',
+        'rental_period',
         'rental_amount',
         'amount_frequency',
         'mileage',
