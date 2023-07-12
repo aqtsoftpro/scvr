@@ -41,7 +41,6 @@ class VanOutController extends Controller
             'amount_frequency' => 'required',
             'mileage' => 'required',
             'van_out_date' => 'required',
-            'van_out_time' => 'required',
             'due_return' => 'required',
             'accessories' => 'required'
         ],

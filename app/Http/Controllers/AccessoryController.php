@@ -18,9 +18,23 @@ class AccessoryController extends Controller
     }
 
     public function store(Request $request, Accessory $accessory){
-        $accessory->create($request->all());
 
-        return $accessory;
+        $validation = $request->validate([
+            'name' => 'required',
+        ]);
+
+        if($accessory->create($request->all())){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Accessory created',
+                'data' => $accessory
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Accessory not created'
+            ]);
+        }
     }
 
     public function show(Accessory $accessory, int $id){
@@ -28,8 +42,12 @@ class AccessoryController extends Controller
     }
 
     public function update(Request $request, Accessory $accessory, int $id){
-        $accessory->find($id)->update($request->all());
-        return $accessory;
+        $accessory->update($request->all());
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Accessory updated',
+            'data' => $accessory
+        ]);
     }
 
     public function destroy(Accessory $accessory){

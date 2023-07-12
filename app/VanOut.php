@@ -28,8 +28,7 @@ class VanOut extends Model
         'mileage',
         'due_return',
         'status',
-        'van_out_date',
-        'van_out_time'
+        'van_out_date'
     ];
 
     public function van_return(){
