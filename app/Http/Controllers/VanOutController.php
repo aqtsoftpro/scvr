@@ -36,7 +36,6 @@ class VanOutController extends Controller
             'vehicle_id' => 'required|integer',
             'location_id' => 'required|integer',
             'reason_of_renting' => 'required',
-            'rental_period' => 'required',
             'rental_amount' => 'required',
             'amount_frequency' => 'required',
             'mileage' => 'required',
