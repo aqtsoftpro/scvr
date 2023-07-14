@@ -23,6 +23,16 @@ class VanReturnController extends Controller
 
     public function store(Request $request, VanReturn $vanReturn){
 
+        //upload image
+        if($request->hasFile('demage_picture')){
+            $image = $request->file('demage_picture');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/damagePics/'), $filename);
+        }
+
+        // get storage path
+        $uploaded_image_path = url('/images/damagePics/' . $filename);
+
         $validation = $request->validate([
             'van_out_id' => 'required|integer',
             'location_id' => 'required|integer',
@@ -37,7 +47,19 @@ class VanReturnController extends Controller
             'location_id.integer' => 'Select Location',
         ]);
 
-        $newVanReturn = $vanReturn->create($request->all());
+        $newVanReturn = $vanReturn->create([
+            'van_out_id' => $request->van_out_id,
+            'location_id' => $request->location_id,
+            'mileage' => $request->mileage,
+            'fuel_tank' => $request->fuel_tank,
+            'condition' => $request->condition,
+            'require_maintenance' => $request->require_maintenance,
+            'require_maintenance_text' => $request->require_maintenance_text,
+            'demage_caused_by_customer' => $request->demage_caused_by_customer,
+            'return_date' => $request->return_date,
+            'demage_picture' => $uploaded_image_path,
+            'demage_text' => $request->demage_text
+        ]);
 
         $booking = VanOut::find($newVanReturn->van_out_id);
         $booking->vehicle()->update([
@@ -55,7 +77,29 @@ class VanReturnController extends Controller
     }
 
     public function update(Request $request, VanReturn $vanReturn){
-        $vanReturn->update($request->all());
+
+        $demagePicture = $request->demage_picture;
+
+        if($request->hasFile('demage_picture')){
+            $image = $request->file('demage_picture');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/damagePics'), $filename);
+            $demagePicture = url('/images/damagePics/' . $filename);
+        }
+
+        $vanReturn->update([
+            'van_out_id' => $request->van_out_id,
+            'location_id' => $request->location_id,
+            'mileage' => $request->mileage,
+            'fuel_tank' => $request->fuel_tank,
+            'condition' => $request->condition,
+            'require_maintenance' => $request->require_maintenance,
+            'require_maintenance_text' => $request->require_maintenance_text,
+            'demage_caused_by_customer' => $request->demage_caused_by_customer,
+            'return_date' => $request->return_date,
+            'demage_picture' => $demagePicture,
+            'demage_text' => $request->demage_text
+        ]);
         $res = [
             'message' => 'Van return record updated',
             'data' => $vanReturn

@@ -22,6 +22,8 @@ class VanReturnResource extends JsonResource
             'vehicle' => $this->van_out->vehicle->reg_plate_number,
             'customer' => $this->van_out->customer->first_name . ' ' . $this->van_out->customer->last_name,
             'customer_id' => $this->van_out->customer->id,
+            'rental_amount' => $this->van_out->rental_amount,
+            'rental_period' => $this->van_out->van_out_date,
             'location' => $this->location->name,
             'van_out_id' => $this->van_out->id,
             'location_id' => $this->location->id,
@@ -31,7 +33,7 @@ class VanReturnResource extends JsonResource
             'demage_caused_by_customer' => $this->demage_caused_by_customer,
             'demage_picture' => $this->demage_picture,
             'demage_text' => $this->demage_text,
-            'return_date' => Carbon::parse($this->return_date)->format('d M, Y'),
+            'return_date' => Carbon::parse($this->return_date)->format('Y-m-d'),
             'require_maintenance' => ($this->require_maintenance == 0) ? 'No' : 'Yes',
             'require_maintenance_text' => $this->require_maintenance_text
         ];
