@@ -174,7 +174,19 @@ class CustomerController extends Controller
 
     public function customer_options(Customer $customer){
 
-        return response()->json(CustomerOptionResource::collection($customer->all()));
+        $customers_list = [];
+
+        foreach(Customer::all() as $key => $customer){
+                if($customer->van_outs->count() > 0 && $customer->van_outs[0]->status == 0){
+                    $customers_list[$key]['id'] = $customer->id;
+                    $customers_list[$key]['name'] = $customer->first_name . ' ' . $customer->last_name;
+                } elseif($customer->van_outs->count() == 0) {
+                    $customers_list[$key]['id'] = $customer->id;
+                    $customers_list[$key]['name'] = $customer->first_name . ' ' . $customer->last_name;
+                }
+        }
+        return array_values($customers_list);
+        // return response()->json(CustomerOptionResource::collection($customers_list));
     }
 
     public function invite(Request $request){
