@@ -23,15 +23,17 @@ class VanReturnController extends Controller
 
     public function store(Request $request, VanReturn $vanReturn){
 
+        $uploaded_image_path = '';
         //upload image
         if($request->hasFile('demage_picture')){
             $image = $request->file('demage_picture');
             $filename = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images/damagePics/'), $filename);
+            $uploaded_image_path = url('/images/damagePics/' . $filename);
         }
 
         // get storage path
-        $uploaded_image_path = url('/images/damagePics/' . $filename);
+
 
         $validation = $request->validate([
             'van_out_id' => 'required|integer',

@@ -210,6 +210,18 @@ class VehicleController extends Controller
 
     }
 
+    public function get_available_vehicles(Request $request, Vehicle $vehicle){
+        $available_vehicles = Vehicle::where('status_id', 1)->where('id', '!=', $vehicle->id)->get();
+        $filtered_vehicles = [];
+
+        foreach($available_vehicles as $key => $vehicle){
+            $filtered_vehicles[$key]['id'] = $vehicle->id;
+            $filtered_vehicles[$key]['name'] = $vehicle->make . ' ' . $vehicle->model . ' (' . $vehicle->reg_plate_number . ')';
+        }
+
+        return response()->json($filtered_vehicles);
+    }
+
     public function vehicle_options(Vehicle $vehicle, Request $request){
 
         if($request->mode == 'active'){

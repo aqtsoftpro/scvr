@@ -116,6 +116,7 @@ Route::get('vehicle_type_options', 'App\Http\Controllers\VehicleTypeController@v
 Route::resource('vehicle', VehicleController::class);
 Route::put('update_vehicle_status/{vehicle}', 'App\Http\Controllers\VehicleController@updateStatus');
 Route::get('vehicle_options', 'App\Http\Controllers\VehicleController@vehicle_options');
+Route::get('available_vehicles_options/{vehicle}', 'App\Http\Controllers\VehicleController@get_available_vehicles');
 Route::resource('mechanic', MechanicController::class);
 Route::get('mechanic_options', 'App\Http\Controllers\MechanicController@mechanic_options');
 Route::resource('role', RoleController::class);
