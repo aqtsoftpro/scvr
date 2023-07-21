@@ -109,6 +109,7 @@ Route::resource('tax_type', TaxTypeController::class);
 Route::get('tax_type_options', 'App\Http\Controllers\TaxTypeController@tax_type_options');
 Route::resource('vanout', VanOutController::class);
 Route::get('van_out_options', 'App\Http\Controllers\VanOutController@van_out_options');
+Route::get('returned_van_out_options', 'App\Http\Controllers\VanOutController@returned_van_out_options');
 Route::resource('van_return', VanReturnController::class);
 Route::get('van_return_options', 'App\Http\Controllers\VanReturnController@van_return_options');
 Route::resource('vehicle_type', VehicleTypeController::class);

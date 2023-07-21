@@ -109,4 +109,8 @@ class VanOutController extends Controller
             $query->select('id', 'reg_plate_number');
         }])->get(['id', 'vehicle_id']);
     }
+
+    public function returned_van_out_options(VanOut $vanOut){
+        return response()->json(VanoutOptionsResource::collection($vanOut->where('status', 0)->get()));
+    }
 }

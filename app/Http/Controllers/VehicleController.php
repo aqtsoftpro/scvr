@@ -61,15 +61,15 @@ class VehicleController extends Controller
         );
 
         //Create Insurace Record
+        $uploaded_image_path = '';
 
         if($request->hasFile('damage_picture')){
             $image = $request->file('damage_picture');
             $filename = '/damage-' . time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images/insurance'), $filename);
+            $uploaded_image_path = url('/images/insurance' . $filename);
         }
         // get storage path
-        $uploaded_image_path = url('/images/insurance' . $filename);
-
         Insurance::create([
             'vehicle_id' => $new_vehicle->id,
             'company_name' => $request->company_name,
@@ -137,8 +137,53 @@ class VehicleController extends Controller
             'next_maintenance_comments' => $request->next_maintenance_comments
         ]);
 
-        $vehicle->insurance->update(
-            [
+
+
+        if(isset($vehicle->insurance)){
+
+            $uploaded_image_path = $vehicle->insurance->damage_picture;
+
+            //Image Upload on if new image has been selected
+            if($request->hasFile('damage_picture')){
+                $image = $request->file('damage_picture');
+                $filename = '/damage-' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images/insurance'), $filename);
+                $uploaded_image_path = url('/images/insurance' . $filename);
+            }
+
+            // get storage path
+
+            $vehicle->insurance->update(
+                [
+                    'vehivle_id' => $vehicle->id,
+                    'company_name' => $request->company_name,
+                    'policy_number' => $request->policy_number,
+                    'policy_type_id' => $request->policy_type_id,
+                    'policy_start_date' => $request->policy_start_date,
+                    'policy_end_date' => $request->policy_end_date,
+                    'road_side_assistance' => $request->road_side_assistance,
+                    'road_side_assistance_company' => $request->road_side_assistance_company,
+                    'road_side_assistance_start_date' => $request->road_side_assistance_start_date,
+                    'road_side_assistance_end_date' => $request->road_side_assistance_end_date,
+                    'demage_details' => $request->demage_details,
+                    'damage_picture' => $uploaded_image_path
+                ]
+            );
+        } else {
+
+
+            $uploaded_image_path = "";
+
+            //Image Upload on if new image has been selected
+            if($request->hasFile('damage_picture')){
+                $image = $request->file('damage_picture');
+                $filename = '/damage-' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images/insurance'), $filename);
+                $uploaded_image_path = url('/images/insurance' . $filename);
+            }
+
+            Insurance::create([
+                'vehicle_id' => $vehicle->id,
                 'company_name' => $request->company_name,
                 'policy_number' => $request->policy_number,
                 'policy_type_id' => $request->policy_type_id,
@@ -149,10 +194,9 @@ class VehicleController extends Controller
                 'road_side_assistance_start_date' => $request->road_side_assistance_start_date,
                 'road_side_assistance_end_date' => $request->road_side_assistance_end_date,
                 'demage_details' => $request->demage_details,
-                'damage_picture' => $request->damage_picture,
-                'damage_picture' => $request->damage_picture,
-            ]
-        );
+                'damage_picture' => $uploaded_image_path
+            ]);
+        }
 
 
         foreach($request->maintenance_records as $maintanance){
