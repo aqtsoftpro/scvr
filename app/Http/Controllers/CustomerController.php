@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\VanOut;
 use Twilio\Rest\Client;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Channels\WhatsAppChannel;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Resources\VanOutResource;
 use App\Mail\Customer as CustomerMail;
 use App\Http\Resources\CustomerResource;
 use App\Channels\Messages\WhatsAppMessage;
 use App\Http\Resources\CustomerOptionResource;
+use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
@@ -187,6 +190,17 @@ class CustomerController extends Controller
         }
         return array_values($customers_list);
         // return response()->json(CustomerOptionResource::collection($customers_list));
+    }
+
+    public function all_customer_options(Customer $customer){
+
+        $customer_list = [];
+        $customers = $customer->all();
+        foreach($customers as $key => $customer){
+            $customer_list[$key]['id'] = $customer->id;
+            $customer_list[$key]['name'] = $customer->first_name . ' ' . $customer->last_name;
+        }
+        return response()->json($customer_list);
     }
 
     public function invite(Request $request){

@@ -128,6 +128,7 @@ Route::resource('vehicle_status', VehicleStatusController::class);
 Route::get('vehicle_status_options', 'App\Http\Controllers\VehicleStatusController@vehicle_status_options');
 Route::resource('customer', CustomerController::class);
 Route::get('customer_options', 'App\Http\Controllers\CustomerController@customer_options');
+Route::get('all_customer_options', 'App\Http\Controllers\CustomerController@all_customer_options');
 Route::resource('toll', TollController::class);
 Route::get('toll_options', 'App\Http\Controllers\TollController@toll_options');
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\VanOut;
+use Carbon\Carbon;
 use App\Models\Toll;
 use Illuminate\Http\Request;
 use App\Http\Resources\TollResource;
@@ -40,6 +42,35 @@ class TollController extends Controller
             'customer_id' => $request->customer_id,
             'toll_image' => $uploaded_image_path
         ]);
+
+
+        $reg_plate_number = $request->reg_plate_number;
+        $date = $request->date;
+        $vanOuts = VanOut::all();
+        $vanOutRecords = [];
+        $index = 0;
+        if($vanOuts->count() > 0){
+            foreach($vanOuts as $vanOut){
+                if($vanOut->vehicle->reg_plate_number == $reg_plate_number && Carbon::parse($date)->between(Carbon::parse($vanOut->van_out_date)->format('Y-m-d'), Carbon::parse($vanOut->due_return)->format('Y-m-d'))){
+                    $vanOutRecords[$index]['id'] = $vanOut->id;
+                    $vanOutRecords[$index]['reg_plate_number'] = $vanOut->vehicle->reg_plate_number;
+                    $vanOutRecords[$index]['van_out_date'] = Carbon::parse($vanOut->van_out_date)->format('Y-m-d');
+                    $vanOutRecords[$index]['due_return'] = Carbon::parse($vanOut->due_return)->format('Y-m-d');
+                    $vanOutRecords[$index]['customer'] = $vanOut->customer->first_name . ' ' . $vanOut->customer->last_name;
+                    $vanOutRecords[$index]['customer_id'] = $vanOut->customer->id;
+                }
+                $index++;
+            }
+
+            $vanOutRecords = array_values($vanOutRecords);
+
+            if(count($vanOutRecords) > 0){
+                $newToll->update(['customer_id' => $vanOutRecords[0]['customer_id']]);
+            }
+        }
+        // return response()->json($vanOutRecords);
+
+
         $res = [
             'status' => 'success',
             'message' => 'Toll record created',
