@@ -29,6 +29,7 @@ class Vehicle extends Model
         'seller_address',
         'seller_contact_number',
         'status_id',
+        'next_maintenance_mileage',
         'next_maintenance_due_date',
         'next_maintenance_service',
         'next_maintenance_comments',

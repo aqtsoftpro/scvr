@@ -54,6 +54,7 @@ class VehicleController extends Controller
                 'seller_contact_number' => $request->seller_contact_number,
 
                 //'Next maintenenace ddud'
+                'next_maintenance_mileage' => $request->next_maintenance_mileage,
                 'next_maintenance_due_date' => $request->next_maintenance_due_date,
                 'next_maintenance_service' => $request->next_maintenance_service,
                 'next_maintenance_comments' => $request->next_maintenance_comments
@@ -132,6 +133,7 @@ class VehicleController extends Controller
             'seller_address' => $request->seller_address,
             'seller_contact_number' => $request->seller_contact_number,
 
+            'next_maintenance_mileage' => $request->next_maintenance_mileage,
             'next_maintenance_due_date' => $request->next_maintenance_due_date,
             'next_maintenance_service' => $request->next_maintenance_service,
             'next_maintenance_comments' => $request->next_maintenance_comments
@@ -162,7 +164,7 @@ class VehicleController extends Controller
                     'policy_start_date' => $request->policy_start_date,
                     'policy_end_date' => $request->policy_end_date,
                     'road_side_assistance' => $request->road_side_assistance,
-                    'road_side_assistance_company' => $request->road_side_assistance_company,
+                    'rPPoad_side_assistance_company' => $request->road_side_assistance_company,
                     'road_side_assistance_start_date' => $request->road_side_assistance_start_date,
                     'road_side_assistance_end_date' => $request->road_side_assistance_end_date,
                     'demage_details' => $request->demage_details,
