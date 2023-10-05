@@ -21,12 +21,12 @@ class InsuranceResource extends JsonResource
             'policy_number' => $this->policy_number,
             'policy_type' => $this->policy_type->name,
             'policy_type_id' => $this->policy_type->id,
-            'policy_start_date' => Carbon::parse($this->policy_start_date)->format('d M, Y'),
-            'policy_end_date' => Carbon::parse($this->policy_end_date)->format('d M, Y'),
+            'policy_start_date' => Carbon::parse($this->policy_start_date)->format('d-m-Y'),
+            'policy_end_date' => Carbon::parse($this->policy_end_date)->format('d-m-Y'),
             'road_side_assistance' => $this->road_side_assistance,
             'road_side_assistance_company' => $this->road_side_assistance_company,
-            'road_side_assistance_start_date' => Carbon::parse($this->road_side_assistance_start_date)->format('d M, Y'),
-            'road_side_assistance_end_date' => Carbon::parse($this->road_side_assistance_end_date)->format('d M, Y'),
+            'road_side_assistance_start_date' => Carbon::parse($this->road_side_assistance_start_date)->format('d-m-Y'),
+            'road_side_assistance_end_date' => Carbon::parse($this->road_side_assistance_end_date)->format('d-m-Y'),
             'demage_details' => $this->demage_details,
             'damage_picture' => $this->damage_picture
         ];

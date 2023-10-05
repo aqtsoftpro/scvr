@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'role_id' => $this->roles[0]->id,
             'role_name' => $this->roles[0]->name,
-            'joined' => Carbon::parse($this->created_at)->format('Y-m-d')
+            'joined' => Carbon::parse($this->created_at)->format('d-m-Y')
         ];
     }
 }

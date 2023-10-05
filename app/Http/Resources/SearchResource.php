@@ -24,7 +24,7 @@ class SearchResource extends JsonResource
             'make' => $this->make,
             'vin' => $this->vin,
             'mileage' => $this->mileage,
-            'purchase_date' => Carbon::parse($this->purchase_date)->format('Y-m-d'),
+            'purchase_date' => Carbon::parse($this->purchase_date)->format('d-m-Y'),
             'purchase_price' => $this->purchase_price,
             'vehicle_condition' => $this->vehicle_condition,
             'seller_nme' => $this->seller_name,

@@ -18,7 +18,7 @@ class TollResource extends JsonResource
         return [
             'id' => $this->id,
             'toll_number' => $this->toll_number,
-            'date' => Carbon::parse($this->date)->format('Y-m-d'),
+            'date' => Carbon::parse($this->date)->format('d-m-Y'),
             'reg_plate_number' => $this->reg_plate_number,
             'customer' => (isset($this->customer)) ? $this->customer->first_name . ' ' . $this->customer->last_name : '',
             'customer_id' => (isset($this->customer_id)) ? $this->customer_id : '',
