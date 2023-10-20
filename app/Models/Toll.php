@@ -13,7 +13,9 @@ class Toll extends Model
         'date',
         'reg_plate_number',
         'customer_id',
-        'toll_image'
+        'toll_image',
+        'bond_deposit',
+        'payment_mode'
     ];
 
     public function customer(){
