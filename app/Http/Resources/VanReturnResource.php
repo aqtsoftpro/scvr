@@ -31,6 +31,7 @@ class VanReturnResource extends JsonResource
             'fuel_tank' => $this->fuel_tank,
             'condition' => $this->condition,
             'demage_caused_by_customer' => $this->demage_caused_by_customer,
+            'damage_caused_by_customer' => ($this->demage_caused_by_customer == 0) ? 'No' : 'Yes',
             'demage_picture' => $this->demage_picture,
             'demage_text' => $this->demage_text,
             'return_date' => Carbon::parse($this->return_date)->format('d-m-Y'),
