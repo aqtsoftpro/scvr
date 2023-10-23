@@ -60,7 +60,9 @@ class VanReturnController extends Controller
             'demage_caused_by_customer' => $request->demage_caused_by_customer,
             'return_date' => $request->return_date,
             'demage_picture' => $uploaded_image_path,
-            'demage_text' => $request->demage_text
+            'demage_text' => $request->demage_text,
+            'bond_deposit' => $request->bond_deposit,
+            'payment_mode' => $request->payment_mode
         ]);
 
         $booking = VanOut::find($newVanReturn->van_out_id);
@@ -100,7 +102,9 @@ class VanReturnController extends Controller
             'demage_caused_by_customer' => $request->demage_caused_by_customer,
             'return_date' => $request->return_date,
             'demage_picture' => $demagePicture,
-            'demage_text' => $request->demage_text
+            'demage_text' => $request->demage_text,
+            'bond_deposit' => $request->bond_deposit,
+            'payment_mode' => $request->payment_mode
         ]);
         $res = [
             'message' => 'Van return record updated',

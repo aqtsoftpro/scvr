@@ -21,7 +21,9 @@ class VanReturn extends Model
       'demage_caused_by_customer',
       'demage_picture',
       'demage_text',
-      'return_date'
+      'return_date',
+      'bond_deposit',
+      'payment_mode'
     ];
 
     public function location(){
