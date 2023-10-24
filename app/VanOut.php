@@ -28,7 +28,9 @@ class VanOut extends Model
         'mileage',
         'due_return',
         'status',
-        'van_out_date'
+        'van_out_date',
+        'bond_deposit',
+        'payment_mode'
     ];
 
     public function van_return(){
