@@ -122,7 +122,7 @@ class ReportsController extends Controller
 
         //subtract maintenance cost
         foreach($maintenance_records as $maintenance){
-            $pnl[$index]['date'] = Carbon::parse($maintenance->created_at)->format('Y-m-d');
+            $pnl[$index]['date'] = Carbon::parse($maintenance->created_at)->format('d-m-Y');
             $pnl[$index]['notes'] = 'Subtracted Maintenance Cost';
             $pnl[$index]['cost'] = $maintenance->cost;
             $pnl[$index]['operation'] = 'subtract';
