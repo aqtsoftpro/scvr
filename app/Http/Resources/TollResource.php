@@ -22,7 +22,8 @@ class TollResource extends JsonResource
             'reg_plate_number' => $this->reg_plate_number,
             'customer' => (isset($this->customer)) ? $this->customer->first_name . ' ' . $this->customer->last_name : '',
             'customer_id' => (isset($this->customer_id)) ? $this->customer_id : '',
-            'toll_image' => $this->toll_image
+            'toll_image' => $this->toll_image,
+            'payment_status' => $this->payment_status
         ];
     }
 }

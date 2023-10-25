@@ -40,7 +40,8 @@ class TollController extends Controller
             'date' => $request->date,
             'reg_plate_number' => $request->reg_plate_number,
             'customer_id' => $request->customer_id,
-            'toll_image' => $uploaded_image_path
+            'toll_image' => $uploaded_image_path,
+            'payment_status' => $request->payment_status
         ]);
 
 
@@ -95,7 +96,8 @@ class TollController extends Controller
             'date' => $request->date,
             'reg_plate_number' => $request->reg_plate_number,
             'customer_id' => $request->customer_id,
-            'toll_image' => $tollImage
+            'toll_image' => $tollImage,
+            'payment_status' => $request->payment_status
         ]);
         $toll->save();
 
