@@ -37,10 +37,10 @@ class CustomerController extends Controller
             'driver_licence_front_picture' => 'required',
             'driver_licence_back_picture' => 'required',
             'driver_licence_expiry' => 'required',
-            'secondary_id_number' => 'required',
-            'secondary_id_front_picture' => 'required',
-            'secondary_id_back_picture' => 'required',
-            'secondary_id_expiry' => 'required',
+            // 'secondary_id_number' => 'required',
+            // 'secondary_id_front_picture' => 'required',
+            // 'secondary_id_back_picture' => 'required',
+            // 'secondary_id_expiry' => 'required',
             'nationality' => 'required',
         ]);
 
