@@ -33,7 +33,7 @@ class CustomerResource extends JsonResource
             'secondary_id_number' => $this->secondary_id_number,
             'secondary_id_front_picture' => $this->secondary_id_front_picture,
             'secondary_id_back_picture' => $this->secondary_id_back_picture,
-            'secondary_id_expiry' => Carbon::parse($this->secondary_id_expiry)->format('d-m-Y'),
+            'secondary_id_expiry' => ($this->secondary_id_expiry) ? Carbon::parse($this->secondary_id_expiry)->format('d-m-Y') : null,
             'vanouts' => $this->van_outs,
             'vanout_count' => $this->van_outs->count(),
         ];
