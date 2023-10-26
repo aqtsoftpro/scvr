@@ -23,7 +23,7 @@ class VanReturnResource extends JsonResource
             'customer' => $this->van_out->customer->first_name . ' ' . $this->van_out->customer->last_name,
             'customer_id' => $this->van_out->customer->id,
             'rental_amount' => $this->van_out->rental_amount,
-            'rental_period' => $this->van_out->van_out_date,
+            'rental_period' => Carbon::parse($this->van_out->van_out_date)->format('d-m-Y H:i'),
             'location' => $this->location->name,
             'van_out_id' => $this->van_out->id,
             'location_id' => $this->location->id,
