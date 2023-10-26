@@ -91,8 +91,8 @@ class CustomerController extends Controller
             'driver_licence_expiry' => $request->driver_licence_expiry,
             'nationality' => $request->nationality,
             'secondary_id_number' => $request->secondary_id_number,
-            'secondary_id_front_picture' => $sidfImage,
-            'secondary_id_back_picture' => $sidbImage,
+            'secondary_id_front_picture' => isset($sidfImage) ? $sidfImage : null,
+            'secondary_id_back_picture' => isset($sidbImage) ? $sidbImage : null,
             'secondary_id_expiry' => $request->secondary_id_expiry
         ])){
             return response()->json([
