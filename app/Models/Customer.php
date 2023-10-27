@@ -27,7 +27,8 @@ class Customer extends Model
         'secondary_id_number', //string
         'secondary_id_front_picture', //image
         'secondary_id_back_picture', //image
-        'secondary_id_expiry'    //date
+        'secondary_id_expiry',    //date
+        'bond_return_amount'
     ];
 
 

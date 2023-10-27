@@ -93,7 +93,8 @@ class CustomerController extends Controller
             'secondary_id_number' => $request->secondary_id_number,
             'secondary_id_front_picture' => isset($sidfImage) ? $sidfImage : null,
             'secondary_id_back_picture' => isset($sidbImage) ? $sidbImage : null,
-            'secondary_id_expiry' => $request->secondary_id_expiry
+            'secondary_id_expiry' => $request->secondary_id_expiry,
+            'bond_return_amount' => $request->bond_return_amount
         ])){
             return response()->json([
                 'status' => 'success',
@@ -157,7 +158,8 @@ class CustomerController extends Controller
             'secondary_id_number' => $request->secondary_id_number,
             'secondary_id_front_picture' => $sidfImage,
             'secondary_id_back_picture' => $sidbImage,
-            'secondary_id_expiry' => $request->secondary_id_expiry
+            'secondary_id_expiry' => $request->secondary_id_expiry,
+            'bond_return_amount' => $request->bond_return_amount
         ])){
             return response()->json([
                 'status' => 'success',
