@@ -36,7 +36,8 @@ class VanReturnResource extends JsonResource
             'demage_text' => $this->demage_text,
             'return_date' => Carbon::parse($this->return_date)->format('d-m-Y'),
             'require_maintenance' => ($this->require_maintenance == 0) ? 'No' : 'Yes',
-            'require_maintenance_text' => $this->require_maintenance_text
+            'require_maintenance_text' => $this->require_maintenance_text,
+            'bond_return_amount' => $this->bond_return_amount
         ];
     }
 }

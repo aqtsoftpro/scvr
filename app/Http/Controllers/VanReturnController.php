@@ -62,7 +62,8 @@ class VanReturnController extends Controller
             'demage_picture' => $uploaded_image_path,
             'demage_text' => $request->demage_text,
             'bond_deposit' => $request->bond_deposit,
-            'payment_mode' => $request->payment_mode
+            'payment_mode' => $request->payment_mode,
+            'bond_return_amount' => $request->bond_return_amount
         ]);
 
         $booking = VanOut::find($newVanReturn->van_out_id);
@@ -104,7 +105,8 @@ class VanReturnController extends Controller
             'demage_picture' => $demagePicture,
             'demage_text' => $request->demage_text,
             'bond_deposit' => $request->bond_deposit,
-            'payment_mode' => $request->payment_mode
+            'payment_mode' => $request->payment_mode,
+            'bond_return_amount' => $request->bond_return_amount
         ]);
         $res = [
             'message' => 'Van return record updated',
