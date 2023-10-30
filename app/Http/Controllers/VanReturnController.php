@@ -126,4 +126,5 @@ class VanReturnController extends Controller
     public function van_return_options(VanReturn $vanReturn){
         return response()->json($vanReturn->all(['id', 'condition']));
     }
+
 }

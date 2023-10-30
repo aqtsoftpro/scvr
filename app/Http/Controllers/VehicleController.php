@@ -270,26 +270,33 @@ class VehicleController extends Controller
 
     public function vehicle_options(Vehicle $vehicle, Request $request){
 
-        if($request->mode == 'active'){
-            $vehicles = $vehicle->where('status_id', 1)->get();
-            $options = [];
+        $vehicles = $vehicle->where('status_id', 1)->get();
+        $options = [];
 
-            foreach($vehicles as $key => $vehicle){
-                $options[$key]['id'] = $vehicle->id;
-                $options[$key]['name'] = $vehicle->make . ' ' . $vehicle->model . ' (' . $vehicle->reg_plate_number . ')';
+        foreach($vehicles as $key => $vehicle){
+            $options[$key]['id'] = $vehicle->id;
+            $options[$key]['name'] = $vehicle->make . ' ' . $vehicle->model . ' (' . $vehicle->reg_plate_number . ')';
+        }
+
+        $options = $this->append_selected_item($options, $request->selected);
+
+        return response()->json($options);
+    }
+
+    function append_selected_item($list, $value){
+        if(isset($value)){
+            $cust = Vehicle::find($value);
+            if($cust){
+                foreach($list as $key => $customer){
+                    if($customer['id'] == $cust->id){
+                        unset($list[$key]);
+                    }
+                }
+                $list[] = ['id' => $cust->id, 'name' => $cust->make . ' ' . $cust->model . ' (' . $cust->reg_plate_number . ')'];
             }
-
-            return response()->json($options);
-
+            return $list;
         } else {
-            $vehicles = $vehicle->all();
-            $options = [];
-
-            foreach($vehicles as $key => $vehicle){
-                $options[$key]['id'] = $vehicle->id;
-                $options[$key]['name'] = $vehicle->make . ' ' . $vehicle->model . ' (' . $vehicle->reg_plate_number . ')';
-            }
-            return response()->json($options);
+            return $list;
         }
     }
 }

@@ -103,8 +103,22 @@ class VanOutController extends Controller
         return response()->json($res, 204);
     }
 
-    public function van_out_options(VanOut $vanOut){
-        return response()->json(VanoutOptionsResource::collection($vanOut->where('status', 1)->get()));
+    public function van_out_options(VanOut $vanOut, Request $request){
+
+        $vanouts = $vanOut->where('status', 1)->with('vehicle')->get();
+        $list = [];
+
+        foreach($vanouts as $key => $vanout){
+            $list[] = ['id' => $vanout['id'] , 'booking_regnumber' => $vanout['vehicle']['reg_plate_number']];
+        }
+
+        //return $list;
+        //$vanouts = VanoutOptionsResource::collection($list);
+
+        $vanouts = $this->append_selected_item($list, $request->selected);
+
+        return response()->json($vanouts);
+
         return $vanOut->query()->with(['vehicle' => function($query){
             $query->select('id', 'reg_plate_number');
         }])->get(['id', 'vehicle_id']);
@@ -112,5 +126,23 @@ class VanOutController extends Controller
 
     public function returned_van_out_options(VanOut $vanOut){
         return response()->json(VanoutOptionsResource::collection($vanOut->where('status', 0)->get()));
+    }
+
+    function append_selected_item($list, $value){
+        if(isset($value)){
+            $vanout = VanOut::find($value);
+            if($vanout){
+                foreach($list as $key => $customer){
+                    if($customer['id'] == $vanout->id){
+                        unset($list[$key]);
+                    }
+                }
+                $vahicle = Vehicle::find($vanout->vehicle_id);
+                $list[] = ['id' => $vanout->id, 'booking_regnumber' => $vahicle->reg_plate_number];
+            }
+            return $list;
+        } else {
+            return $list;
+        }
     }
 }

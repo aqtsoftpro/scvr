@@ -177,7 +177,7 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function customer_options(Customer $customer){
+    public function customer_options(Customer $customer, Request $request){
 
         $customers_list = [];
 
@@ -190,7 +190,10 @@ class CustomerController extends Controller
                     $customers_list[$key]['name'] = $customer->first_name . ' ' . $customer->last_name;
                 }
         }
-        return array_values($customers_list);
+
+        $customer_list =  $this->append_selected_item($customers_list, $request->selected);
+
+        return response()->json(array_values($customer_list));
         // return response()->json(CustomerOptionResource::collection($customers_list));
     }
 
@@ -242,5 +245,22 @@ class CustomerController extends Controller
             'sid' => $message->sid,
             'message' => 'Your whatsapp client invitation has been sent to number ' . $phoneNumber
         ]);
+    }
+
+    function append_selected_item($list, $value){
+        if(isset($value)){
+            $cust = Customer::find($value);
+            if($cust){
+                foreach($list as $key => $customer){
+                    if($customer['id'] == $cust->id){
+                        unset($list[$key]);
+                    }
+                }
+                $list[] = ['id' => $cust->id, 'name' => $cust->first_name . ' ' . $cust->last_name];
+            }
+            return $list;
+        } else {
+            return $list;
+        }
     }
 }
