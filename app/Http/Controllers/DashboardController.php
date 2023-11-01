@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $available_cars = Vehicle::where('vehicle_type_id', 1)->where('status_id', 1)->count();
         $vanoutCount = VanOut::where('status', 1)->count();
         $vanreturnsCount = VanReturn::count();
-        $vanouts = VanoutDashboardResource::collection(VanOut::whereBetween('due_return', [Carbon::now(), Carbon::now()->addDays(7)])->where('status', 1)->get());
+        $vanouts = VanoutDashboardResource::collection(VanOut::whereBetween('due_return', [Carbon::now()->format('d-m-Y'), Carbon::now()->addDays(7)->format('d-m-Y')])->where('status', 1)->get());
 
         $vanins = VanReturnDashboardResource::collection(VanReturn::all());
 

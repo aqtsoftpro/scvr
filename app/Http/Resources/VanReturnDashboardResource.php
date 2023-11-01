@@ -18,6 +18,7 @@ class VanReturnDashboardResource extends JsonResource
         return [
             'img' => ($this->van_out) ? $this->van_out->vehicle->picture : '',
             'vehicle_id' => ($this->van_out) ? $this->van_out->vehicle->id: '',
+            'vehicle_type' => ($this->van_out) ? $this->van_out->vehicle->vehicle_type->name : '',
             'vehicle_status' => ($this->van_out) ? $this->van_out->vehicle->status->name: '',
             'vehicle_make_model' => ($this->van_out) ? $this->van_out->vehicle->make . ' - ' . $this->van_out->vehicle->model : '',
             'location' => $this->location->name,
