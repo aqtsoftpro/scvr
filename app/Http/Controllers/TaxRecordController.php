@@ -22,6 +22,24 @@ class TaxRecordController extends Controller
     }
 
     public function store(Request $request, TaxRecord $taxRecord){
+
+        $validation = $request->validate([
+            'tax_type_id' => 'required',
+            'amount' => 'required',
+            'date' => 'required',
+            'filer_name' => 'required',
+            'filer_contact' => 'required',
+            'accountant_fee' => 'required',
+            'comments' => 'required',
+        ]);
+
+        if(!$validation){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Tax cream, m nbnhaopusp;isd7t6rylyuil6y7tylxcidug;hkgfplhk8gfihghligh99opoyhlokup;ukkpjhlpjhk;[jk;=piulpio0i-io--[-8owa-a-l muo8i98oooooobbbt6899yltion error'
+            ]);
+        }
+
         if($taxRecord->create($request->all())){
             return response()->json([
                 'status' => 'success',
