@@ -82,28 +82,23 @@ class TollController extends Controller
     }
 
     public function search_toll_record($tollDate, $plateNumber){
-        // return response()->json([
-        //     'toll_date' => $tollDate,
-        //     'plate_number' => $plateNumber
-        // ]);
-
-        // return Carbon::parse($tollDate)->between(Carbon::parse('08-11-2023')->format('d-m-Y'), Carbon::parse('11-11-2023')->format('d-m-Y'));
 
         $records = [];
         if($tollDate != ''){
-            $vanout_records =  VanOut::with('vehicle', 'customer')->get();
-            foreach($vanout_records as $vanout){
+            $vanin_records = VanReturn::with('van_out', 'van_out.vehicle', 'van_out.customer')->get();
+            //$vanout_records =  VanOut::with('vehicle', 'customer')->get();
+            foreach($vanin_records as $vanin){
 
-                if(Carbon::parse($tollDate)->between(Carbon::parse($vanout->van_out_date), Carbon::parse($vanout->due_return))){
-                    if($vanout->vehicle->reg_plate_number == $plateNumber){
+                if(Carbon::parse($tollDate)->between(Carbon::parse($vanin->van_out->van_out_date), Carbon::parse($vanin->return_date))){
+                    if($vanin->van_out->vehicle->reg_plate_number == $plateNumber){
                         $records[] = [
-                            'id' => $vanout->id,
-                            'van_out_date' => Carbon::parse($vanout->van_out_date)->format('d-m-Y'),
-                            'due_return' => Carbon::parse($vanout->due_return)->format('d-m-Y'),
-                            'customer' => $vanout->customer->first_name . ' ' . $vanout->customer->last_name,
-                            'customer_id' => $vanout->customer->id,
-                            'customer_email' => $vanout->customer->email,
-                            'vehicle' => $vanout->vehicle->reg_plate_number,
+                            'id' => $vanin->van_out->id,
+                            'van_out_date' => Carbon::parse($vanin->van_out->van_out_date)->format('d-m-Y'),
+                            'return_date' => Carbon::parse($vanin->return_date)->format('d-m-Y'),
+                            'customer' => $vanin->van_out->customer->first_name . ' ' . $vanin->van_out->customer->last_name,
+                            'customer_id' => $vanin->van_out->customer->id,
+                            'customer_email' => $vanin->van_out->customer->email,
+                            'vehicle' => $vanin->van_out->vehicle->reg_plate_number,
                         ];
                     }
                 }
