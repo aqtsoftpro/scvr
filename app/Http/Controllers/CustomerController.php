@@ -234,16 +234,25 @@ class CustomerController extends Controller
         $message = $twilio->messages
           ->create("whatsapp:" . $phoneNumber, // to
             array(
-              "from" => "whatsapp:" . $from,
-              "body" => "please click on the link to register yourself on 'Super Cheap Van Rental ':" .  "scvrapp.aqtdemos.com/user/register"
+              'from' => "whatsapp:" . $from,
+              'body' => "You are receiving this message from SCVR, Please link click on the link to register yourself: scvrapp.aqtdemos.com/user/register"
             )
         );
 
-        return response()->json([
-            'status' => 'success',
-            'sid' => $message->sid,
-            'message' => 'Your whatsapp client invitation has been sent to number ' . $phoneNumber
-        ]);
+        //   "body" => "please click on the link to register yourself on 'Super Cheap Van Rental ':" . "scvrapp.aqtdemos.com/user/register",
+
+        //print_r($message);
+
+        if($message){
+            return response()->json([
+                'status' => 'success',
+                'sid' => $message->sid,
+                'message' => 'Your whatsapp client invitation has been sent to number ' . $phoneNumber
+            ]);
+        } else {
+            return response($message);
+        }
+
     }
 
     function append_selected_item($list, $value){
