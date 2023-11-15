@@ -231,7 +231,7 @@ class CustomerController extends Controller
             $settingsArray[$settings->key] = $settings->value;
         }
 
-        $sid = $settingsArray['TWILIO_AUTH_SID'];
+        $sid = $settingsArray['TWILIO_ACCOUNT_SID'];
         $token = $settingsArray['TWILIO_AUTH_TOKEN'];
         $from = $settingsArray['TWILIO_WHATSAPP_FROM'];
         $phoneNumber = $request->phone_number;
