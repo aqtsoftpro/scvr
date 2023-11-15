@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EvnController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TollController;
 use App\Http\Controllers\UserController;
@@ -33,6 +34,8 @@ use App\Http\Controllers\ServiceTypeController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\VehicleStatusController;
 use App\Http\Controllers\GeneralServiceController;
+use App\Http\Controllers\EnvController;
+use App\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,6 +133,10 @@ Route::resource('customer', CustomerController::class);
 Route::get('customer_options', 'App\Http\Controllers\CustomerController@customer_options');
 Route::get('all_customer_options', 'App\Http\Controllers\CustomerController@all_customer_options');
 Route::resource('toll', TollController::class);
+
+
+Route::resource('settings', SettingsController::class);
+
 // Route::post('toll_assign', 'App\Http\Controllers\TollController@assign');
 Route::get('search_toll_record/{tollDate}/{plateNumber}', 'App\Http\Controllers\TollController@search_toll_record');
 Route::get('toll_options', 'App\Http\Controllers\TollController@toll_options');
@@ -144,6 +151,10 @@ Route::post('password-reset', 'App\Http\Controllers\Auth\PasswordResetLinkContro
 Route::post('invite-customer', 'App\Http\Controllers\CustomerController@invite');
 Route::post('whatsapp-invite-customer', 'App\Http\Controllers\CustomerController@whatsapp_invite');
 Route::post('register-customer', 'App\Http\Controllers\CustomerController@store');
+
+Route::post('set-variable', 'App\Http\Controllers\EnvController@setVariable');
+
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $user_id = $request->user()->id;

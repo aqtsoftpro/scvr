@@ -13,6 +13,7 @@ use App\Mail\Customer as CustomerMail;
 use App\Http\Resources\CustomerResource;
 use App\Channels\Messages\WhatsAppMessage;
 use App\Http\Resources\CustomerOptionResource;
+use App\Models\Settings;
 use Carbon\Carbon;
 
 class CustomerController extends Controller
@@ -224,9 +225,15 @@ class CustomerController extends Controller
 
     public function whatsapp_invite(Request $request){
 
-        $sid = env("TWILIO_AUTH_SID");
-        $token = env("TWILIO_AUTH_TOKEN");
-        $from = env("TWILIO_WHATSAPP_FROM");
+        $settingsArray = [];
+
+        foreach(Settings::all() as $settings){
+            $settingsArray[$settings->key] = $settings->value;
+        }
+
+        $sid = $settingsArray['TWILIO_AUTH_SID'];
+        $token = $settingsArray['TWILIO_AUTH_TOKEN'];
+        $from = $settingsArray['TWILIO_WHATSAPP_FROM'];
         $phoneNumber = $request->phone_number;
 
         $twilio = new Client($sid, $token);
@@ -235,7 +242,7 @@ class CustomerController extends Controller
           ->create("whatsapp:" . $phoneNumber, // to
             array(
               'from' => "whatsapp:" . $from,
-              'body' => "You are receiving this message from SCVR, Please link click on the link to register yourself: scvrapp.aqtdemos.com/user/register"
+              'body' => "You are receiving this message from SCVR, Please click on the link to register yourself: scvrapp.aqtdemos.com/user/register"
             )
         );
 
