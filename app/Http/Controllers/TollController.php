@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use App\Models\Toll;
 use Illuminate\Http\Request;
 use App\Http\Resources\TollResource;
+use App\Imports\TollsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TollController extends Controller
 {
@@ -141,5 +143,16 @@ class TollController extends Controller
 
     public function van_out_options(Toll $toll){
         return response()->json(TollResource::collection($toll->all()));
+    }
+
+    public function import(Request $request){
+
+        $import = Excel::import(new TollsImport, $request->file('toll'));
+
+        if($import){
+            return response()->json([ 'message' => 'The Excel file imported']);
+        } else {
+            return response()->json(['mesage' => 'Error importing Excel File.']);
+        }
     }
 }

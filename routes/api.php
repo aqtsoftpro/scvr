@@ -139,6 +139,7 @@ Route::resource('settings', SettingsController::class);
 
 // Route::post('toll_assign', 'App\Http\Controllers\TollController@assign');
 Route::get('search_toll_record/{tollDate}/{plateNumber}', 'App\Http\Controllers\TollController@search_toll_record');
+Route::post('toll_import', 'App\Http\Controllers\TollController@import');
 Route::get('toll_options', 'App\Http\Controllers\TollController@toll_options');
 
 Route::get('reports/earnings', 'App\Http\Controllers\ReportsController@earnings');
