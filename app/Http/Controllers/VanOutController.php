@@ -56,12 +56,12 @@ class VanOutController extends Controller
 
     //return $vanOut;
 
-    $access_to_be_attached = [];
-    foreach($vanOut->accessories as $accessory){
-        $accessoryObj = Accessory::find($accessory);
-        $access_to_be_attached[] = $accessoryObj;
-    }
-    return $access_to_be_attached;
+    //$access_to_be_attached = [];
+    //foreach($vanOut->accessories as $accessory){
+    //    $accessoryObj = Accessory::find($accessory);
+    //    $access_to_be_attached[] = $accessoryObj;
+    //}
+    //return $access_to_be_attached;
 
 
         $data = array_merge($request->all(), ['booking_id' => md5(now())]);
