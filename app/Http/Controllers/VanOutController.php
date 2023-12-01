@@ -54,7 +54,7 @@ class VanOutController extends Controller
     ]);
 
 
-    return $vanOut;
+    //return $vanOut;
 
     $access_to_be_attached = [];
     foreach($vanOut->accessories as $accessory){
@@ -74,7 +74,7 @@ class VanOutController extends Controller
         Add assign accessories to vanout
         */
 
-        $vanOut->accessories()->attach($access_to_be_attached);
+        //$vanOut->accessories()->attach($access_to_be_attached);
 
         /*
         Update the vehicle status to rented out
