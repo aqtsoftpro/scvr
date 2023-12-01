@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\VanOut;
 use App\Vehicle;
+use App\Accessory;
 use Illuminate\Http\Request;
 use App\Http\Resources\VanOutResource;
 use App\Http\Resources\VanoutOptionsResource;
@@ -29,7 +30,7 @@ class VanOutController extends Controller
 
     public function store(Request $request, VanOut $vanOut){
 
-        return response()->json($request->all());
+        //return response()->json($request->all());
 
         /*
         Create a new booking
@@ -53,16 +54,27 @@ class VanOutController extends Controller
     ]);
 
 
+    return $vanOut;
+
+    $access_to_be_attached = [];
+    foreach($vanOut->accessories as $accessory){
+        $accessoryObj = Accessory::find($accessory);
+        $access_to_be_attached[] = $accessoryObj;
+    }
+    return $access_to_be_attached;
+
+
         $data = array_merge($request->all(), ['booking_id' => md5(now())]);
 
         $vanOut->create($data);
 
-        $vanOut->save();
+        //$vanOut->save();
 
         /*
         Add assign accessories to vanout
         */
-        $vanOut->accessories()->attach($request->accessories);
+
+        $vanOut->accessories()->attach($access_to_be_attached);
 
         /*
         Update the vehicle status to rented out
@@ -90,6 +102,7 @@ class VanOutController extends Controller
             'message' => 'Booking updated',
             'data' => $vanOut
         ];
+
         return response()->json($res);
     }
 
