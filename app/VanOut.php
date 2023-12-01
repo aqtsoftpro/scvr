@@ -17,6 +17,7 @@ class VanOut extends Model
 {
     use HasFactory, LogsActivity;
     protected $fillable = [
+        'booking_id',
         'customer_id',
         'vehicle_id',
         'location_id',

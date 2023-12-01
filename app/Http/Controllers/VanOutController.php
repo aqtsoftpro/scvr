@@ -16,6 +16,7 @@ class VanOutController extends Controller
     }
 
     public function index(Request $request, VanOut $vanOut){
+
         if(isset($request->mode) && $request->mode == 'active'){
             return response()->json(VanOutResource::collection($vanOut->where('status', 1)->orderBy('id', 'desc')->get()));
         }
@@ -27,6 +28,8 @@ class VanOutController extends Controller
     }
 
     public function store(Request $request, VanOut $vanOut){
+
+        return response()->json($request->all());
 
         /*
         Create a new booking
@@ -50,9 +53,10 @@ class VanOutController extends Controller
     ]);
 
 
+        $data = array_merge($request->all(), ['booking_id' => md5(now())]);
 
+        $vanOut->create($data);
 
-        $vanOut->fill($request->all());
         $vanOut->save();
 
         /*
