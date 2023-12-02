@@ -23,7 +23,9 @@ class TaxRecordResource extends JsonResource
             'filer_name' => $this->filer_name,
             'filer_contact' => $this->filer_contact,
             'accountant_fee' => $this->accountant_fee,
-            'comments' => $this->comments
+            'comments' => $this->comments,
+            'added' => Carbon::parse($this->created_at)->format('d-m-Y g:i A'),
+            'updated' => Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
         ];
     }
 }
