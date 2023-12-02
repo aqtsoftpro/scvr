@@ -30,7 +30,6 @@ class VanOutController extends Controller
 
     public function store(Request $request, VanOut $vanOut){
 
-        //return response()->json($request->all());
 
         /*
         Create a new booking
@@ -54,19 +53,19 @@ class VanOutController extends Controller
     ]);
 
 
-    //return $vanOut;
+    //$access_to_be_attached =  array_values($request->accessories);
 
     //$access_to_be_attached = [];
-    //foreach($vanOut->accessories as $accessory){
-    //    $accessoryObj = Accessory::find($accessory);
-    //    $access_to_be_attached[] = $accessoryObj;
+    //foreach($request->accessories as $accessory){
+    //    $access_to_be_attached[] = $accessory;
     //}
     //return $access_to_be_attached;
 
 
         $data = array_merge($request->all(), ['booking_id' => md5(now())]);
 
-        $vanOut->create($data);
+        //$vanOut->create($data);
+        $vanout = Vanout::create($data);
 
         //$vanOut->save();
 
@@ -74,7 +73,7 @@ class VanOutController extends Controller
         Add assign accessories to vanout
         */
 
-        //$vanOut->accessories()->attach($access_to_be_attached);
+        $vanout->accessories()->attach($request->accessories);
 
         /*
         Update the vehicle status to rented out
