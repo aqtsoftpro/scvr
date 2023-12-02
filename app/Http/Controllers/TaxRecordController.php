@@ -14,7 +14,7 @@ class TaxRecordController extends Controller
     }
 
     public function index(TaxRecord $taxRecord){
-        return TaxRecordResource::collection($taxRecord->all());
+        return TaxRecordResource::collection($taxRecord->orderBy('id', 'desc')->get());
     }
 
     public function show(TaxRecord $taxRecord){
