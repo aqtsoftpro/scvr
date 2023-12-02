@@ -78,7 +78,7 @@ class VanOutController extends Controller
         /*
         Update the vehicle status to rented out
         */
-        $vanOut->vehicle()->update([
+        $vanout->vehicle()->update([
             'status_id' => 2
         ]);
 
@@ -88,7 +88,7 @@ class VanOutController extends Controller
         $res = [
             'status' => 'success',
             'message' => 'Booking created',
-            'data' => $vanOut
+            'data' => $vanout
         ];
         return response()->json($res);
     }

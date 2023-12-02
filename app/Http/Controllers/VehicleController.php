@@ -265,7 +265,7 @@ class VehicleController extends Controller
             $filtered_vehicles[$key]['name'] = $vehicle->make . ' ' . $vehicle->model . ' (' . $vehicle->reg_plate_number . ')';
         }
 
-        return response()->json($filtered_vehicles);
+        return $filtered_vehicles;
     }
 
     public function vehicle_options(Vehicle $vehicle, Request $request){
@@ -294,7 +294,7 @@ class VehicleController extends Controller
                 }
                 $list[] = ['id' => $cust->id, 'name' => $cust->make . ' ' . $cust->model . ' (' . $cust->reg_plate_number . ')'];
             }
-            return $list;
+            return array_values($list);
         } else {
             return $list;
         }
