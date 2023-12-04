@@ -21,7 +21,8 @@ class MechanicResource extends JsonResource
             'workshop_address' => $this->workshop_address,
             'expertise' => $this->expertise,
             'comments' => $this->comments,
-            'added-updated' => Carbon::parse($this->created_at)->format('d-m-Y g:i A') . '/' .  Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
+            'added' => Carbon::parse($this->created_at)->format('d-m-Y g:i A'),
+            'updated' => Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
         ];
     }
 }

@@ -35,7 +35,8 @@ class VanOutResource extends JsonResource
             'van_out_date' => Carbon::parse($this->van_out_date)->format('d-m-Y H:i'),
             'bond_deposit' => $this->bond_deposit,
             'payment_mode' => $this->payment_mode,
-            'added-updated' => Carbon::parse($this->created_at)->format('d-m-Y g:i A') . '/' .  Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
+            'added' => Carbon::parse($this->created_at)->format('d-m-Y g:i A'),
+            'updated' => Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
 
         ];
     }

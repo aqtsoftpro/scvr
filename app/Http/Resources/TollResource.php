@@ -24,7 +24,8 @@ class TollResource extends JsonResource
             'customer_id' => (isset($this->customer_id)) ? $this->customer_id : '',
             'toll_image' => $this->toll_image,
             'payment_status' => $this->payment_status,
-            'added-updated' => Carbon::parse($this->created_at)->format('d-m-Y g:i A') . '/' .  Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
+            'added' => Carbon::parse($this->created_at)->format('d-m-Y g:i A'),
+            'updated' => Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
         ];
     }
 }

@@ -270,7 +270,7 @@ class VehicleController extends Controller
 
     public function vehicle_options(Vehicle $vehicle, Request $request){
 
-        $vehicles = $vehicle->where('status_id', 1)->get();
+        $vehicles = $vehicle->where('status_id', 1)->orderBy('id', 'desc')->get();
         $options = [];
 
         foreach($vehicles as $key => $vehicle){
