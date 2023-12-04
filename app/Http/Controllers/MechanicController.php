@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MechanicResource;
 use App\Models\Mechanic;
 use Illuminate\Http\Request;
 
 class MechanicController extends Controller
 {
     public function index(Mechanic $mechanic){
-        return response()->json($mechanic->orderBy('id', 'desc')->get());
+        return response()->json(MechanicResource::collection($mechanic->orderBy('id', 'desc')->get()));
     }
 
     public function show(Mechanic $mechanic){

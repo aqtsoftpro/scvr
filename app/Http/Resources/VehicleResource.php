@@ -36,6 +36,7 @@ class VehicleResource extends JsonResource
             'insurance' => new InsuranceResource($this->insurance),
             'maintenance' => MaintenanceResource::collection($this->maintenance),
             'status' => $this->status->name,
+            'added-updated' => Carbon::parse($this->created_at)->format('d-m-Y g:i A') . '/' .  Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
             'status_id' => $this->status_id,
             'condition' => $this->vehicle_condition,
             'next_maintenance_mileage' => $this->next_maintenance_mileage,

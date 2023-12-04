@@ -37,8 +37,7 @@ class CustomerResource extends JsonResource
             'vanouts' => $this->van_outs,
             'vanout_count' => $this->van_outs->count(),
             'bond_return_amount' => $this->bond_return_amount,
-            'added' => Carbon::parse($this->created_at)->format('d-m-Y g:i A'),
-            'updated' => Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
+            'added-updated' => Carbon::parse($this->created_at)->format('d-m-Y g:i A') . '/' .  Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
         ];
     }
 }

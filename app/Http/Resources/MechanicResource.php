@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TaxRecordResource extends JsonResource
+class MechanicResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +16,10 @@ class TaxRecordResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'type' => $this->tax_type->name,
-            'amount' => $this->amount,
-            'date' => Carbon::parse($this->date)->format('d-m-Y'),
-            'filer_name' => $this->filer_name,
-            'filer_contact' => $this->filer_contact,
-            'accountant_fee' => $this->accountant_fee,
+            'name' => $this->name,
+            'workshop_contact' => $this->workshop_contact,
+            'workshop_address' => $this->workshop_address,
+            'expertise' => $this->expertise,
             'comments' => $this->comments,
             'added-updated' => Carbon::parse($this->created_at)->format('d-m-Y g:i A') . '/' .  Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
         ];

@@ -28,7 +28,8 @@ class InsuranceResource extends JsonResource
             'road_side_assistance_start_date' => Carbon::parse($this->road_side_assistance_start_date)->format('d-m-Y'),
             'road_side_assistance_end_date' => Carbon::parse($this->road_side_assistance_end_date)->format('d-m-Y'),
             'demage_details' => $this->demage_details,
-            'damage_picture' => $this->damage_picture
+            'damage_picture' => $this->damage_picture,
+            'added/updated' => Carbon::parse($this->created_at)->format('d-m-Y g:i A') . '/' .  Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
         ];
     }
 }

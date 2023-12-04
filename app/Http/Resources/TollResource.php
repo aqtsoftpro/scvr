@@ -23,7 +23,8 @@ class TollResource extends JsonResource
             'customer' => (isset($this->customer)) ? $this->customer->first_name . ' ' . $this->customer->last_name : '',
             'customer_id' => (isset($this->customer_id)) ? $this->customer_id : '',
             'toll_image' => $this->toll_image,
-            'payment_status' => $this->payment_status
+            'payment_status' => $this->payment_status,
+            'added-updated' => Carbon::parse($this->created_at)->format('d-m-Y g:i A') . '/' .  Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
         ];
     }
 }
