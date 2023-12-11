@@ -29,11 +29,27 @@ class DashboardController extends Controller
         $available_cars = Vehicle::where('vehicle_type_id', 1)->where('status_id', 1)->count();
         $vanoutCount = VanOut::where('status', 1)->count();
         $vanreturnsCount = VanReturn::count();
+
+
         //$vanouts = VanoutDashboardResource::collection(VanOut::whereBetween('due_return', [Carbon::now()->format('d-m-Y'), Carbon::now()->addDays(7)->format('d-m-Y')])->where('status', 1)->get());
+        $vanoutsArray = [];
         $vanouts = VanoutDashboardResource::collection(VanOut::where('status', 1)
-                        ->where('due_return', '>', Carbon::now()->format('d-m-Y'))
-                        ->where ('due_return', '<=', Carbon::now()->addDays(7)->format('d-m-Y'))
+                        //->whereBetween('due_return', [Carbon::now()->format('Y-m-d'), Carbon::now()->addDays(7)->format('Y-m-d')])
+                        //->where('due_return', '<=', Carbon::now()->addDays(7)->format('d-m-Y'))
                         ->get());
+
+        foreach($vanouts as $vanout){
+            //return (date('d-m-Y', strtotime($vanout->due_return)) > date('d-m-Y'))? 'yes' : 'no';
+            //return Carbon::createFromFormat('d-m-Y', '1-1-2023 12:00')->format('d-m-Y');
+            if(
+                date('d-m-Y', strtotime($vanout->due_return)) > Carbon::now()->format('d-m-Y')
+                && date('d-m-Y', strtotime($vanout->due_return)) <= Carbon::now()->addDays(7)->format('d-m-Y')
+            ){
+                $vanoutsArray[] = $vanout;
+            }
+        }
+
+
         $vanins = VanReturnDashboardResource::collection(VanReturn::all());
 
         $data = [
@@ -43,7 +59,7 @@ class DashboardController extends Controller
             'available_cars' => $available_cars,
             'vanout_count' => $vanoutCount,
             'vanreturn_count' => $vanreturnsCount,
-            'vanouts' => $vanouts,
+            'vanouts' => $vanoutsArray,
             'vanins' => $vanins
         ];
 

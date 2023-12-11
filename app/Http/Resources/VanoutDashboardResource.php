@@ -15,27 +15,14 @@ class VanoutDashboardResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        /**            id: 1,
-          *title: 'Vehicle 1',
-          *img: '/assets/img/van-white.jpg',
-          *category: 'Rented',
-          *createDate: '02.04.2018',
-          *status: '2 DAYS',
-          *statusColor: 'primary',
-          *description: 'Van was rented for some offical purposes',
-          *sales: 1647,
-          *stock: 62
-        **/
         return [
-            'img' => $this->vehicle->picture,
             'id' => $this->id,
+            'img' => $this->vehicle->picture,
             'vehicle_id' => $this->vehicle->id,
             'title' => $this->vehicle->make . '-' . $this->vehicle->model,
-            'category' => $this->vehicle->status->name,
-            'description' => $this->vehicle->reg_plate_number,
-            'createDate' => Carbon::parse($this->created_at)->format('d-m-Y'),
-            'vanOutDate' => Carbon::parse($this->van_out_date)->format('d-m-Y'),
-            'dueReturn' => Carbon::parse($this->due_return)->format('d-m-Y'),
+            'category' => $this->vehicle->reg_plate_number,
+            'mileage' => $this->mileage,
+            'due_return' => Carbon::parse($this->due_return)->format('d-m-Y'),
         ];
     }
 }
