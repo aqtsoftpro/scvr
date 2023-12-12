@@ -102,6 +102,8 @@ class VanOutController extends Controller
             'data' => $vanOut
         ];
 
+        $booking->accessories()->sync($request->accessories);
+
         return response()->json($res);
     }
 
