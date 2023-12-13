@@ -41,7 +41,7 @@ class AccessoryController extends Controller
         return response()->json(new AccessoryResource($accessory->find($id)));
     }
 
-    public function update(Request $request, Accessory $accessory, int $id){
+    public function update(Request $request, Accessory $accessory){
         $accessory->update($request->all());
         return response()->json([
             'status' => 'success',
