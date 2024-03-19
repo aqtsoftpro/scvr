@@ -18,9 +18,11 @@ class TollsImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         $customer = null;
+
         if(isset($row['customer']) && $row['customer'] != null){
             $customer = $row['customer'];
             $customerRecord = Customer::where('first_name', 'like', '%' . $row['customer'] . '%')->first();
+
             if($customerRecord){
                 $customer = $customerRecord->id;
             } else {
@@ -29,6 +31,8 @@ class TollsImport implements ToModel, WithHeadingRow
                 ])->id;
             }
         }
+
+        return $row;
 
         return new Toll([
             'toll_number' => $row['toll_number'],
