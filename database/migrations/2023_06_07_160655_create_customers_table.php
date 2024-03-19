@@ -20,6 +20,10 @@ return new class extends Migration
             $table->text('address');
             $table->timestamps();
         });
+
+        Schema::table('van_outs', function (Blueprint $table) {
+            $table->foreignId('customer_id')->constrained()->cascadeOnDelete();
+        });
     }
 
     /**

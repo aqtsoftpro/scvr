@@ -14,24 +14,17 @@ return new class extends Migration
     {
         Schema::create('van_outs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('vehicle_id');
-            $table->unsignedBigInteger('location_id');
+            $table->foreignId('vehicle_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('location_id')->constrained()->cascadeOnDelete();
             $table->string('reason_of_renting');
-            $table->unsignedBigInteger('swap_with');
+            $table->foreignId('swap_with')->constrained('vehicles')->cascadeOnDelete();
             $table->integer('rental_priod');
             $table->integer('rental_amount');
+            $table->foreignId('accessory_id')->constrained()->cascadeOnDelete();
             $table->integer('mileage');
-            $table->unsignedBigInteger('accessory_id');
             $table->string('due_return');
             $table->integer('status');
             $table->timestamps();
-
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
-            $table->foreign('swap_with')->references('id')->on('vehicles')->onDelete('cascade');
-            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
-            $table->foreign('accessory_id')->references('id')->on('accessories')->onDelete('cascade');
         });
     }
 
