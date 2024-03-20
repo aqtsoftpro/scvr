@@ -36,6 +36,8 @@ use App\Http\Controllers\VehicleStatusController;
 use App\Http\Controllers\GeneralServiceController;
 use App\Http\Controllers\EnvController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -154,7 +156,8 @@ Route::post('whatsapp-invite-customer', 'App\Http\Controllers\CustomerController
 Route::post('register-customer', 'App\Http\Controllers\CustomerController@store');
 
 Route::post('set-variable', 'App\Http\Controllers\EnvController@setVariable');
-
+// forget password and reset password routes
+Route::post('forgot-password', [PasswordResetLinkController::class, 'store']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
