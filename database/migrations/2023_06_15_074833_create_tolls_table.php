@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('toll_number');
             $table->date('date');
             $table->string('toll_image');
+            $table->string('reg_plate_number')->nullable();
+            $table->foreignId('customer_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('payment_status')->default('unpaid');
             $table->timestamps();
         });
     }

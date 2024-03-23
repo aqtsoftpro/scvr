@@ -160,6 +160,9 @@ Route::post('set-variable', 'App\Http\Controllers\EnvController@setVariable');
 Route::post('forgot-password', [PasswordResetLinkController::class, 'store']);
 Route::post('reset-password', [NewPasswordController::class, 'store']);
 
+// Route::middleware('prevent.director.deletion')->group(function () {
+//     // Routes that need to prevent Manager deletion
+// });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $user_id = $request->user()->id;

@@ -241,6 +241,7 @@ class VehicleController extends Controller
         return response()->json($vehicle);
     }
     public function destroy(Vehicle $vehicle){
+        $this->middleware('prevent.director.deletion');
         try {
             $vehicle->delete();
             return response()->json([
