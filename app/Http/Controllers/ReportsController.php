@@ -11,9 +11,14 @@ use Illuminate\Http\Request;
 
 class ReportsController extends Controller
 {
-    public function earnings(){
+    public function earnings(Request $request){
 
-        $bookings = VanOut::all();
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $bookings = VanOut::whereBetween('created_at', [$request->start_date, $request->end_date])->get();
+        } else {
+            $bookings = VanOut::all();
+        }
+        
         $total = 0;
         $earnings = [];
 
