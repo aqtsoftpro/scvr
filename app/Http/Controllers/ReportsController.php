@@ -14,9 +14,13 @@ class ReportsController extends Controller
     public function earnings(Request $request){
 
         if (isset($request->start_date) && isset($request->end_date)) {
-            $bookings = VanOut::whereBetween('created_at', [$request->start_date, $request->end_date])->get();
+
+            $start = Carbon::createFromFormat('d-m-Y', $request->start_date);
+            $end = Carbon::createFromFormat('d-m-Y', $request->end_date);
+
+            $bookings = VanOut::whereBetween('created_at', [$start, $end])->get();
         } else {
-            $bookings = VanOut::all();
+            $bookings = VanOut::orderBy('vehicle_id')->get();
         }
         
         $total = 0;
@@ -34,9 +38,17 @@ class ReportsController extends Controller
         return response()->json($earnings);
     }
 
-    public function maintenance_cost(){
+    public function maintenance_cost(Request $request)
+    {
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $start = Carbon::createFromFormat('d-m-Y', $request->start_date);
+            $end = Carbon::createFromFormat('d-m-Y', $request->end_date);
 
-        $maintenance = Maintenance::all();
+            $maintenance = Maintenance::whereBetween('created_at', [$start, $end])->get();
+        } else {
+            $maintenance = Maintenance::orderBy('vehicle_id')->get();
+        }
+
         $total = 0;
         $maintenance_entries = [];
 

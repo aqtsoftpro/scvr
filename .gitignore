@@ -21,3 +21,4 @@ yarn-error.log
 public/images
 .well-known
 /scvr2
+/storage/logs
