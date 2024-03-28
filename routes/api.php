@@ -35,7 +35,7 @@ use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\VehicleStatusController;
 use App\Http\Controllers\GeneralServiceController;
 use App\Http\Controllers\EnvController;
-use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\{SettingsController, VehicleRentalController};
 use App\Http\Controllers\Auth\{PasswordResetLinkController, NewPasswordController};
 
 
@@ -163,6 +163,8 @@ Route::post('reset-password', [NewPasswordController::class, 'store']);
 // Route::middleware('prevent.director.deletion')->group(function () {
 //     // Routes that need to prevent Manager deletion
 // });
+
+Route::get('rental-detail/{vanOut}', [VehicleRentalController::class, 'show']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $user_id = $request->user()->id;

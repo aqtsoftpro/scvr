@@ -38,18 +38,13 @@ class DashboardController extends Controller
                         //->where('due_return', '<=', Carbon::now()->addDays(7)->format('d-m-Y'))
                         ->get());
 
-        foreach($vanouts as $vanout){
-            //return (date('d-m-Y', strtotime($vanout->due_return)) > date('d-m-Y'))? 'yes' : 'no';
-            //return Carbon::createFromFormat('d-m-Y', '1-1-2023 12:00')->format('d-m-Y');
-            if(
-                date('d-m-Y', strtotime($vanout->due_return)) > Carbon::now()->format('d-m-Y')
-                && date('d-m-Y', strtotime($vanout->due_return)) <= Carbon::now()->addDays(7)->format('d-m-Y')
-            ){
+        foreach ($vanouts as $vanout) {
+            $dueReturn = Carbon::parse($vanout->due_return); // Parse the due_return date using Carbon
+
+            if ($dueReturn->isBetween(Carbon::now(), Carbon::now()->addDays(7))) {
                 $vanoutsArray[] = $vanout;
             }
         }
-
-
         $vanins = VanReturnDashboardResource::collection(VanReturn::all());
 
         $data = [

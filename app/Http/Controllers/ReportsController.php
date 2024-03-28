@@ -84,9 +84,16 @@ class ReportsController extends Controller
         return response()->json($maintenance_list);
     }
 
-    public function rental_history(){
+    public function rental_history(Request $request)
+    {
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $start = Carbon::createFromFormat('d-m-Y', $request->start_date);
+            $end = Carbon::createFromFormat('d-m-Y', $request->end_date);
 
-        $vanout = VanOut::with('customer', 'van_return')->get();
+            $vanout = VanOut::with('customer', 'van_return')->whereBetween('created_at', [$start, $end])->get();
+        } else {
+            $vanout = VanOut::with('customer', 'van_return')->orderBy('vehicle_id')->get();
+        }
 
         $rental_history = [];
 
