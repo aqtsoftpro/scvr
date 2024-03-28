@@ -40,6 +40,7 @@ class ReportsController extends Controller
 
     public function maintenance_cost(Request $request)
     {
+        // $maintenance = 
         if (isset($request->start_date) && isset($request->end_date)) {
             $start = Carbon::createFromFormat('d-m-Y', $request->start_date);
             $end = Carbon::createFromFormat('d-m-Y', $request->end_date);
