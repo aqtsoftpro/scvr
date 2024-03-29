@@ -64,7 +64,9 @@ class VanReturnController extends Controller
             'demage_text' => $request->demage_text,
             'bond_deposit' => $request->bond_deposit,
             'payment_mode' => $request->payment_mode,
-            'bond_return_amount' => $request->bond_return_amount
+            'bond_return_amount' => $request->bond_return_amount,
+            'total_driven' => $request->total_driven,
+            'days_count' => $request->days_count,
         ]);
 
         $booking = VanOut::find($newVanReturn->van_out_id);
