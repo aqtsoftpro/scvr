@@ -109,7 +109,8 @@ class ReportsController extends Controller
 
     }
 
-    public function profit_loss(){
+    public function profit_loss(Request $request)
+    {
 
         $final = [];
         $pnl = [];
@@ -129,6 +130,7 @@ class ReportsController extends Controller
             $pnl[$index]['date'] = Carbon::parse($vanout->created_at)->format('d-m-Y');
             $pnl[$index]['notes'] = 'Rented out ' . $vanout->vehicle->vehicle_type->name .  ' with reg# '. $vanout->vehicle->reg_plate_number;
             $pnl[$index]['cost'] = $vanout->rental_amount;
+            $pnl[$index]['expense'] = 0.00;
             $pnl[$index]['operation'] = 'add';
 
             $index += 1;
@@ -140,6 +142,7 @@ class ReportsController extends Controller
             $pnl[$index]['date'] = Carbon::parse($tax->created_at)->format('d-m-Y');
             $pnl[$index]['notes'] = 'Subtracted Tax Payed';
             $pnl[$index]['cost'] = $tax->amount;
+            $pnl[$index]['expense'] = $tax->amount;
             $pnl[$index]['operation'] = 'subtract';
 
             $index += 1;
@@ -150,18 +153,35 @@ class ReportsController extends Controller
             $pnl[$index]['date'] = Carbon::parse($maintenance->created_at)->format('d-m-Y');
             $pnl[$index]['notes'] = 'Subtracted Maintenance Cost';
             $pnl[$index]['cost'] = $maintenance->cost;
+            $pnl[$index]['expense'] = $maintenance->cost;
             $pnl[$index]['operation'] = 'subtract';
 
             $index += 1;
         }
 
+        // $sorted_tax_records = collect($pnl)->sortBy('date')->values();
 
-        $sorted_tax_records = collect($pnl)->sortBy('date')->values();
+        if (isset($request->start_date) && isset($request->end_date)) {
+
+            $start = Carbon::createFromFormat('d-m-Y', $request->start_date);
+            $end = Carbon::createFromFormat('d-m-Y', $request->end_date);
+
+            $sorted_tax_records = collect($pnl)->filter(function ($record) use ($start, $end) {
+                $record_date = Carbon::parse($record['date']);
+                return $record_date->between($start, $end);
+            })->sortBy('date')->values();
+
+        } else {
+            $sorted_tax_records = collect($pnl)->sortBy('date')->values();
+        }
+
+
 
         foreach($sorted_tax_records as $index => $record){
             $final[$index]['date'] = $record['date'];
             $final[$index]['notes'] = $record['notes'];
             $final[$index]['cost'] = $record['cost'];
+            $final[$index]['expense'] = $record['expense'];
             $final[$index]['sub_total'] = ($record['operation'] == 'add') ? $sub_total_final += $record['cost'] : $sub_total_final     -= $record['cost'];
         }
 
