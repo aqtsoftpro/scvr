@@ -11,6 +11,9 @@ use App\Models\Customer;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class VanOut extends Model
@@ -34,19 +37,23 @@ class VanOut extends Model
         'payment_mode'
     ];
 
-    public function van_return(){
+    public function van_return(): HasMany
+    {
         return $this->hasOne(VanReturn::class);
     }
 
-    public function customer(){
+    public function customer(): BelongsTo
+    {
         return $this->belongsTo(Customer::class);
     }
 
-    public function vehicle(){
+    public function vehicle(): BelongsTo
+    {
         return $this->belongsTo(Vehicle::class);
     }
 
-    public function location(){
+    public function location(): BelongsTo
+    {
         return $this->belongsTo(Location::class);
     }
 
@@ -54,7 +61,8 @@ class VanOut extends Model
     //     return $this->belongsTo(Accessory::class);
     // }
 
-    public function swapWith(){
+    public function swapWith(): BelongsTo
+    {
         return $this->belongsTo(Vehicle::class, 'swap_with');
     }
 
@@ -64,7 +72,8 @@ class VanOut extends Model
             ->logUnguarded();
     }
 
-    public function accessories(){
+    public function accessories(): BelongsToMany
+    {
         return $this->belongsToMany(Accessory::class, 'accessory_van_out');
     }
 

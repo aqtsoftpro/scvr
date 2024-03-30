@@ -17,16 +17,16 @@ class VanReturnResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // if ($this->van_out->vehicle()->exists()) {
-        //     $vehicle = $this->van_out?->vehicle?->reg_plate_number;
-        // } else {
-        //     $vehicle = "no vehicle";
-        // }
+        if ($this->van_out()->exists()) {
+            $vehicle = $this->van_out ? $this->van_out->vehicle->reg_plate_number : null;
+        } else {
+            $vehicle = "no vehicle";
+        }
         
         return [
             'id' => $this->id,
-            'vehicle' => $this->van_out?->vehicle?->reg_plate_number,
-            'customer' => ($this->van_out?->customer ? $this->van_out?->customer->first_name : '') . ' ' . ($this->van_out?->customer ? $this->van_out?->customer->last_name : ''),
+            'vehicle' => $this->van_out ? $this->van_out->vehicle->reg_plate_number : null,
+            'customer' => ($this->van_out ? $this->van_out->customer?->first_name : '') . ' ' . ($this->van_out ? $this->van_out->customer?->last_name : ''),
             'customer_id' => $this->van_out?->customer?->id,
             'rental_amount' => $this->van_out?->rental_amount?? null,
             'rental_period' => Carbon::parse($this->van_out?->van_out_date)->format('d-m-Y H:i'),

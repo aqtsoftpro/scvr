@@ -6,6 +6,7 @@ use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VanReturn extends Model
 {
@@ -27,11 +28,13 @@ class VanReturn extends Model
       'days_count'
     ];
 
-    public function location(){
+    public function location(): BelongsTo
+    {
       return $this->belongsTo(Location::class);
     }
 
-    public function van_out(){
+    public function van_out(): BelongsTo
+    {
         return $this->belongsTo(VanOut::class, 'van_out_id');
     }
 
