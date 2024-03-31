@@ -21,6 +21,7 @@ class VanReturnResource extends JsonResource
         return [
             'id' => $this->id,
             'vehicle' => $this->van_out ? $this->van_out->vehicle?->reg_plate_number : null,
+            // 'vehicle' => "Test Vehicle",
             'customer' => ($this->van_out ? $this->van_out->customer?->first_name : '') . ' ' . ($this->van_out ? $this->van_out->customer?->last_name : ''),
             'customer_id' => $this->van_out?->customer?->id,
             'rental_amount' => $this->van_out?->rental_amount?? null,
@@ -43,7 +44,6 @@ class VanReturnResource extends JsonResource
             'bond_return_amount' => $this->bond_return_amount,
             'added' => Carbon::parse($this->created_at)->format('d-m-Y g:i A'),
             'updated' => Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
-
         ];
     }
 }

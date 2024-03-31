@@ -9,12 +9,15 @@ use App\Http\Resources\VanReturnResource;
 
 class VanReturnController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth:sanctum');
     }
 
     public function index(VanReturn $vanReturn){
-        return response()->json(VanReturnResource::collection($vanReturn->load('van_out.vehicle', 'van_out.customer')->orderBy('id', 'desc')->get()));
+        $vanReturn = $vanReturn->with('van_out.vehicle', 'van_out.customer')->orderBy('id', 'desc')->get();
+        return response()->json(VanReturnResource::collection($vanReturn));
+        // return response()->json($vanReturn);
     }
 
     public function show(VanReturn $vanReturn){
