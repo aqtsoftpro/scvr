@@ -16,8 +16,8 @@ class VanReturnController extends Controller
 
     public function index(VanReturn $vanReturn){
         $vanReturn = $vanReturn->with('van_out.vehicle', 'van_out.customer')->orderBy('id', 'desc')->get();
-        // return response()->json(VanReturnResource::collection($vanReturn));
-        return response()->json($vanReturn);
+        return response()->json(VanReturnResource::collection($vanReturn));
+        // return response()->json($vanReturn);
     }
 
     public function show(VanReturn $vanReturn){
