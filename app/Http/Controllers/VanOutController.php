@@ -64,7 +64,7 @@ class VanOutController extends Controller
 
 
         $data = array_merge($request->all(), ['booking_id' => md5(now())]);
-
+        // $data['rental_period'] = 
         if ($request->hasFile('demage_video')) {
             $video = $request->file('demage_video')->store('demage-videos', 'public');
             $data['video'] =url('storage/'.$video);

@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class VanOut extends Model
 {
     use HasFactory, LogsActivity;
+
     protected $fillable = [
         'booking_id',
         'customer_id',
@@ -37,6 +38,16 @@ class VanOut extends Model
         'payment_mode',
         'video'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            // Calculate the number of days and store it in a separate attribute
+            $model->rental_period = $model->calculateNumberOfDays();
+        });
+    }
 
     public function van_return(): HasMany
     {
@@ -81,6 +92,11 @@ class VanOut extends Model
     public function galleries(): HasMany
     {
         return $this->hasMany(DemageGallery::class);
+    }
+
+    public function calculateNumberOfDays()
+    {
+        return $this->van_out_date->diffInDays($this->due_return);
     }
 
 }
