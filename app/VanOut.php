@@ -7,7 +7,7 @@ use App\Location;
 use App\Accessory;
 use App\Http\Resources\AccessoryResource;
 use App\Models\AccessoryVanout;
-use App\Models\Customer;
+use App\Models\{Customer, DemageGallery};
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -76,6 +76,11 @@ class VanOut extends Model
     public function accessories(): BelongsToMany
     {
         return $this->belongsToMany(Accessory::class, 'accessory_van_out');
+    }
+
+    public function galleries(): HasMany
+    {
+        return $this->hasMany(DemageGallery::class);
     }
 
 }
