@@ -34,7 +34,8 @@ class VanOut extends Model
         'status',
         'van_out_date',
         'bond_deposit',
-        'payment_mode'
+        'payment_mode',
+        'video'
     ];
 
     public function van_return(): HasMany

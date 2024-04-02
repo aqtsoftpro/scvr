@@ -11,10 +11,10 @@ use App\Http\Resources\VehicleResource;
 
 class VehicleController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:sanctum');
+    // }
 
     public function index(Vehicle $vehicle){
         return response()->json(VehicleResource::collection($vehicle->orderBy('id', 'desc')->get()));
@@ -272,6 +272,7 @@ class VehicleController extends Controller
     public function vehicle_options(Vehicle $vehicle, Request $request){
 
         $vehicles = $vehicle->where('status_id', 1)->orderBy('id', 'desc')->get();
+        // dd($vehicles);
         $options = [];
 
         foreach($vehicles as $key => $vehicle){

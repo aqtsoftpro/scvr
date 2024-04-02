@@ -27,15 +27,14 @@ class DashboardController extends Controller
         $available_vans = Vehicle::where('vehicle_type_id', 3)->where('status_id', 1)->count();
         $cars = Vehicle::where('vehicle_type_id', 1)->count();
         $available_cars = Vehicle::where('vehicle_type_id', 1)->where('status_id', 1)->count();
-        $vanoutCount = VanOut::where('status', 1)->count();
-        $vanreturnsCount = VanReturn::count();
-
+        $vanoutCount = VanOut::where('status', 1)->distinct('vehicle_id')->count();
+        $vanreturnsCount = VanReturn::distinct('van_out_id')->count();
 
         //$vanouts = VanoutDashboardResource::collection(VanOut::whereBetween('due_return', [Carbon::now()->format('d-m-Y'), Carbon::now()->addDays(7)->format('d-m-Y')])->where('status', 1)->get());
         $vanoutsArray = [];
         $vanouts = VanoutDashboardResource::collection(VanOut::where('status', 1)
-                        //->whereBetween('due_return', [Carbon::now()->format('Y-m-d'), Carbon::now()->addDays(7)->format('Y-m-d')])
-                        //->where('due_return', '<=', Carbon::now()->addDays(7)->format('d-m-Y'))
+                        // ->whereBetween('due_return', [Carbon::now()->format('Y-m-d'), Carbon::now()->addDays(7)->format('Y-m-d')])
+                        // ->where('due_return', '<=', Carbon::now()->addDays(7)->format('d-m-Y'))
                         ->get());
 
         foreach ($vanouts as $vanout) {

@@ -25,7 +25,8 @@ class VanReturn extends Model
       'return_date',
       'bond_return_amount',
       'total_driven',
-      'days_count'
+      'days_count',
+      'video'
     ];
 
     public function location(): BelongsTo

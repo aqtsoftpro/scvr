@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\VanOut;
 use App\VanReturn;
+use App\Models\DemageGallery;
 use Illuminate\Http\Request;
 use App\Http\Resources\VanReturnResource;
 
@@ -27,13 +28,14 @@ class VanReturnController extends Controller
     public function store(Request $request, VanReturn $vanReturn){
 
         $uploaded_image_path = '';
+        $status = 1;
+        $video_url = '';
         //upload image
-        if($request->hasFile('demage_picture')){
-            $image = $request->file('demage_picture');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/damagePics/'), $filename);
-            $uploaded_image_path = url('/images/damagePics/' . $filename);
+        if($request->hasFile('demage_vid')){
+            $video = $request->file('demage_vid')->store('demage-videos', 'public');
+            $video_url = url('storage/'.$video);
         }
+
 
         // get storage path
 
@@ -69,14 +71,35 @@ class VanReturnController extends Controller
             'bond_return_amount' => $request->bond_return_amount,
             'total_driven' => $request->total_driven,
             'days_count' => $request->days_count,
+            'video' => $video_url
+        ]);
+
+
+        if ($request->hasFile('demage_picture')) {
+            foreach ($request->file('demage_picture') as $image) {
+                $imagePath = $image->store('demage-gallery', 'public');
+                $main_path = url('storage/'.$imagePath);
+                $gallery = DemageGallery::create([
+                    'van_return_id'=> $newVanReturn->id,
+                    'image' => $main_path
+                ]);
+            }
+            $new_path = $main_path;
+            $status = 3;
+        }
+
+        $newVanReturn->update([
+            'demage_picture' => $main_path
         ]);
 
         $booking = VanOut::find($newVanReturn->van_out_id);
         $booking->vehicle()->update([
-            'status_id' => 3
+            'status_id' => $status
         ]);
         $booking->status = 0;
         $booking->save();
+
+
 
         $res = [
             'status' => 'success',

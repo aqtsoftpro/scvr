@@ -147,15 +147,18 @@ class TollController extends Controller
 
     public function import(Request $request){
 
-
-         $import = Excel::import(new Toll, $request->file('toll'));
-
-         return $import;
-
-        if($import){
-            return response()->json([ 'message' => 'The Excel file imported']);
-        } else {
-            return response()->json(['mesage' => 'Error importing Excel File.']);
+        try {
+            // Import the Excel file
+            $import = Excel::import(new Toll, $request->file('toll'));
+            // Check if the import was successful
+            if ($import) {
+                return response()->json(['message' => 'The Excel file imported']);
+            } else {
+                return response()->json(['message' => 'Error importing Excel File.']);
+            }
+        } catch (\Exception $e) {
+            // Handle any exceptions that might occur during the import process
+            return response()->json(['message' => 'Error: ' . $e->getMessage()], 500);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\VanOut;
 use App\Vehicle;
 use App\Accessory;
+use App\Models\DemageGallery;
 use Illuminate\Http\Request;
 use App\Http\Resources\VanOutResource;
 use App\Http\Resources\VanoutOptionsResource;
@@ -64,10 +65,23 @@ class VanOutController extends Controller
 
         $data = array_merge($request->all(), ['booking_id' => md5(now())]);
 
-        //$vanOut->create($data);
+        if ($request->hasFile('demage_video')) {
+            $video = $request->file('demage_video')->store('demage-videos', 'public');
+            $data['video'] =url('storage/'.$video);
+        }
+
         $vanout = Vanout::create($data);
 
-        //$vanOut->save();
+        if ($request->hasFile('demage_pics')) {
+            foreach ($request->file('demage_pics') as $image) {
+                $imagePath = $image->store('demage-gallery', 'public');
+                $main_path = url('storage/'.$imagePath);
+                $gallery = DemageGallery::create([
+                    'van_out_id'=> $vanout->id,
+                    'image' => $main_path
+                ]);
+            }
+        }
 
         /*
         Add assign accessories to vanout
