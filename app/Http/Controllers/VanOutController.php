@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\VanOut;
 use App\Vehicle;
 use App\Accessory;
+use App\Models\Customer;
 use App\Models\DemageGallery;
 use Illuminate\Http\Request;
 use App\Http\Resources\VanOutResource;
@@ -81,6 +82,13 @@ class VanOutController extends Controller
                     'image' => $main_path
                 ]);
             }
+        }
+
+        if ($vanout) {
+            $customer = Customer::find($request->customer_id);
+            $customer->update([
+                'is_available' => 0
+            ]);
         }
 
         /*

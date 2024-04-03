@@ -29,6 +29,15 @@ class VanReturn extends Model
       'video'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->days_count = $model->calculateNumberOfDays();
+        });
+    }
+
     public function location(): BelongsTo
     {
       return $this->belongsTo(Location::class);
@@ -44,4 +53,5 @@ class VanReturn extends Model
             ->logOnly(['id', 'name'])
             ->logUnguarded();
     }
+
 }

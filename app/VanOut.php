@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 
 class VanOut extends Model
 {
@@ -45,7 +46,6 @@ class VanOut extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            // Calculate the number of days and store it in a separate attribute
             $model->rental_period = $model->calculateNumberOfDays();
         });
     }
@@ -70,10 +70,6 @@ class VanOut extends Model
         return $this->belongsTo(Location::class);
     }
 
-    // public function accessory(){
-    //     return $this->belongsTo(Accessory::class);
-    // }
-
     public function swapWith(): BelongsTo
     {
         return $this->belongsTo(Vehicle::class, 'swap_with');
@@ -97,7 +93,10 @@ class VanOut extends Model
 
     public function calculateNumberOfDays()
     {
-        return $this->van_out_date->diffInDays($this->due_return);
+        $vanOutDate = date_create($this->van_out_date);
+        $dueReturn = date_create($this->due_return);    
+        $diff = date_diff($vanOutDate, $dueReturn);
+        return $diff->days;
     }
 
 }

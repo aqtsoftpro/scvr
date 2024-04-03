@@ -28,6 +28,7 @@ class VanReturnController extends Controller
     public function store(Request $request, VanReturn $vanReturn){
 
         $uploaded_image_path = '';
+        $new_path = '';
         $status = 1;
         $video_url = '';
         //upload image
@@ -89,17 +90,27 @@ class VanReturnController extends Controller
         }
 
         $newVanReturn->update([
-            'demage_picture' => $main_path
+            'demage_picture' => $new_path
         ]);
 
         $booking = VanOut::find($newVanReturn->van_out_id);
+        $booking->customer()->update([
+            'is_available' => 1
+        ]);
         $booking->vehicle()->update([
             'status_id' => $status
         ]);
+        //days count   here 
+
+// $vanOutDate = date_create($this->van_out_date);
+// $dueReturn = date_create($this->due_return);    
+// $diff = date_diff($vanOutDate, $dueReturn);
+// return $diff->days;
+
+
+//         $days_count = 
         $booking->status = 0;
         $booking->save();
-
-
 
         $res = [
             'status' => 'success',

@@ -91,7 +91,7 @@ Route::get('dashboard_data', 'App\Http\Controllers\DashboardController@index');
 // });
 
 Route::resource('users', UserController::class);
-Route::get('customer_options', 'App\Http\Controllers\UserController@customer_options');
+// Route::get('customer_options', 'App\Http\Controllers\UserController@customer_options');
 Route::resource('accessory', AccessoryController::class);
 Route::get('accessory_options', 'App\Http\Controllers\AccessoryController@accessory_options');
 Route::resource('general_service', GeneralServiceController::class);

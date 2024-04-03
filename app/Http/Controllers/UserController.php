@@ -21,7 +21,7 @@ class UserController extends Controller
 
     public function customer_options(User $user)
     {
-        return response()->json($user->all(['id', 'name']));
+        return response()->json($user->where('status', 1)->where('is_available', 1)->get(['id', 'name']));
     }
 
     public function store(Request $request, User $user)

@@ -181,7 +181,7 @@ class CustomerController extends Controller
 
         $customers_list = [];
 
-        foreach(Customer::all() as $key => $customer){
+        foreach(Customer::where(['is_available'=> 1, 'status' => 1])->get() as $key => $customer){
                 if($customer->van_outs->count() > 0 && $customer->van_outs[0]->status == 0){
                     $customers_list[$key]['id'] = $customer->id;
                     $customers_list[$key]['name'] = $customer->first_name . ' ' . $customer->last_name;
