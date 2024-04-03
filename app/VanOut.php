@@ -14,6 +14,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class VanOut extends Model
@@ -49,7 +50,7 @@ class VanOut extends Model
         });
     }
 
-    public function van_return(): HasMany
+    public function van_return(): HasOne
     {
         return $this->hasOne(VanReturn::class);
     }
