@@ -34,8 +34,8 @@ class VehicleController extends Controller
         // }
 
         if($request->hasFile('picture')){
-            $filename = $request->file('picture')->store('images', 'public');
-            $uploaded_image_path = url('storage/'.$filename);
+            $picture = $request->file('picture')->store('images', 'public');
+            $uploaded_image_path = url('storage/'.$picture);
         }
         
         $new_vehicle = $vehicle->create(
