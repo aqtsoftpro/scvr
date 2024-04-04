@@ -130,7 +130,8 @@ class ReportsController extends Controller
             $pnl[$index]['date'] = Carbon::parse($vanout->created_at)->format('d-m-Y');
             $pnl[$index]['notes'] = 'Rented out ' . $vanout->vehicle->vehicle_type->name .  ' with reg# '. $vanout->vehicle->reg_plate_number;
             $pnl[$index]['cost'] = $vanout->rental_amount;
-            $pnl[$index]['expense'] = 0.00;
+            $pnl[$index]['tax'] = 0.00;
+            $pnl[$index]['maintenance'] = 0.00;
             $pnl[$index]['operation'] = 'add';
 
             $index += 1;
@@ -142,7 +143,8 @@ class ReportsController extends Controller
             $pnl[$index]['date'] = Carbon::parse($tax->created_at)->format('d-m-Y');
             $pnl[$index]['notes'] = 'Subtracted Tax Payed';
             $pnl[$index]['cost'] = $tax->amount;
-            $pnl[$index]['expense'] = $tax->amount;
+            $pnl[$index]['tax'] = $tax->amount;
+            $pnl[$index]['maintenance'] = 0.00;
             $pnl[$index]['operation'] = 'subtract';
 
             $index += 1;
@@ -153,7 +155,8 @@ class ReportsController extends Controller
             $pnl[$index]['date'] = Carbon::parse($maintenance->created_at)->format('d-m-Y');
             $pnl[$index]['notes'] = 'Subtracted Maintenance Cost';
             $pnl[$index]['cost'] = $maintenance->cost;
-            $pnl[$index]['expense'] = $maintenance->cost;
+            $pnl[$index]['tax'] = 0.00;
+            $pnl[$index]['maintenance'] = $maintenance->cost;
             $pnl[$index]['operation'] = 'subtract';
 
             $index += 1;
@@ -181,7 +184,8 @@ class ReportsController extends Controller
             $final[$index]['date'] = $record['date'];
             $final[$index]['notes'] = $record['notes'];
             $final[$index]['cost'] = $record['cost'];
-            $final[$index]['expense'] = $record['expense'];
+            $final[$index]['maintenance'] = $record['maintenance'];
+            $final[$index]['tax'] = $record['tax'];
             $final[$index]['sub_total'] = ($record['operation'] == 'add') ? $sub_total_final += $record['cost'] : $sub_total_final     -= $record['cost'];
         }
 

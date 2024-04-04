@@ -19,27 +19,40 @@ class TollsImport implements ToModel, WithHeadingRow
     {
         $customer = null;
 
-        if(isset($row['customer']) && $row['customer'] != null){
-            $customer = $row['customer'];
-            $customerRecord = Customer::where('first_name', 'like', '%' . $row['customer'] . '%')->first();
+        if (isset($row['customer']) && $row['customer'] != null) {
 
-            if($customerRecord){
+            // Assuming $row['customer'] contains "John Doe"
+            $fullName = $row['customer'];
+
+            // Split the full name into an array of first and last names
+            $customerNames = explode(' ', $fullName);
+
+            // Extract first name and last name
+            $firstName = $customerNames[0]; // "John"
+            $lastName = isset($customerNames[1]) ? $customerNames[1] : '';
+
+            $customerRecord = Customer::where('first_name', 'like', '%' . $firstName . '%')->where('last_name', 'like', '%' . $lastName . '%')->first();
+            if ($customerRecord) {
                 $customer = $customerRecord->id;
             } else {
-                $customer = Customer::create([
-                    'first_name' => $row['customer']
-                ])->id;
+                // Create a new customer if not found
+                $newCustomer = Customer::create([
+                    'first_name' => $firstName,
+                    'last_name' => $lastName
+                ]);
+                $customer = $newCustomer->id;
             }
         }
 
-        return $row;
-
-        return new Toll([
-            'toll_number' => $row['toll_number'],
-            'date' => Carbon::parse($row['date'])->format('d-m-Y'),
-            'reg_plate_number' => $row['reg_plate_number'],
-            'customer_id' => $customer,
-            'payment_status' => $row['payment_status']
-        ]);
+        if ($customer) {
+            return new Toll([
+                'toll_number' => $row['toll_number'],
+                'date' => Carbon::parse($row['date'])->format('d-m-Y'),
+                'reg_plate_number' => $row['reg_plate_number'],
+                'customer_id' => $customer,
+                'payment_status' => $row['payment_status']
+            ]);
+        }
+    
     }
 }
