@@ -100,15 +100,6 @@ class VanReturnController extends Controller
         $booking->vehicle()->update([
             'status_id' => $status
         ]);
-        //days count   here 
-
-// $vanOutDate = date_create($this->van_out_date);
-// $dueReturn = date_create($this->due_return);    
-// $diff = date_diff($vanOutDate, $dueReturn);
-// return $diff->days;
-
-
-//         $days_count = 
         $booking->status = 0;
         $booking->save();
 

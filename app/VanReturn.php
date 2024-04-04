@@ -29,14 +29,14 @@ class VanReturn extends Model
       'video'
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function ($model) {
-            $model->days_count = $model->calculateNumberOfDays();
-        });
-    }
+    //     static::creating(function ($model) {
+    //         $model->days_count = $model->calculateNumberOfDays();
+    //     });
+    // }
 
     public function location(): BelongsTo
     {

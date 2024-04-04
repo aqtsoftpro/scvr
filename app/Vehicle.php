@@ -10,6 +10,7 @@ use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 
 class Vehicle extends Model
 {
@@ -59,5 +60,18 @@ class Vehicle extends Model
 
     public function vanouts(){
         return $this->hasMany(VanOut::class);
+    }
+
+    public function getPurchaseDateAttribute($value)
+    {
+        // Check if $value is not null
+        if ($value) {
+            // Parse the date using Carbon
+            $date = Carbon::parse($value);
+            // Format the date as desired (01 Jan 2024)
+            return $date->format('d M Y');
+        }
+        // Return null if value is null
+        return null;
     }
 }

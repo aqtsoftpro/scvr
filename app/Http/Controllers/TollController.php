@@ -149,7 +149,7 @@ class TollController extends Controller
 
         try {
             // Import the Excel file
-            $import = Excel::import(new Toll, $request->file('toll'));
+            $import = Excel::import(new TollsImport, $request->file('toll'));
             // Check if the import was successful
             if ($import) {
                 return response()->json(['message' => 'The Excel file imported']);
