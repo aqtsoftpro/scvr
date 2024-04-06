@@ -260,9 +260,16 @@ class VehicleController extends Controller
         }
 
     }
+    // Request $request, Vehicle 
 
-    public function get_available_vehicles(Request $request, Vehicle $vehicle){
-        $available_vehicles = Vehicle::where('status_id', 1)->where('id', '!=', $vehicle->id)->get();
+    public function get_available_vehicles($id=null){
+        // $vehicle = Vehicle::find($id);
+        if ($id) {
+            $available_vehicles = Vehicle::where('status_id', 1)->where('id', '!=', $id)->get();
+        } else {
+            $available_vehicles = Vehicle::where('status_id', 1)->get();
+        }
+        
         $filtered_vehicles = [];
 
         foreach($available_vehicles as $key => $vehicle){
