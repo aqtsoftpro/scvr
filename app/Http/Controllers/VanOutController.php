@@ -48,20 +48,20 @@ class VanOutController extends Controller
             'due_return' => 'required',
             'accessories' => 'required'
         ],
-    [
-        'customer_id.integer' => 'Select Customer',
-        'vehicle_id.integer' => 'Select Vehicle ',
-        'location_id.integer' => 'Select Location',
-    ]);
+        [
+            'customer_id.integer' => 'Select Customer',
+            'vehicle_id.integer' => 'Select Vehicle ',
+            'location_id.integer' => 'Select Location',
+        ]);
 
 
-    //$access_to_be_attached =  array_values($request->accessories);
+        //$access_to_be_attached =  array_values($request->accessories);
 
-    //$access_to_be_attached = [];
-    //foreach($request->accessories as $accessory){
-    //    $access_to_be_attached[] = $accessory;
-    //}
-    //return $access_to_be_attached;
+        //$access_to_be_attached = [];
+        //foreach($request->accessories as $accessory){
+        //    $access_to_be_attached[] = $accessory;
+        //}
+        //return $access_to_be_attached;
 
 
         $data = array_merge($request->all(), ['booking_id' => md5(now())]);
@@ -119,6 +119,15 @@ class VanOutController extends Controller
         $booking = VanOut::find($vanOut);
         $booking->fill($request->all());
         $booking->save();
+
+        $booking->vehicle()->update([
+            'status_id' => 1
+        ]);
+
+        $vehicle = Vehicle::find($booking->swap_with)->update([
+            'status_id' => 2
+        ]);
+        
         $res = [
             'message' => 'Booking updated',
             'data' => $vanOut
