@@ -28,7 +28,7 @@ class VehicleRentalController extends Controller
      */
     public function show(VanOut $vanOut)
     {
-        $vanout = $vanOut->load('customer', 'galleries', 'vehicle.status', 'vehicle.vehicle_type', 'location');
+        $vanout = $vanOut->load('customer', 'swapWith', 'galleries', 'vehicle.status', 'vehicle.vehicle_type', 'location');
 
         return response()->json($vanout);
 
