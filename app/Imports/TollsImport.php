@@ -56,7 +56,7 @@ class TollsImport implements ToModel, WithHeadingRow
         if ($customer) {
             return new Toll([
                 'toll_number' => $row['details'],
-                'date' => Carbon::parse($row['start_date'])->format('d-m-Y'),
+                'date' => Carbon::parse($row['start_date']),
                 'reg_plate_number' => $row['lpn'],
                 'customer_id' => $customer,
                 'payment_status' => 'unpaid',
