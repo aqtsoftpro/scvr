@@ -14,7 +14,10 @@ class Toll extends Model
         'reg_plate_number',
         'customer_id',
         'toll_image',
-        'payment_status'
+        'payment_status',
+        'due_date',
+        'details',
+        'trip_cost'
     ];
 
     public function customer(){

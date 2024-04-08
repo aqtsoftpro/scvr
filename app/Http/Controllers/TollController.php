@@ -26,7 +26,10 @@ class TollController extends Controller
         $validation = $request->validate([
             'toll_number' => 'required',
             'date' => 'required|date',
-            'toll_image' => 'required'
+            'toll_image' => 'required',
+            'due_date' => 'required',
+            'trip_cost' => 'required',
+            'details' => 'string'
         ]);
 
         //upload image
@@ -44,7 +47,11 @@ class TollController extends Controller
             'reg_plate_number' => $request->reg_plate_number,
             'customer_id' => $request->customer_id,
             'toll_image' => $uploaded_image_path,
-            'payment_status' => $request->payment_status
+            'payment_status' => $request->payment_status,
+            'due_date' => Carbon::parse($request->due_date),
+            'trip_cost' => $request->trip_cost,
+            'details' => $request->details,
+
         ]);
 
 

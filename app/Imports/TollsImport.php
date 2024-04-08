@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use Carbon\Carbon;
 use App\Models\Toll;
+use App\{VanReturn, VanOut, Vehicle};
 use App\Models\Customer;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -15,44 +16,54 @@ class TollsImport implements ToModel, WithHeadingRow
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
+
+    protected $columnMapping = [
+        // 'LPN/Tag number' => 'lpn_tag_number',
+        'LPN' => 'lpn',
+    ];
+
     public function model(array $row)
     {
         $customer = null;
 
-        if (isset($row['customer']) && $row['customer'] != null) {
+        // return $row;
 
-            // Assuming $row['customer'] contains "John Doe"
-            $fullName = $row['customer'];
+        $vehicle = Vehicle::where('reg_plate_number', $row['lpn'])->first();
 
-            // Split the full name into an array of first and last names
-            $customerNames = explode(' ', $fullName);
+        if ($vehicle) {
 
-            // Extract first name and last name
-            $firstName = $customerNames[0]; // "John"
-            $lastName = isset($customerNames[1]) ? $customerNames[1] : '';
+                // $vanOut = VanOut::whereDate('van_out_date', '<=', Carbon::parse($row['start_date']))
+                //     ->where('vehicle_id', $vehicle->id)
+                //     ->orderBy('created_at', 'desc')
+                //     ->first();
+                // if ($vanOut) {
+                //     $customer = $vanOut->customer_id;
+                // }
 
-            $customerRecord = Customer::where('first_name', 'like', '%' . $firstName . '%')->where('last_name', 'like', '%' . $lastName . '%')->first();
-            if ($customerRecord) {
-                $customer = $customerRecord->id;
-            } else {
-                // Create a new customer if not found
-                $newCustomer = Customer::create([
-                    'first_name' => $firstName,
-                    'last_name' => $lastName
-                ]);
-                $customer = $newCustomer->id;
+            $vanOut = VanOut::where('vehicle_id', $vehicle->id)
+                ->where(function ($query) use ($row) {
+                    $query->where('van_out_date', '<=', Carbon::parse($row['start_date'])->toDateString())
+                        ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
+                })
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if ($vanOut) {
+                $customer = $vanOut->customer_id;
             }
         }
 
         if ($customer) {
             return new Toll([
-                'toll_number' => $row['toll_number'],
-                'date' => Carbon::parse($row['date'])->format('d-m-Y'),
-                'reg_plate_number' => $row['reg_plate_number'],
+                'toll_number' => $row['details'],
+                'date' => Carbon::parse($row['start_date'])->format('d-m-Y'),
+                'reg_plate_number' => $row['lpn'],
                 'customer_id' => $customer,
-                'payment_status' => $row['payment_status']
+                'payment_status' => 'unpaid',
+                'due_date' => Carbon::parse($row['end_date']),
+                'details' => $row['details'],
+                'trip_cost' => $row['trip_cost']
             ]);
         }
-    
     }
 }
