@@ -31,10 +31,11 @@ class VanOutResource extends JsonResource
             'rental_amount' => $this->rental_amount,
             'amount_frequency' => $this->amount_frequency,
             'mileage' => $this->mileage,
-            'due_return' => Carbon::parse($this->due_return)->format('d-m-Y'),
+            'due_return' => Carbon::parse($this->due_return)->format('d-m-Y H:i'),
             'van_out_date' => Carbon::parse($this->van_out_date)->format('d-m-Y H:i'),
             'bond_deposit' => $this->bond_deposit,
             'payment_mode' => $this->payment_mode,
+            'condition' => $this->condition,
             'added' => Carbon::parse($this->created_at)->format('d-m-Y g:i A'),
             'updated' => Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
 

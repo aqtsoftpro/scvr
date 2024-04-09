@@ -38,7 +38,8 @@ class VanOut extends Model
         'van_out_date',
         'bond_deposit',
         'payment_mode',
-        'video'
+        'video',
+        'condition'
     ];
 
     protected static function boot()
