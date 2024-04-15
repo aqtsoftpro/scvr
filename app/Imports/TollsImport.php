@@ -25,20 +25,24 @@ class TollsImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         $customer = null;
-
-        // return $row;
-
         $vehicle = Vehicle::where('reg_plate_number', $row['lpn'])->first();
 
         if ($vehicle) {
-
-                // $vanOut = VanOut::whereDate('van_out_date', '<=', Carbon::parse($row['start_date']))
-                //     ->where('vehicle_id', $vehicle->id)
-                //     ->orderBy('created_at', 'desc')
-                //     ->first();
-                // if ($vanOut) {
-                //     $customer = $vanOut->customer_id;
-                // }
+            if (is_numeric($row['start_date'])) {
+                $start = ($row['start_date'] - 25569) * 86400;
+                $start = date('d/m/Y', $start);
+            } else {
+                $carbonStart = Carbon::createFromFormat('d/m/Y H:i:s', $row['start_date']);
+                $start = $carbonStart->format('m/d/Y');
+            }
+    
+            if (is_numeric($row['end_date'])) {
+                $end = ($row['end_date'] - 25569) * 86400;
+                $end = date('d/m/Y', $end);
+            } else {
+                $carbonEnd = Carbon::createFromFormat('d/m/Y H:i:s', $row['end_date']);
+                $end = $carbonEnd->format('m/d/Y');
+            }
 
             $vanOut = VanOut::where('vehicle_id', $vehicle->id)
                 ->where(function ($query) use ($row) {
@@ -50,20 +54,28 @@ class TollsImport implements ToModel, WithHeadingRow
 
             if ($vanOut) {
                 $customer = $vanOut->customer_id;
+                $cost = str_replace('$', '', $row['trip_cost']);
+                $trip_cost = (float)$cost;
+                $toll = Toll::where([
+                    'customer_id' => $customer, 
+                    'reg_plate_number'=> $row['lpn'],
+                    'date' => $start,
+                    'due_date' => $end
+                    ])->first();
+                
+                if ($customer && !$toll) {
+                    return new Toll([
+                        'toll_number' => $row['details'],
+                        'date' => $start,
+                        'reg_plate_number' => $row['lpn'],
+                        'customer_id' => $customer,
+                        'payment_status' => 'unpaid',
+                        'due_date' => $end,
+                        'details' => $row['details'],
+                        'trip_cost' => $trip_cost
+                    ]);
+                }
             }
-        }
-
-        if ($customer) {
-            return new Toll([
-                'toll_number' => $row['details'],
-                'date' => Carbon::parse($row['start_date']),
-                'reg_plate_number' => $row['lpn'],
-                'customer_id' => $customer,
-                'payment_status' => 'unpaid',
-                'due_date' => Carbon::parse($row['end_date']),
-                'details' => $row['details'],
-                'trip_cost' => $row['trip_cost']
-            ]);
         }
     }
 }
