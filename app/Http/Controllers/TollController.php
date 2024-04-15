@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\TollResource;
 use App\Imports\TollsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class TollController extends Controller
 {
@@ -24,7 +25,6 @@ class TollController extends Controller
     public function store(Request $request, Toll $toll){
 
         $validation = $request->validate([
-            'toll_number' => 'required',
             'date' => 'required|date',
             'toll_image' => 'required',
             'due_date' => 'required',
@@ -42,13 +42,13 @@ class TollController extends Controller
         // get storage path
 
         $newToll = $toll->create([
-            'toll_number' => $request->toll_number,
+            'toll_number' => Str::random(8),
             'date' => $request->date,
             'reg_plate_number' => $request->reg_plate_number,
             'customer_id' => $request->customer_id,
             'toll_image' => $uploaded_image_path,
             'payment_status' => $request->payment_status,
-            'due_date' => Carbon::parse($request->due_date),
+            'due_date' => $request->due_date,
             'trip_cost' => $request->trip_cost,
             'details' => $request->details,
 
