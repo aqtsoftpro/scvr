@@ -27,53 +27,71 @@ class TollsImport implements ToModel, WithHeadingRow
         $customer = null;
         $vehicle = Vehicle::where('reg_plate_number', $row['lpn'])->first();
 
-        if ($vehicle) {
+        // return new Toll([
+        //     'toll_number' => $row['details'],
+        //     'date' => $row['start_date'],
+        //     'reg_plate_number' => $row['lpn'],
+        //     'customer_id' => 44,
+        //     'payment_status' => 'unpaid',
+        //     'due_date' => $row['end_date'],
+        //     'details' => $row['details'],
+        //     'trip_cost' => 24,
+        // ]);
+
+        if ($vehicle) { 
+
             if (is_numeric($row['start_date'])) {
-                $start = ($row['start_date'] - 25569) * 86400;
-                $start = date('d/m/Y', $start);
-            } else {
-                $carbonStart = Carbon::createFromFormat('d/m/Y H:i:s', $row['start_date']);
-                $start = $carbonStart->format('m/d/Y');
-            }
-    
-            if (is_numeric($row['end_date'])) {
-                $end = ($row['end_date'] - 25569) * 86400;
-                $end = date('d/m/Y', $end);
-            } else {
-                $carbonEnd = Carbon::createFromFormat('d/m/Y H:i:s', $row['end_date']);
-                $end = $carbonEnd->format('m/d/Y');
-            }
+                $carbonStart = ($row['start_date'] - 25569) * 86400;
+                $start = date('m-d-Y H:i', $carbonStart); // Changed date format to Y-m-d
 
-            $vanOut = VanOut::where('vehicle_id', $vehicle->id)
+                $vanOut = VanOut::where('vehicle_id', $vehicle->id)
                 ->where(function ($query) use ($row) {
-                    $query->where('van_out_date', '<=', Carbon::parse($row['start_date'])->toDateString())
+                    $query->where('van_out_date', '<=', $carbonStart)
                         ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
-                })
-                ->orderBy('created_at', 'desc')
-                ->first();
+                })->orderBy('created_at', 'desc')->first();
+            }
+            else {
+                $carbonStart = \DateTime::createFromFormat('d/m/Y H:i', $row['start_date']);
+                // $start = $carbonStart->format('m/d/Y'); // Changed date format to Y-m-d
+            }
 
-            if ($vanOut) {
-                $customer = $vanOut->customer_id;
-                $cost = str_replace('$', '', $row['trip_cost']);
-                $trip_cost = (float)$cost;
-                $toll = Toll::where([
-                    'customer_id' => $customer, 
-                    'reg_plate_number'=> $row['lpn'],
-                    'date' => $start,
-                    'due_date' => $end
-                    ])->first();
-                
-                if ($customer && !$toll) {
-                    return new Toll([
-                        'toll_number' => $row['details'],
-                        'date' => $start,
-                        'reg_plate_number' => $row['lpn'],
-                        'customer_id' => $customer,
-                        'payment_status' => 'unpaid',
-                        'due_date' => $end,
-                        'details' => $row['details'],
-                        'trip_cost' => $trip_cost
-                    ]);
+            if ($carbonStart) {
+                $vanOut = VanOut::where('vehicle_id', $vehicle->id)
+                ->where(function ($query) use ($row) {
+                    $query->where('van_out_date', '<=', \DateTime::createFromFormat('d/m/Y H:i', $row['start_date'])->format('Y-m-d H:i:s'))
+                        ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
+                })->orderBy('created_at', 'desc')->first();
+
+                if ($vanOut) {
+
+                    if (is_numeric($row['end_date'])) {
+                        $carbonEnd = ($row['end_date'] - 25569) * 86400;
+                        $end = date('Y-m-d H:i', $end); // Changed date format to Y-m-d
+                    } else {
+                        $carbonEnd = Carbon::createFromFormat('d/m/Y H:i', $row['end_date']);
+                        $end = $carbonEnd->format('m/d/Y'); // Changed date format to Y-m-d
+                    }
+                    $customer = $vanOut->customer_id;
+                    $cost = str_replace('$', '', $row['trip_cost']);
+                    $trip_cost = (float)$cost;
+                    $toll = Toll::where([
+                            'date' => $carbonStart,
+                            'due_date' => $carbonEnd,
+                            'trip_cost' => $trip_cost,
+                            'reg_plate_number' => $row['lpn'],
+                            ])->first();
+                    if (!$toll) {
+                        return new Toll([
+                            'toll_number' => $row['details'],
+                            'date' => $carbonStart,
+                            'reg_plate_number' => $row['lpn'],
+                            'customer_id' => $customer,
+                            'payment_status' => 'unpaid',
+                            'due_date' => $carbonEnd,
+                            'details' => $row['details'],
+                            'trip_cost' => $trip_cost,
+                        ]);
+                    }
                 }
             }
         }

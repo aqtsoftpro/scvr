@@ -135,6 +135,7 @@ Route::resource('customer', CustomerController::class);
 Route::get('customer_options', 'App\Http\Controllers\CustomerController@customer_options');
 Route::get('all_customer_options', 'App\Http\Controllers\CustomerController@all_customer_options');
 Route::resource('toll', TollController::class);
+Route::post('customer-check', [TollController::class, 'getCustomer']);
 
 
 Route::resource('settings', SettingsController::class);

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\VanOut;
+use App\{VanOut, Vehicle};
 use App\VanReturn;
 use Carbon\Carbon;
-use App\Models\Toll;
+use App\Models\{Toll, Customer};
 use Illuminate\Http\Request;
 use App\Http\Resources\TollResource;
 use App\Imports\TollsImport;
@@ -26,7 +26,6 @@ class TollController extends Controller
 
         $validation = $request->validate([
             'date' => 'required|date',
-            'toll_image' => 'required',
             'due_date' => 'required',
             'trip_cost' => 'required',
             'details' => 'string'
@@ -46,12 +45,11 @@ class TollController extends Controller
             'date' => $request->date,
             'reg_plate_number' => $request->reg_plate_number,
             'customer_id' => $request->customer_id,
-            'toll_image' => $uploaded_image_path,
+            'toll_image' => $uploaded_image_path ?? null,
             'payment_status' => $request->payment_status,
             'due_date' => $request->due_date,
             'trip_cost' => $request->trip_cost,
             'details' => $request->details,
-
         ]);
 
 
@@ -166,6 +164,25 @@ class TollController extends Controller
         } catch (\Exception $e) {
             // Handle any exceptions that might occur during the import process
             return response()->json(['message' => 'Error: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function getCustomer(Request $request) 
+    {
+        $vehicle = Vehicle::where('reg_plate_number', $request->reg_plate_number)->first();
+        if ($vehicle) {
+            // dd($request->date);
+            $vanOut = VanOut::where('vehicle_id', $vehicle->id)
+                ->where(function ($query) use ($request){
+                    $query->where('van_out_date', '<=', Carbon::parse($request->date)->format('dd-MM-YYY HH:ii'))
+                        ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
+                })
+                ->orderBy('created_at', 'desc')
+                ->first();
+            if ($vanOut) {
+                $customer = $vanOut->customer_id;
+                return response()->json($customer);
+            }
         }
     }
 }
