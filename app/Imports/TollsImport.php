@@ -26,18 +26,6 @@ class TollsImport implements ToModel, WithHeadingRow
     {
         $customer = null;
         $vehicle = Vehicle::where('reg_plate_number', $row['lpn'])->first();
-
-        // return new Toll([
-        //     'toll_number' => $row['details'],
-        //     'date' => $row['start_date'],
-        //     'reg_plate_number' => $row['lpn'],
-        //     'customer_id' => 44,
-        //     'payment_status' => 'unpaid',
-        //     'due_date' => $row['end_date'],
-        //     'details' => $row['details'],
-        //     'trip_cost' => 24,
-        // ]);
-
         if ($vehicle) { 
 
             if (is_numeric($row['start_date'])) {
@@ -66,10 +54,10 @@ class TollsImport implements ToModel, WithHeadingRow
 
                     if (is_numeric($row['end_date'])) {
                         $carbonEnd = ($row['end_date'] - 25569) * 86400;
-                        $end = date('Y-m-d H:i', $end); // Changed date format to Y-m-d
+                        // $end = date('Y-m-d H:i', $end); // Changed date format to Y-m-d
                     } else {
                         $carbonEnd = Carbon::createFromFormat('d/m/Y H:i', $row['end_date']);
-                        $end = $carbonEnd->format('m/d/Y'); // Changed date format to Y-m-d
+                        // $end = $carbonEnd->format('m/d/Y'); // Changed date format to Y-m-d
                     }
                     $customer = $vanOut->customer_id;
                     $cost = str_replace('$', '', $row['trip_cost']);
