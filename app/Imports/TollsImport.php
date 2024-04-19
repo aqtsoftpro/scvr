@@ -30,7 +30,7 @@ class TollsImport implements ToModel, WithHeadingRow
 
             if (is_numeric($row['start_date'])) {
                 $carbonStart = ($row['start_date'] - 25569) * 86400;
-                $start = date('m-d-Y H:i', $carbonStart); // Changed date format to Y-m-d
+                // $start = date('m-d-Y H:i', $carbonStart); // Changed date format to Y-m-d
                 // $vanOut = VanOut::where('vehicle_id', $vehicle->id)
                 // ->where(function ($query) use ($row) {
                 //     $query->whereDate('van_out_date', '<=', $carbonStart)
@@ -39,7 +39,7 @@ class TollsImport implements ToModel, WithHeadingRow
                 // ->orderBy('created_at', 'desc')->first();
             }
             else {
-                $carbonStart = \DateTime::createFromFormat('d/m/Y H:i', $row['start_date']);
+                $carbonStart = \DateTime::createFromFormat('d/m/Y H:i', $row['start_date'])->modify('-1 day');
                 // $start = $carbonStart->format('m/d/Y'); // Changed date format to Y-m-d
             }
 
@@ -65,7 +65,7 @@ class TollsImport implements ToModel, WithHeadingRow
                     $trip_cost = (float)$cost;
                     $toll = Toll::where([
                             'date' => $carbonStart,
-                            'due_date' => $carbonEnd,
+                            'due_date' => $row['end_date'],
                             'trip_cost' => $trip_cost,
                             'reg_plate_number' => $row['lpn'],
                             ])->first();
@@ -76,7 +76,7 @@ class TollsImport implements ToModel, WithHeadingRow
                             'reg_plate_number' => $row['lpn'],
                             'customer_id' => $customer,
                             'payment_status' => 'unpaid',
-                            'due_date' => $carbonEnd,
+                            'due_date' => $row['end_date'],
                             'details' => $row['details'],
                             'trip_cost' => $trip_cost,
                         ]);
