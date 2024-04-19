@@ -54,9 +54,9 @@ class TollsImport implements ToModel, WithHeadingRow
 
                     if (is_numeric($row['end_date'])) {
                         $carbonEnd = ($row['end_date'] - 25569) * 86400;
-                        // $end = date('Y-m-d H:i', $end); // Changed date format to Y-m-d
+                        $end = date('Y-m-d H:i', $end); // Changed date format to Y-m-d
                     } else {
-                        $carbonEnd = Carbon::createFromFormat('d/m/Y H:i', $row['end_date']);
+                        $carbonEnd = \DateTime::createFromFormat('d/m/Y H:i', $row['end_date']);
                         // $end = $carbonEnd->format('m/d/Y'); // Changed date format to Y-m-d
                     }
                     $customer = $vanOut->customer_id;
