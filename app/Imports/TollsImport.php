@@ -43,12 +43,12 @@ class TollsImport implements ToModel, WithHeadingRow
             if (is_numeric($row['start_date'])) {
                 $carbonStart = ($row['start_date'] - 25569) * 86400;
                 $start = date('m-d-Y H:i', $carbonStart); // Changed date format to Y-m-d
-
-                $vanOut = VanOut::where('vehicle_id', $vehicle->id)
-                ->where(function ($query) use ($row) {
-                    $query->where('van_out_date', '<=', $carbonStart)
-                        ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
-                })->orderBy('created_at', 'desc')->first();
+                // $vanOut = VanOut::where('vehicle_id', $vehicle->id)
+                // ->where(function ($query) use ($row) {
+                //     $query->whereDate('van_out_date', '<=', $carbonStart)
+                //         ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
+                // })
+                // ->orderBy('created_at', 'desc')->first();
             }
             else {
                 $carbonStart = \DateTime::createFromFormat('d/m/Y H:i', $row['start_date']);
@@ -57,11 +57,11 @@ class TollsImport implements ToModel, WithHeadingRow
 
             if ($carbonStart) {
                 $vanOut = VanOut::where('vehicle_id', $vehicle->id)
-                ->where(function ($query) use ($row) {
-                    $query->where('van_out_date', '<=', \DateTime::createFromFormat('d/m/Y H:i', $row['start_date'])->format('Y-m-d H:i:s'))
-                        ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
-                })->orderBy('created_at', 'desc')->first();
-
+                // ->where(function ($query) use ($row) {
+                //     $query->where('van_out_date', '<=', \DateTime::createFromFormat('d/m/Y H:i', $row['start_date'])->format('Y-m-d H:i:s'))
+                //         ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
+                // })
+                ->orderBy('created_at', 'desc')->first();
                 if ($vanOut) {
 
                     if (is_numeric($row['end_date'])) {
