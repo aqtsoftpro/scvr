@@ -180,8 +180,11 @@ class TollController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->first();
             if ($vanOut) {
-                $customer = $vanOut->customer_id;
-                return response()->json($customer);
+                $data = array();
+                $customer = Customer::find($vanOut->customer_id);
+                $data['id'] = $customer->id;
+                $data['name'] = $customer->first_name . ' ' . $customer->last_name;
+                return response()->json($data);
             }
         }
     }

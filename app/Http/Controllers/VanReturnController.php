@@ -98,7 +98,8 @@ class VanReturnController extends Controller
             'is_available' => 1
         ]);
         $booking->vehicle()->update([
-            'status_id' => $status
+            'status_id' => $status,
+            'mileage' => $request->mileage
         ]);
         $booking->status = 0;
         $booking->save();
@@ -137,6 +138,10 @@ class VanReturnController extends Controller
             'bond_deposit' => $request->bond_deposit,
             'payment_mode' => $request->payment_mode,
             'bond_return_amount' => $request->bond_return_amount
+        ]);
+        $booking = VanOut::find($vanReturn->van_out_id);
+        $booking->vehicle()->update([
+            'mileage' => $request->mileage
         ]);
         $res = [
             'message' => 'Van return record updated',
