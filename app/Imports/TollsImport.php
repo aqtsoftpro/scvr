@@ -30,6 +30,7 @@ class TollsImport implements ToModel, WithHeadingRow
 
             if (is_numeric($row['start_date'])) {
                 $carbonStart = ($row['start_date'] - 25569) * 86400;
+                $carbonStart = $carbonStart->modify('-1 day');
                 // $start = date('m-d-Y H:i', $carbonStart); // Changed date format to Y-m-d
                 // $vanOut = VanOut::where('vehicle_id', $vehicle->id)
                 // ->where(function ($query) use ($row) {
