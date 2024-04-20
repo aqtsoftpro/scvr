@@ -118,6 +118,10 @@ class VanOutController extends Controller
 
     public function update(Request $request, $vanOut){
         $booking = VanOut::find($vanOut);
+        Vehicle::find($booking->swap_with)->update([
+            'status_id' => 1
+        ]);
+
         $booking->fill($request->all());
         $booking->save();
 
