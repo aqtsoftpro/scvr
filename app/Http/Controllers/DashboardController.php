@@ -46,6 +46,17 @@ class DashboardController extends Controller
         }
         $vanins = VanReturnDashboardResource::collection(VanReturn::all());
 
+        $fina_vanins = array();
+        foreach ($vanins as $van) {
+            $van_out = VanOut::find($van->van_out_id);
+            if ($van_out) {
+                $check_vehicle = Vehicle::find($van_out->vehicle_id);
+                if ($check_vehicle) {
+                    $fina_vanins[] = $van;
+                }
+            }
+        }
+
         $data = [
             'vans' => $vans,
             'available_vans' => $available_vans,
@@ -54,7 +65,7 @@ class DashboardController extends Controller
             'vanout_count' => $vanoutCount,
             'vanreturn_count' => $vanreturnsCount,
             'vanouts' => $vanoutsArray,
-            'vanins' => $vanins
+            'vanins' => $fina_vanins
         ];
 
         return response()->json($data);

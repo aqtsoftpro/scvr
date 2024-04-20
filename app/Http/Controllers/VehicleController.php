@@ -121,8 +121,14 @@ class VehicleController extends Controller
 
     public function update(Request $request, Vehicle $vehicle){
 
+        if($request->hasFile('picture')){
+            $picture = $request->file('picture')->store('images', 'public');
+            $main_image = url('storage/'.$picture);
+        }
+
+
         $vehicle->update([
-            'picture' => $request->picture,
+            'picture' => $main_image ?? null,
             'vin' => $request->vin,
             'reg_plate_number' => $request->reg_plate_number,
             'mileage' => $request->mileage,
