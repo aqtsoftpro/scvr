@@ -16,6 +16,7 @@ class MechanicResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'workshop_contact' => $this->workshop_contact,
             'workshop_address' => $this->workshop_address,
