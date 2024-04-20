@@ -21,9 +21,9 @@ class VanOutController extends Controller
     public function index(Request $request, VanOut $vanOut){
 
         if(isset($request->mode) && $request->mode == 'active'){
-            return response()->json(VanOutResource::collection($vanOut->where('status', 1)->orderBy('id', 'desc')->get()));
+            return response()->json(VanOutResource::collection($vanOut->with('swapWith')->where('status', 1)->orderBy('id', 'desc')->get()));
         }
-        return response()->json(VanOutResource::collection($vanOut->orderBy('id','desc')->get()));
+        return response()->json(VanOutResource::collection($vanOut->with('swapWith')->orderBy('id','desc')->get()));
     }
 
     public function show($vanOut){
