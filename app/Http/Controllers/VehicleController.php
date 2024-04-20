@@ -262,7 +262,7 @@ class VehicleController extends Controller
     }
     // Request $request, Vehicle 
 
-    public function get_available_vehicles($id=null){
+    public function get_available_vehicles($id=null, $swap=null){
         // $vehicle = Vehicle::find($id);
         if ($id) {
             $available_vehicles = Vehicle::where('status_id', 1)->where('id', '!=', $id)->get();
@@ -272,9 +272,20 @@ class VehicleController extends Controller
         
         $filtered_vehicles = [];
 
+
         foreach($available_vehicles as $key => $vehicle){
             $filtered_vehicles[$key]['id'] = $vehicle->id;
             $filtered_vehicles[$key]['name'] = $vehicle->make . ' ' . $vehicle->model . ' (' . $vehicle->reg_plate_number . ')';
+        }
+
+        if (isset($swap)) {
+            $swap_vehicle = Vehicle::find($swap);
+            if ($swap_vehicle && !in_array($swap_vehicle->id, array_column($filtered_vehicles, 'id'))) {
+                $filtered_vehicles[] = [
+                    'id' => $swap_vehicle->id,
+                    'name' => $swap_vehicle->make . ' ' . $swap_vehicle->model . ' (' . $swap_vehicle->reg_plate_number . ')',
+                ];
+            }
         }
 
         return $filtered_vehicles;

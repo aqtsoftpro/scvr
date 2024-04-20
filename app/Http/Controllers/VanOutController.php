@@ -27,7 +27,8 @@ class VanOutController extends Controller
     }
 
     public function show($vanOut){
-        return response()->json(new VanOutResource(Vanout::find($vanOut)));
+        $van_out = Vanout::find($vanOut);
+        return response()->json(new VanOutResource($van_out));
     }
 
     public function store(Request $request, VanOut $vanOut){

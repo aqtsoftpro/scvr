@@ -8,6 +8,7 @@ use App\{VanReturn, VanOut, Vehicle};
 use App\Models\Customer;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 class TollsImport implements ToModel, WithHeadingRow
 {
@@ -16,74 +17,92 @@ class TollsImport implements ToModel, WithHeadingRow
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
+    public function __construct()
+    {
+        HeadingRowFormatter::default('none');
+    }
 
-    protected $columnMapping = [
-        // 'LPN/Tag number' => 'lpn_tag_number',
-        'LPN' => 'lpn',
-    ];
+
+    // function convertSerialDate($date,$hr)	{
+    //     $datestr = ($date - 25569) * 86400;
+    //     $timestr = ($hr - 25569) * 86400;
+    //     $n1 =  date("Y-m-d",$datestr);
+    //     $n2 =  date("H:i",$timestr);
+    //     return $n1.' '.$n2;
+    // }
+    
+    // if(strpos($row['enddate'],".") > 0){
+    //    $v = explode('.', $row['enddate']);
+    //    $carbonDate = convertSerialDate($v[0], $v[1]);
+    // }else{
+    //     $carbonDate = date_create($row['enddate']);
+    //     $carbonDate = date_format('Y-m-d H:i', $carbonDate);	
+    // }
+    
 
     public function model(array $row)
     {
         $customer = null;
-        $vehicle = Vehicle::where('reg_plate_number', $row['lpn'])->first();
-        if ($vehicle) { 
+        $vehicle = Vehicle::where('reg_plate_number', $row['LPN/Tag number'])->first();
+        if ($vehicle) {
 
-            if (is_numeric($row['start_date'])) {
-                $carbonStart = ($row['start_date'] - 25569) * 86400;
-                $carbonStart = $carbonStart->modify('-1 day');
-                // $start = date('m-d-Y H:i', $carbonStart); // Changed date format to Y-m-d
-                // $vanOut = VanOut::where('vehicle_id', $vehicle->id)
-                // ->where(function ($query) use ($row) {
-                //     $query->whereDate('van_out_date', '<=', $carbonStart)
-                //         ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
-                // })
-                // ->orderBy('created_at', 'desc')->first();
+            if(strpos($row['Start Date'],".") > 0){
+                $v = explode('.', $row['Start Date']);
+                $dateTime = $this->convertSerialDate($v[0], $v[1]);
+                $dateTime = \DateTime::createFromFormat('Y-m-d H:i', $dateTime);
+                $day = $dateTime->format('d');
+                $month = $dateTime->format('m');
+                $dateTime->setDate($dateTime->format('Y'), $day, $month);
+                // Format back to the desired format
+                $startDate = $dateTime->format('Y-m-d H:i');
+
+                $startDate = \DateTime::createFromFormat('Y-m-d H:i', $startDate);
+
+            }else{
+                $startDate = \DateTime::createFromFormat('d/m/Y H:i', $row['Start Date']);
             }
-            else {
-                $carbonStart = \DateTime::createFromFormat('d/m/Y H:i', $row['start_date'])->modify('-1 day');
-                // $start = $carbonStart->format('m/d/Y'); // Changed date format to Y-m-d
+
+            if(strpos($row['End Date'],".") > 0){
+                $v = explode('.', $row['End Date']);
+                $endTime = $this->convertSerialDate($v[0], $v[1]);
+                $endTime = \DateTime::createFromFormat('Y-m-d H:i', $endTime);
+                $day = $endTime->format('d');
+                $month = $endTime->format('m');
+                $endTime->setDate($endTime->format('Y'), $day, $month);
+                // Format back to the desired format
+                $endDate = $endTime->format('Y-m-d H:i');
+                $endDate = \DateTime::createFromFormat('Y-m-d H:i', $endDate);
+            }else{
+                $endDate = \DateTime::createFromFormat('d/m/Y H:i', $row['End Date']);
             }
 
-            if ($carbonStart) {
-                $vanOut = VanOut::where('vehicle_id', $vehicle->id)
-                // ->where(function ($query) use ($row) {
-                //     $query->where('van_out_date', '<=', \DateTime::createFromFormat('d/m/Y H:i', $row['start_date'])->format('Y-m-d H:i:s'))
-                //         ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
-                // })
-                ->orderBy('created_at', 'desc')->first();
-                if ($vanOut) {
-
-                    if (is_numeric($row['end_date'])) {
-                        // $carbonEnd = ($row['end_date'] - 25569) * 86400;
-                        $carbonEnd = \DateTime::createFromFormat('d/m/Y H:i', $row['end_date']);
-                        // $end = date('Y-m-d H:i', $end); // Changed date format to Y-m-d
-                    } else {
-                        $carbonEnd = \DateTime::createFromFormat('d/m/Y H:i', $row['end_date']);
-                        // $end = $carbonEnd->format('m/d/Y'); // Changed date format to Y-m-d
-                    }
-                    $customer = $vanOut->customer_id;
-                    $cost = str_replace('$', '', $row['trip_cost']);
-                    $trip_cost = (float)$cost;
-                    $toll = Toll::where([
-                            'date' => $carbonStart,
-                            'due_date' => $row['end_date'],
-                            'trip_cost' => $trip_cost,
-                            'reg_plate_number' => $row['lpn'],
-                            ])->first();
-                    if (!$toll) {
-                        return new Toll([
-                            'toll_number' => $row['details'],
-                            'date' => $carbonStart,
-                            'reg_plate_number' => $row['lpn'],
-                            'customer_id' => $customer,
-                            'payment_status' => 'unpaid',
-                            'due_date' => $row['end_date'],
-                            'details' => $row['details'],
-                            'trip_cost' => $trip_cost,
-                        ]);
-                    }
-                }
+            $vanOut = VanOut::where('vehicle_id', $vehicle->id)
+            ->where(function ($query) use ($startDate) {
+                $query->where('van_out_date', '<=', $startDate)
+                    ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
+            })->orderBy('created_at', 'desc')->first();
+            if ($vanOut) {
+                $customer = $vanOut->customer_id;
+                return new Toll([
+                    'toll_number' => $row['Details'],
+                    'date' => $startDate ?? 'No Date',
+                    'reg_plate_number' => $row['LPN/Tag number'],
+                    'customer_id' => $customer,
+                    'payment_status' => 'unpaid',
+                    'due_date' => $endDate,
+                    'details' => $row['Details'],
+                    'trip_cost' => 20,
+                ]);
             }
         }
+    }
+
+    public function convertSerialDate($date,$hr)
+    {
+        $datestr = ($date - 25569) * 86400;
+        $timestr = ($hr - 25569) * 86400;
+        $n1 =  date("Y-m-d",$datestr);
+        $n2 =  date("H:i",$timestr);
+        return $n1.' '.$n2;
     }
 }
