@@ -77,10 +77,11 @@ class TollsImport implements ToModel, WithHeadingRow
             }
 
             $vanOut = VanOut::where('vehicle_id', $vehicle->id)
-            ->where(function ($query) use ($startDate) {
-                $query->where('van_out_date', '<=', $startDate)
-                    ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
-            })->orderBy('created_at', 'desc')->first();
+            // ->where(function ($query) use ($startDate) {
+            //     $query->where('van_out_date', '<=', $startDate)
+            //         ->orWhereNull('van_out_date'); // To handle cases where van_out_date is null
+            // })
+            ->orderBy('created_at', 'desc')->first();
             if ($vanOut) {
                 $customer = $vanOut->customer_id;
                 return new Toll([
