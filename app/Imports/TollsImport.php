@@ -92,7 +92,7 @@ class TollsImport implements ToModel, WithHeadingRow
                     'payment_status' => 'unpaid',
                     'due_date' => $endDate,
                     'details' => $row['Details'],
-                    'trip_cost' => 20,
+                    'trip_cost' => $row['Trip Cost'],
                 ]);
             }
         }
