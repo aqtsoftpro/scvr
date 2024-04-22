@@ -163,7 +163,7 @@ class VanReturnController extends Controller
             }
 
             if ($van_out->customer_id !== null) {
-                $customer = Customer::find($out_vehicle->customer_id);
+                $customer = Customer::find($van_out->customer_id);
                 $customer->update([
                     'is_available' => 0
                 ]);
