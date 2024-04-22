@@ -27,7 +27,7 @@ class VehicleResource extends JsonResource
             'make' => $this->make,
             'vin' => $this->vin,
             'mileage' => $this->mileage,
-            'purchase_date' => Carbon::parse($this->purchase_date)->format('d-m-Y'),
+            'purchase_date' => $this->purchase_date,
             // currency format purchase price
             'purchase_price' => $this->purchase_price,
             'vehicle_condition' => $this->vehicle_condition,
@@ -42,7 +42,7 @@ class VehicleResource extends JsonResource
             'status_id' => $this->status_id,
             'condition' => $this->vehicle_condition,
             'next_maintenance_mileage' => $this->next_maintenance_mileage,
-            'next_maintenance_due_date' => Carbon::parse($this->next_maintenance_due_date)->format('d-m-Y'),
+            'next_maintenance_due_date' => $this->next_maintenance_due_date,
             'next_maintenance_service' => $this->next_maintenance_service,
             'next_maintenance_comments' => $this->next_maintenance_comments,
         ];

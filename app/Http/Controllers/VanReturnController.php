@@ -151,6 +151,17 @@ class VanReturnController extends Controller
     }
 
     public function destroy(VanReturn $vanReturn){
+        $van_out = VanOut::find($vanReturn->van_out_id);
+        if ($van_out) {
+            $van_out->update([
+                'status' => 1
+            ]);
+            if ($van_out->vehicle_id !== null) {
+                $van_out->vehicle()->update([
+                    'status_id' => 1
+                ]);
+            }
+        }
         $vanReturn->delete();
         $res = [
             'message' => 'Van return record deleted',

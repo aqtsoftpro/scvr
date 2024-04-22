@@ -19,7 +19,7 @@ class MaintenanceResource extends JsonResource
             'id' => $this->id,
             'vehicle' => $this->vehicle->reg_plate_number,
             'mileage' => $this->mileage,
-            'date' => Carbon::parse($this->date)->format('d-m-Y'),
+            'date' => $this->date,
             'service_type' => $this->service_type->name,
             'service_type_id' => $this->service_type->id,
             'cost' => $this->cost,

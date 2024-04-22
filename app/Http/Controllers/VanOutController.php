@@ -54,8 +54,6 @@ class VanOutController extends Controller
             'vehicle_id.integer' => 'Select Vehicle ',
             'location_id.integer' => 'Select Location',
         ]);
-
-
         //$access_to_be_attached =  array_values($request->accessories);
 
         //$access_to_be_attached = [];
@@ -63,8 +61,6 @@ class VanOutController extends Controller
         //    $access_to_be_attached[] = $accessory;
         //}
         //return $access_to_be_attached;
-
-
         $data = array_merge($request->all(), ['booking_id' => md5(now())]);
         // $data['rental_period'] = 
         if ($request->hasFile('demage_video')) {
@@ -118,10 +114,11 @@ class VanOutController extends Controller
 
     public function update(Request $request, $vanOut){
         $booking = VanOut::find($vanOut);
-        Vehicle::find($booking->swap_with)->update([
-            'status_id' => 1
-        ]);
-
+        if ($booking->swap_with !== null) {
+            Vehicle::find($booking->swap_with)->update([
+                'status_id' => 1
+            ]);
+        }
         $booking->fill($request->all());
         $booking->save();
 
@@ -129,10 +126,13 @@ class VanOutController extends Controller
             'status_id' => 1
         ]);
 
-        $vehicle = Vehicle::find($booking->swap_with)->update([
-            'status_id' => 2
-        ]);
-        
+
+        if ($booking->swap_with !== null) {
+            $vehicle = Vehicle::find($booking->swap_with)->update([
+                'status_id' => 2
+            ]);
+        }
+
         $res = [
             'message' => 'Booking updated',
             'data' => $vanOut
@@ -144,13 +144,13 @@ class VanOutController extends Controller
     }
 
     public function destroy($vanOut){
-        $vehicle_id = VanOut::find($vanOut)->vehicle_id;
-        Vanout::find($vanOut)->delete();
-
-        Vehicle::find($vehicle_id)->update([
-            'status_id' => 1
-        ]);
-
+        $out_vehicle = VanOut::find($vanOut);
+        if ($out_vehicle && $out_vehicle->vehicle_id !== null) {
+            Vehicle::find($out_vehicle->vehicle_id)->update([
+                'status_id' => 1
+            ]);
+        }
+        $out_vehicle->delete();
         $res = [
             'message' => 'Booking deleted',
         ];

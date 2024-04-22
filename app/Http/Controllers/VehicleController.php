@@ -121,14 +121,10 @@ class VehicleController extends Controller
 
     public function update(Request $request, Vehicle $vehicle){
 
-        if($request->hasFile('picture')){
-            $picture = $request->file('picture')->store('images', 'public');
-            $main_image = url('storage/'.$picture);
-        }
+
 
 
         $vehicle->update([
-            'picture' => $main_image ?? null,
             'vin' => $request->vin,
             'reg_plate_number' => $request->reg_plate_number,
             'mileage' => $request->mileage,
@@ -148,6 +144,15 @@ class VehicleController extends Controller
             'next_maintenance_service' => $request->next_maintenance_service,
             'next_maintenance_comments' => $request->next_maintenance_comments
         ]);
+
+        if($request->hasFile('picture')){
+            $picture = $request->file('picture')->store('images', 'public');
+            $main_image = url('storage/'.$picture);
+
+            $vehicle->update([
+                'picture' => $main_image
+            ]);
+        }
 
 
 
