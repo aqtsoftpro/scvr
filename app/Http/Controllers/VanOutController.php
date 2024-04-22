@@ -150,6 +150,15 @@ class VanOutController extends Controller
                 'status_id' => 1
             ]);
         }
+
+        if ($out_vehicle && $out_vehicle->customer_id !== null) {
+            $customer = Customer::find($out_vehicle->customer_id);
+            $customer->update([
+                'is_available' => 1
+            ]);
+        }
+
+
         $out_vehicle->delete();
         $res = [
             'message' => 'Booking deleted',

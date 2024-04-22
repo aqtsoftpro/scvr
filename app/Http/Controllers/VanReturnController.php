@@ -161,6 +161,13 @@ class VanReturnController extends Controller
                     'status_id' => 1
                 ]);
             }
+
+            if ($van_out->customer_id !== null) {
+                $customer = Customer::find($out_vehicle->customer_id);
+                $customer->update([
+                    'is_available' => 0
+                ]);
+            }
         }
         $vanReturn->delete();
         $res = [
