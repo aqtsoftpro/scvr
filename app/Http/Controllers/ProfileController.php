@@ -40,6 +40,19 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
     }
 
+    public function picUpdate(Request $request)
+    {
+        if ($request->hasFile('profile_image')) {
+            $image = $request->file('profile_image')->store('profile', 'public');
+            $path = asset('storage/'.$image);
+
+            auth()->user()->update([
+                'image'=> $path
+            ]);
+        }
+        return response()->json(['message' => 'Profile Image updated successfully']);
+    }
+
     /**
      * Delete the user's account.
      */

@@ -35,7 +35,7 @@ use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\VehicleStatusController;
 use App\Http\Controllers\GeneralServiceController;
 use App\Http\Controllers\EnvController;
-use App\Http\Controllers\{SettingsController, VehicleRentalController};
+use App\Http\Controllers\{SettingsController, VehicleRentalController, ProfileController};
 use App\Http\Controllers\Auth\{PasswordResetLinkController, NewPasswordController};
 
 
@@ -137,7 +137,6 @@ Route::get('all_customer_options', 'App\Http\Controllers\CustomerController@all_
 Route::resource('toll', TollController::class);
 Route::post('customer-check', [TollController::class, 'getCustomer']);
 
-
 Route::resource('settings', SettingsController::class);
 // Route::post('toll_assign', 'App\Http\Controllers\TollController@assign');
 Route::get('search_toll_record/{tollDate}/{plateNumber}', 'App\Http\Controllers\TollController@search_toll_record');
@@ -165,6 +164,8 @@ Route::post('reset-password', [NewPasswordController::class, 'store']);
 // });
 
 Route::get('rental-detail/{vanOut}', [VehicleRentalController::class, 'show']);
+
+Route::post('edit-pic', [ProfileController::class, 'picUpdate'])->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $user_id = $request->user()->id;
