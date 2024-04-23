@@ -39,7 +39,8 @@ class VanOut extends Model
         'bond_deposit',
         'payment_mode',
         'video',
-        'condition'
+        'condition',
+        'long_term'
     ];
 
     protected static function boot()
@@ -58,7 +59,10 @@ class VanOut extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class)->withDefault([
+            'first_name' => 'Name',
+            'last_name' => 'Not found'
+        ]);
     }
 
     public function vehicle(): BelongsTo
