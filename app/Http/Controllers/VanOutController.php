@@ -6,7 +6,7 @@ use App\VanOut;
 use App\Vehicle;
 use App\Accessory;
 use App\Models\Customer;
-use App\Models\DemageGallery;
+use App\Models\{DemageGallery, Swap};
 use Illuminate\Http\Request;
 use App\Http\Resources\VanOutResource;
 use App\Http\Resources\VanoutOptionsResource;
@@ -127,25 +127,35 @@ class VanOutController extends Controller
             'status_id' => 1
         ]);
 
-
-        if ($booking->swap_with !== null) {
-            $vehicle = Vehicle::find($booking->swap_with)->update([
+        if ($booking->swap_with != null && $request->swapped_data != null ) {
+            $vehicle = Vehicle::find($request->swapped_data->swapped)->update([
                 'status_id' => 2
             ]);
 
+            // swapped: null,
+            // condition: null,
+            // video: null,
+            // amount: 0.00,
+            // rem_amount: 0.00,
+            // out_date: null,
+            // amount_status: 'unpaid',
+            // amount_tracking_id: null,
+            // vehicle_reg: null,
+            // images: null,
+
             Swap::create([
-                'customer_id' => $request->customer_id,
+                'customer_id' => $booking->customer_id,
                 'vehicle_id' => $vehicle->id,
                 'parent_id' => $swap->id ?? null,
                 'van_out_id' => $booking->id,
-                'condition' => $request->condition,
-                'video' => $request->video,
-                'amount' => $request->amount,
-                'rem_amount' => $request->rem_amount,
-                'out_date' => $request->out_date,
-                'amount_status' => $request->amount_status,
-                'amount_tracking_id' => $request->amount_tracking_id,
-                'vehicle_reg' => $request->vehicle_reg,
+                'condition' => $request->swapped_data->condition,
+                // 'video' => $request->swapped_data->video,
+                'amount' => $request->swapped_data->amount,
+                'rem_amount' => $request->swapped_data->rem_amount,
+                'out_date' => $request->swapped_data->out_date,
+                'amount_status' => $request->swapped_data->amount_status,
+                'amount_tracking_id' => $request->swapped_data->amount_tracking_id,
+                'vehicle_reg' => $vehicle->reg_plate_number,
             ]);
         }
 
@@ -223,5 +233,16 @@ class VanOutController extends Controller
         } else {
             return $list;
         }
+    }
+
+    public function customer_van_out($id)
+    {
+        $booking = VanOut::where(['customer_id' => $id, 'status'=> 1])->latest()->first();
+        if ($booking) {
+            return response()->json($booking);
+        } else {
+            $booking = null;
+        }
+        
     }
 }

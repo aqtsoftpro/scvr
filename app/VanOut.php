@@ -59,10 +59,7 @@ class VanOut extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class)->withDefault([
-            'first_name' => 'Name',
-            'last_name' => 'Not found'
-        ]);
+        return $this->belongsTo(Customer::class)->withDefault();
     }
 
     public function vehicle(): BelongsTo
@@ -96,9 +93,9 @@ class VanOut extends Model
         return $this->hasMany(DemageGallery::class);
     }
 
-    public function swaps(): HasOne
+    public function swaps(): HasMany
     {
-        return $this->hasOne(Swap::class);
+        return $this->hasMany(Swap::class);
     }
 
     public function calculateNumberOfDays()
