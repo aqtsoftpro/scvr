@@ -127,34 +127,26 @@ class VanOutController extends Controller
             'status_id' => 1
         ]);
 
-        if ($booking->swap_with != null && $request->swapped_data != null ) {
-            $vehicle = Vehicle::find($request->swapped_data->swapped)->update([
+        if ($booking->reason_of_renting== 'Swap' && $request->swapped_data != null ) {
+            $vehicle = Vehicle::find($request->swapped_data['swapped']);
+            $vehicle->update([
                 'status_id' => 2
             ]);
 
-            // swapped: null,
-            // condition: null,
-            // video: null,
-            // amount: 0.00,
-            // rem_amount: 0.00,
-            // out_date: null,
-            // amount_status: 'unpaid',
-            // amount_tracking_id: null,
-            // vehicle_reg: null,
-            // images: null,
+            // dd($vehicle);
 
             Swap::create([
                 'customer_id' => $booking->customer_id,
                 'vehicle_id' => $vehicle->id,
                 'parent_id' => $swap->id ?? null,
                 'van_out_id' => $booking->id,
-                'condition' => $request->swapped_data->condition,
-                // 'video' => $request->swapped_data->video,
-                'amount' => $request->swapped_data->amount,
-                'rem_amount' => $request->swapped_data->rem_amount,
-                'out_date' => $request->swapped_data->out_date,
-                'amount_status' => $request->swapped_data->amount_status,
-                'amount_tracking_id' => $request->swapped_data->amount_tracking_id,
+                'condition' => $request->swapped_data['condition'],
+                // 'video' => $request->swapped_data['video'],
+                'amount' => $request->swapped_data['amount'],
+                'rem_amount' => $request->swapped_data['rem_amount'],
+                'out_date' => $request->swapped_data['out_date'],
+                'amount_status' => $request->swapped_data['amount_status'],
+                'amount_tracking_id' => $request->swapped_data['amount_tracking_id'],
                 'vehicle_reg' => $vehicle->reg_plate_number,
             ]);
         }
