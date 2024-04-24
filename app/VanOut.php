@@ -7,7 +7,7 @@ use App\Location;
 use App\Accessory;
 use App\Http\Resources\AccessoryResource;
 use App\Models\AccessoryVanout;
-use App\Models\{Customer, DemageGallery};
+use App\Models\{Customer, DemageGallery, Swap};
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -94,6 +94,11 @@ class VanOut extends Model
     public function galleries(): HasMany
     {
         return $this->hasMany(DemageGallery::class);
+    }
+
+    public function swaps(): HasOne
+    {
+        return $this->hasOne(Swap::class);
     }
 
     public function calculateNumberOfDays()

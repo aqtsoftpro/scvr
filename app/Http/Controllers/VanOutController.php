@@ -117,6 +117,8 @@ class VanOutController extends Controller
             Vehicle::find($booking->swap_with)->update([
                 'status_id' => 1
             ]);
+
+            $swap = $booking->swaps()->latest()->first();
         }
         $booking->fill($request->all());
         $booking->save();
@@ -129,6 +131,21 @@ class VanOutController extends Controller
         if ($booking->swap_with !== null) {
             $vehicle = Vehicle::find($booking->swap_with)->update([
                 'status_id' => 2
+            ]);
+
+            Swap::create([
+                'customer_id' => $request->customer_id,
+                'vehicle_id' => $vehicle->id,
+                'parent_id' => $swap->id ?? null,
+                'van_out_id' => $booking->id,
+                'condition' => $request->condition,
+                'video' => $request->video,
+                'amount' => $request->amount,
+                'rem_amount' => $request->rem_amount,
+                'out_date' => $request->out_date,
+                'amount_status' => $request->amount_status,
+                'amount_tracking_id' => $request->amount_tracking_id,
+                'vehicle_reg' => $request->vehicle_reg,
             ]);
         }
 
