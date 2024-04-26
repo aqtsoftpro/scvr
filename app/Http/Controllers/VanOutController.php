@@ -6,7 +6,7 @@ use App\VanOut;
 use App\Vehicle;
 use App\Accessory;
 use App\Models\Customer;
-use App\Models\{DemageGallery, Swap};
+use App\Models\{DemageGallery, Swap, SwapGallery};
 use Illuminate\Http\Request;
 use App\Http\Resources\VanOutResource;
 use App\Http\Resources\VanoutOptionsResource;
@@ -69,7 +69,7 @@ class VanOutController extends Controller
 
         $vanout = Vanout::create($data);
 
-        if ($request->hasFile('demage_pics')) {
+        if ($vanout && $request->hasFile('demage_pics')) {
             foreach ($request->file('demage_pics') as $image) {
                 $imagePath = $image->store('demage-gallery', 'public');
                 $main_path = url('storage/'.$imagePath);
@@ -120,7 +120,14 @@ class VanOutController extends Controller
 
             $swap = $booking->swaps()->latest()->first();
         }
-        $booking->fill($request->all());
+
+        $data = $request->all();
+        if ($request->hasFile('demage_video')) {
+            $video = $request->file('demage_video')->store('demage-videos', 'public');
+            $data['video'] =url('storage/'.$video);
+        }
+
+        $booking->fill($data);
         $booking->save();
 
         $booking->vehicle()->update([
@@ -128,7 +135,7 @@ class VanOutController extends Controller
         ]);
 
         if ($booking->reason_of_renting== 'Swap' && $request->swapped_data != null ) {
-            $vehicle = Vehicle::find($request->swapped_data['swapped']);
+            $vehicle = Vehicle::find($request->swapped_data['vehicle_id']);
             $vehicle->update([
                 'status_id' => 2
             ]);
@@ -136,24 +143,54 @@ class VanOutController extends Controller
             // dd($vehicle);
 
             if ($request->hasFile('swapped_data.video')) {
+                dd($request->file('swapped_data.video'));
                 $save_path = $request->file('swapped_data.video')->store('swaped', 'public');
             }
 
-            Swap::create([
+
+
+            $swap = Swap::create([
                 'customer_id' => $booking->customer_id,
                 'vehicle_id' => $vehicle->id,
                 'parent_id' => $swap->id ?? null,
                 'van_out_id' => $booking->id,
                 'condition' => $request->swapped_data['condition'],
                 'video' => $save_path ?? null,
-                'amount' => $request->swapped_data['amount'],
-                'rem_amount' => $request->swapped_data['rem_amount'],
+                // 'rental_period' => $request->swapped_data['rental_period'],
+                'rental_amount' => $request->swapped_data['rental_amount'],
                 'out_date' => $request->swapped_data['out_date'],
-                'amount_status' => $request->swapped_data['amount_status'],
-                'amount_tracking_id' => $request->swapped_data['amount_tracking_id'],
                 'vehicle_reg' => $vehicle->reg_plate_number,
+                'long_term' => $request->swapped_data['long_term'],
+                'due_return' => $request->swapped_data['due_return'],
+                'location_id' => $request->swapped_data['location_id'],
+                'mileage' => $request->swapped_data['mileage'],
+                'amount_frequency' => $request->swapped_data['amount_frequency'],
             ]);
+
+            if ($swap && $request->hasFile('swapped_data.images')) {
+                foreach ($request->file('swapped_data.images') as $image) {
+                    $imagePath = $image->store('swaped-gallery', 'public');
+
+                    SwapGallery::create([
+                        'swap_id' => $swap->id, 
+                        'image' => $imagePath
+                    ]);
+
+                }
+            }
         }
+
+        if ($request->hasFile('demage_pics')) {
+            foreach ($request->file('demage_pics') as $image) {
+                $imagePath = $image->store('demage-gallery', 'public');
+                $main_path = url('storage/'.$imagePath);
+                $gallery = DemageGallery::create([
+                    'van_out_id'=> $booking->id,
+                    'image' => $main_path
+                ]);
+            }
+        }
+
 
         $res = [
             'message' => 'Booking updated',

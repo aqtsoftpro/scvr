@@ -48,7 +48,6 @@ class DashboardController extends Controller
 
         $total_available = VehicleDashboardResource::collection(Vehicle::where('status_id', 1)->get());
 
-
         // $fina_vanins = array();
         // foreach ($vanins as $van) {
         //     $van_out = VanOut::find($van->van_out_id);
