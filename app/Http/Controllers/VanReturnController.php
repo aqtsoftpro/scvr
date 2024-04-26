@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\VanOut;
 use App\VanReturn;
-use App\Models\DemageGallery;
+use App\Models\{DemageGallery, Customer};
 use Illuminate\Http\Request;
 use App\Http\Resources\VanReturnResource;
 
@@ -164,9 +164,11 @@ class VanReturnController extends Controller
 
             if ($van_out->customer_id !== null) {
                 $customer = Customer::find($van_out->customer_id);
-                $customer->update([
-                    'is_available' => 0
-                ]);
+                if ($customer) {
+                    $customer->update([
+                        'is_available' => 0
+                    ]);
+                }
             }
         }
         $vanReturn->delete();

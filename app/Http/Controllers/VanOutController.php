@@ -135,13 +135,17 @@ class VanOutController extends Controller
 
             // dd($vehicle);
 
+            if ($request->hasFile('swapped_data.video')) {
+                $save_path = $request->file('swapped_data.video')->store('swaped', 'public');
+            }
+
             Swap::create([
                 'customer_id' => $booking->customer_id,
                 'vehicle_id' => $vehicle->id,
                 'parent_id' => $swap->id ?? null,
                 'van_out_id' => $booking->id,
                 'condition' => $request->swapped_data['condition'],
-                // 'video' => $request->swapped_data['video'],
+                'video' => $save_path ?? null,
                 'amount' => $request->swapped_data['amount'],
                 'rem_amount' => $request->swapped_data['rem_amount'],
                 'out_date' => $request->swapped_data['out_date'],
