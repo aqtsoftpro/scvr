@@ -8,7 +8,7 @@ use App\VanReturn;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\VanoutDashboardResource;
-use App\Http\Resources\VanReturnDashboardResource;
+use App\Http\Resources\{VanReturnDashboardResource, VehicleDashboardResource};
 
 class DashboardController extends Controller
 {
@@ -46,16 +46,19 @@ class DashboardController extends Controller
         }
         $vanins = VanReturnDashboardResource::collection(VanReturn::all());
 
-        $fina_vanins = array();
-        foreach ($vanins as $van) {
-            $van_out = VanOut::find($van->van_out_id);
-            if ($van_out) {
-                $check_vehicle = Vehicle::where('status_id', 1)->find($van_out->vehicle_id);
-                if ($check_vehicle) {
-                    $fina_vanins[] = $van;
-                }
-            }
-        }
+        $total_available = VehicleDashboardResource::collection(Vehicle::where('status_id', 1)->get());
+
+
+        // $fina_vanins = array();
+        // foreach ($vanins as $van) {
+        //     $van_out = VanOut::find($van->van_out_id);
+        //     if ($van_out) {
+        //         $check_vehicle = Vehicle::where('status_id', 1)->find($van_out->vehicle_id);
+        //         if ($check_vehicle) {
+        //             $fina_vanins[] = $van;
+        //         }
+        //     }
+        // }
 
         $data = [
             'vans' => $vans,
@@ -65,7 +68,7 @@ class DashboardController extends Controller
             'vanout_count' => $vanoutCount,
             'vanreturn_count' => $vanreturnsCount,
             'vanouts' => $vanoutsArray,
-            'vanins' => $fina_vanins
+            'vanins' => $total_available
         ];
 
         return response()->json($data);
