@@ -26,10 +26,14 @@ class Swap extends Model
         parent::boot();
 
         static::creating(function ($model) {
+            $model->rental_period = $model->calculateNumberOfDays();
+            // $model->long_term = $request->long_term ?? 0;
             $model->added_by = auth()->id(); // Generate slug from the name
         });
 
         static::updating(function ($model) {
+            $model->rental_period = $model->calculateNumberOfDays();
+            // $model->long_term = $request->long_term ?? 0;
             $model->updated_by = auth()->id(); // Generate slug from the name
         });
     }
@@ -72,5 +76,13 @@ class Swap extends Model
     public function accessories(): BelongsToMany
     {
         return $this->belongsToMany(Accessory::class);
+    }
+
+    public function calculateNumberOfDays()
+    {
+        $vanOutDate = date_create($this->van_out_date);
+        $dueReturn = date_create($this->due_return);    
+        $diff = date_diff($vanOutDate, $dueReturn);
+        return $diff->days;
     }
 }

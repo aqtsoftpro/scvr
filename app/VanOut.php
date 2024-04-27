@@ -49,12 +49,12 @@ class VanOut extends Model
 
         static::creating(function ($model) {
             $model->rental_period = $model->calculateNumberOfDays();
-            $model->long_term = $request->long_term ?? 0;
+            // $model->long_term = $request->long_term ?? 0;
         });
 
         static::updating(function ($model) {
             $model->rental_period = $model->calculateNumberOfDays();
-            $model->long_term = $request->long_term ?? 0;
+            // $model->long_term = $request->long_term ?? 0;
         });
     }
 

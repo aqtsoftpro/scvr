@@ -113,72 +113,22 @@ class VanOutController extends Controller
 
     public function update(Request $request, $vanOut){
         $booking = VanOut::find($vanOut);
-        if ($booking->swap_with !== null) {
-            Vehicle::find($booking->swap_with)->update([
-                'status_id' => 1
-            ]);
-
-            $swap = $booking->swaps()->latest()->first();
-        }
 
         $data = $request->all();
+
         if ($request->hasFile('demage_video')) {
             $video = $request->file('demage_video')->store('demage-videos', 'public');
             $data['video'] =url('storage/'.$video);
         }
 
+        if ($booking->reason_of_renting == 'New' && $request->reason_of_renting == 'Swap' && $request->swap_with !== null) {
+            $booking->vehicle()->update([
+                'status_id' => 1
+            ]);
+        }
+
         $booking->fill($data);
         $booking->save();
-
-        $booking->vehicle()->update([
-            'status_id' => 1
-        ]);
-
-        if ($booking->reason_of_renting== 'Swap' && $request->swapped_data != null ) {
-            $vehicle = Vehicle::find($request->swapped_data['vehicle_id']);
-            $vehicle->update([
-                'status_id' => 2
-            ]);
-
-            // dd($vehicle);
-
-            if ($request->hasFile('swapped_data.video')) {
-                dd($request->file('swapped_data.video'));
-                $save_path = $request->file('swapped_data.video')->store('swaped', 'public');
-            }
-
-
-
-            $swap = Swap::create([
-                'customer_id' => $booking->customer_id,
-                'vehicle_id' => $vehicle->id,
-                'parent_id' => $swap->id ?? null,
-                'van_out_id' => $booking->id,
-                'condition' => $request->swapped_data['condition'],
-                'video' => $save_path ?? null,
-                // 'rental_period' => $request->swapped_data['rental_period'],
-                'rental_amount' => $request->swapped_data['rental_amount'],
-                'out_date' => $request->swapped_data['out_date'],
-                'vehicle_reg' => $vehicle->reg_plate_number,
-                'long_term' => $request->swapped_data['long_term'],
-                'due_return' => $request->swapped_data['due_return'],
-                'location_id' => $request->swapped_data['location_id'],
-                'mileage' => $request->swapped_data['mileage'],
-                'amount_frequency' => $request->swapped_data['amount_frequency'],
-            ]);
-
-            if ($swap && $request->hasFile('swapped_data.images')) {
-                foreach ($request->file('swapped_data.images') as $image) {
-                    $imagePath = $image->store('swaped-gallery', 'public');
-
-                    SwapGallery::create([
-                        'swap_id' => $swap->id, 
-                        'image' => $imagePath
-                    ]);
-
-                }
-            }
-        }
 
         if ($request->hasFile('demage_pics')) {
             foreach ($request->file('demage_pics') as $image) {
@@ -198,6 +148,67 @@ class VanOutController extends Controller
         ];
 
         $booking->accessories()->sync($request->accessories);
+
+        return response()->json($res);
+    }
+
+
+    public function swapStore(Request $request){
+        $booking = VanOut::find($request->booking_id);
+        $inputs = $request->all();
+        $lastSwaped = null;
+        if ($booking->swaps()->count() > 0) {
+            $swap = $booking->swaps()->latest()->first();
+            $inputs['parent_id'] = $swap->id;
+            $lastSwaped = Vehicle::find($swap->vehicle_id);
+        }
+        $vehicle = Vehicle::find($request->vehicle_id);
+        if ($vehicle->status_id !== 1) {
+            return response()->json(['message'=> 'vehicle not available right now']);
+        }
+
+        $inputs['van_out_id'] = $booking->id;
+        $inputs['customer_id'] = $booking->customer_id;
+
+        if ($request->hasFile('video')) {
+            $video = $request->file('video')->store('swaped', 'public');
+            $inputs['video'] =url('storage/'.$video);
+        }
+
+        $new_swap = Swap::create($inputs);
+
+        $new_swap->vehicle()->update([
+            'status_id' => 2
+        ]);
+
+        if ($new_swap && $request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imagePath = $image->store('swaped-gallery', 'public');
+                SwapGallery::create([
+                    'swap_id' => $new_swap->id, 
+                    'image' => url('storage/'.$imagePath)
+                ]);
+
+            }
+        }
+
+        if ($lastSwaped !== null ) {
+            $lastSwaped->update([
+                'status_id' => 1
+            ]);
+        }
+        if ($booking->reason_of_renting == 'New') {
+            $booking->vehicle()->update([
+                'status_id' => 1
+            ]);
+        }
+
+        $res = [
+            'message' => 'Swapped updated',
+            'data' => $new_swap
+        ];
+
+        $new_swap->accessories()->sync($request->accessories);
 
         return response()->json($res);
     }
