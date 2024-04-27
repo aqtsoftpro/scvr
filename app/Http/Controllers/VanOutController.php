@@ -166,6 +166,11 @@ class VanOutController extends Controller
             $swap = $booking->swaps()->latest()->first();
             $inputs['parent_id'] = $swap->id;
             $lastSwaped = Vehicle::find($swap->vehicle_id);
+            if ($swap->parent) {
+                $swap->parent()->update([
+                    'vehicle_return_date' => $request->out_date
+                ]);
+            }
         }
         $vehicle = Vehicle::find($request->vehicle_id);
         if ($vehicle->status_id !== 1) {
@@ -199,13 +204,17 @@ class VanOutController extends Controller
 
         if ($lastSwaped !== null ) {
             $lastSwaped->update([
-                'status_id' => 1
+                'status_id' => 1,
             ]);
         }
         if ($booking->reason_of_renting == 'New') {
             $booking->vehicle()->update([
-                'status_id' => 1
+                'status_id' => 1,
             ]);
+            $booking->update([
+                'vehicle_return_date' => $request->out_date
+            ]);
+
         }
 
         $res = [

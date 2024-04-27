@@ -78,6 +78,7 @@ class VanOutResource extends JsonResource
                 'added' => Carbon::parse($this->created_at)->format('d-m-Y g:i A'),
                 'updated' => Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
                 'old_vehicle' => $this->vehicle_id,
+                'vehicle_return_date' => $this->vehicle_return_date,
                 // 'swaps' => $this->swaps,
     
             ];

@@ -18,7 +18,7 @@ class Swap extends Model
         'customer_id', 'vehicle_id', 'parent_id', 'van_out_id', 'condition', 'video', 'amount', 'rem_amount', 'out_date',
         'amount_status', 'amount_tracking_id', 'vehicle_reg', 'added_by', 'updated_by',
         'long_term', 'status', 'due_return', 'location_id', 'rental_period', 
-        'rental_amount', 'mileage', 'amount_frequency',  'bond_deposit',  'payment_mode', 
+        'rental_amount', 'mileage', 'amount_frequency',  'bond_deposit',  'payment_mode', 'vehicle_return_date'
     ];
 
     protected static function boot()

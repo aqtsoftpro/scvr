@@ -40,7 +40,8 @@ class VanOut extends Model
         'payment_mode',
         'video',
         'condition',
-        'long_term'
+        'long_term',
+        'vehicle_return_date'
     ];
 
     protected static function boot()
