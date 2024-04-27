@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Vehicle;
 use App\Insurance;
 use App\Maintenance;
-use App\VehicleType;
+use App\{VehicleType, VanOut};
 use Illuminate\Http\Request;
 use App\Http\Resources\VehicleResource;
 
@@ -290,6 +290,7 @@ class VehicleController extends Controller
             $filtered_vehicles[$key]['name'] = $vehicle->make . ' ' . $vehicle->model . ' (' . $vehicle->reg_plate_number . ')';
         }
 
+
         if (isset($swap)) {
             $swap_vehicle = Vehicle::find($swap);
             if ($swap_vehicle && !in_array($swap_vehicle->id, array_column($filtered_vehicles, 'id'))) {
@@ -300,6 +301,8 @@ class VehicleController extends Controller
             }
         }
 
+        $filtered_vehicles = $this->append_selected_item($filtered_vehicles, $id);
+
         return $filtered_vehicles;
     }
 
@@ -308,6 +311,13 @@ class VehicleController extends Controller
         $vehicles = $vehicle->where('status_id', 1)->latest()->get();
         // dd($vehicles);
         $options = [];
+
+
+        // if (isset($request->selected)) {
+        //     # code...
+        // }
+
+        // $selected = 
 
         foreach($vehicles as $key => $vehicle){
             $options[$key]['id'] = $vehicle->id;

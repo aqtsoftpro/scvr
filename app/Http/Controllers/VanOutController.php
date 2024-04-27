@@ -9,7 +9,7 @@ use App\Models\Customer;
 use App\Models\{DemageGallery, Swap, SwapGallery};
 use Illuminate\Http\Request;
 use App\Http\Resources\VanOutResource;
-use App\Http\Resources\VanoutOptionsResource;
+use App\Http\Resources\{VanoutOptionsResource, VanoutSwapResource, SingleVanoutResource};
 
 class VanOutController extends Controller
 {
@@ -28,7 +28,12 @@ class VanOutController extends Controller
 
     public function show($vanOut){
         $van_out = Vanout::find($vanOut);
-        return response()->json(new VanOutResource($van_out));
+        return response()->json(new SingleVanoutResource($van_out));
+    }
+
+    public function showReturn($vanOut){
+        $van_out = Vanout::find($vanOut);
+        return response()->json(new VanoutSwapResource($van_out));
     }
 
     public function store(Request $request, VanOut $vanOut){

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\{Customer, User, SwapGallery};
-use App\{Vehicle, VanOut, Accessory};
+use App\{Vehicle, VanOut, Accessory, Location};
 
 class Swap extends Model
 {
@@ -68,14 +68,19 @@ class Swap extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function swapImages(): BelongsTo
+    public function swapImages(): HasMany
     {
-        return $this->belongsTo(SwapGallery::class);
+        return $this->hasMany(SwapGallery::class);
     }
 
     public function accessories(): BelongsToMany
     {
-        return $this->belongsToMany(Accessory::class);
+        return $this->belongsToMany(Accessory::class, 'accessory_swap');
+    }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class);
     }
 
     public function calculateNumberOfDays()

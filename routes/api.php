@@ -114,6 +114,7 @@ Route::resource('tax_type', TaxTypeController::class);
 Route::get('tax_type_options', 'App\Http\Controllers\TaxTypeController@tax_type_options');
 Route::resource('vanout', VanOutController::class);
 Route::post('swap-store', [VanOutController::class, 'swapStore']);
+Route::get('vanout-return/{vanOut}', [VanOutController::class, 'showReturn']);
 Route::get('van_out_options', 'App\Http\Controllers\VanOutController@van_out_options');
 Route::get('returned_van_out_options', 'App\Http\Controllers\VanOutController@returned_van_out_options');
 Route::get('customer_van_out/{id}', [VanOutController::class, 'customer_van_out']);
