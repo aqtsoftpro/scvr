@@ -114,6 +114,7 @@ Route::resource('tax_type', TaxTypeController::class);
 Route::get('tax_type_options', 'App\Http\Controllers\TaxTypeController@tax_type_options');
 Route::resource('vanout', VanOutController::class);
 Route::post('swap-store', [VanOutController::class, 'swapStore']);
+Route::post('swap-update/{swap}', [VanOutController::class, 'swapUpdate']);
 Route::get('vanout-return/{vanOut}', [VanOutController::class, 'showReturn']);
 Route::get('van_out_options', 'App\Http\Controllers\VanOutController@van_out_options');
 Route::get('returned_van_out_options', 'App\Http\Controllers\VanOutController@returned_van_out_options');
@@ -125,7 +126,7 @@ Route::get('vehicle_type_options', 'App\Http\Controllers\VehicleTypeController@v
 Route::resource('vehicle', VehicleController::class);
 Route::put('update_vehicle_status/{vehicle}', 'App\Http\Controllers\VehicleController@updateStatus');
 Route::get('vehicle_options', 'App\Http\Controllers\VehicleController@vehicle_options');
-Route::get('available_vehicles_options/{vehicle?}/{swap?}', 'App\Http\Controllers\VehicleController@get_available_vehicles');
+Route::get('available_vehicles_options/{vehicle?}/{swap?}/{type?}', 'App\Http\Controllers\VehicleController@get_available_vehicles');
 Route::resource('mechanic', MechanicController::class);
 Route::get('mechanic_options', 'App\Http\Controllers\MechanicController@mechanic_options');
 Route::resource('role', RoleController::class);

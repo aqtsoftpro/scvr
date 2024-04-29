@@ -6,7 +6,7 @@ use App\VanOut;
 use App\VanReturn;
 use App\Models\{DemageGallery, Customer};
 use Illuminate\Http\Request;
-use App\Http\Resources\VanReturnResource;
+use App\Http\Resources\{VanReturnResource, ShowVanReturnResource};
 
 class VanReturnController extends Controller
 {
@@ -22,7 +22,9 @@ class VanReturnController extends Controller
     }
 
     public function show(VanReturn $vanReturn){
-        return response()->json($vanReturn->find($vanReturn->id));
+        // $vanReturn->load('location', 'van_out.swaps');
+        // ->find($vanReturn->id)
+        return response()->json(new ShowVanReturnResource($vanReturn));
     }
 
     public function store(Request $request, VanReturn $vanReturn){
@@ -36,11 +38,7 @@ class VanReturnController extends Controller
             $video = $request->file('demage_vid')->store('demage-videos', 'public');
             $video_url = url('storage/'.$video);
         }
-
-
         // get storage path
-
-
         $validation = $request->validate([
             'van_out_id' => 'required|integer',
             'location_id' => 'required|integer',
@@ -97,10 +95,24 @@ class VanReturnController extends Controller
         $booking->customer()->update([
             'is_available' => 1
         ]);
-        $booking->vehicle()->update([
-            'status_id' => $status,
-            'mileage' => $request->mileage
-        ]);
+        if ($booking->swaps()->count() > 0) {
+            $swap = $booking->swaps()->latest()->first();
+            $swap->update([
+                'vehicle_return_date' => $newVanReturn->return_date,
+                'status'=> 0
+            ]);
+            $swap->vehicle()->update([
+                'status_id' => $status,
+                'mileage' => $request->mileage
+            ]);
+        }
+        else {
+            $booking->vehicle()->update([
+                'status_id' => $status,
+                'mileage' => $request->mileage
+            ]);
+        }
+
         $booking->status = 0;
         $booking->save();
 

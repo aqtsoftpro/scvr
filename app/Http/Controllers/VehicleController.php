@@ -273,14 +273,14 @@ class VehicleController extends Controller
     }
     // Request $request, Vehicle 
 
-    public function get_available_vehicles($id=null, $swap=null){
+    public function get_available_vehicles($id=null, $swap=null, $type=null){
         if (isset($id) && $id != 'undefined') {
             $vehicle = Vehicle::find($id);
-            $available_vehicles = Vehicle::where('status_id', 1)
-            ->where('vehicle_type_id', $vehicle->vehicle_type_id)
+            $available_vehicles =isset($type) ? Vehicle::where('status_id', 1)
+            ->where('vehicle_type_id', $type)->where('id', '!=', $id)->get() : Vehicle::where('status_id', 1)
             ->where('id', '!=', $id)->get();
         } else {
-            $available_vehicles = Vehicle::where('status_id', 1)->get();
+            $available_vehicles = isset($type) ? Vehicle::where(['status_id' => 1, 'vehicle_type_id'=> $type])->get() : Vehicle::where('status_id', 1)->get();
         }
         
         $filtered_vehicles = [];
@@ -308,7 +308,7 @@ class VehicleController extends Controller
 
     public function vehicle_options(Vehicle $vehicle, Request $request){
 
-        $vehicles = $vehicle->where('status_id', 1)->latest()->get();
+        $vehicles = isset($request->type) ? $vehicle->where(['status_id' => 1, 'vehicle_type_id'=> $request->type])->latest()->get() : $vehicle->where('status_id', 1)->latest()->get();
         // dd($vehicles);
         $options = [];
 

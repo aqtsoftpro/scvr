@@ -47,6 +47,8 @@ class SingleVanoutResource extends JsonResource
             'van_return' => Carbon::parse($this->van_return?->return_date)->format('d-m-Y g:i A'),
             'galleries' => $this->galleries,
             'vehicle_return_date' => $this->vehicle_return_date,
+            'status' => $this->status,
+            'video' => $this->video,
         ];
     }
 }

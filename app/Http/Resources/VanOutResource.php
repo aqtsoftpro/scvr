@@ -46,6 +46,8 @@ class VanOutResource extends JsonResource
                 'added' => Carbon::parse($swap->created_at)->format('d-m-Y g:i A'),
                 'updated' => Carbon::parse($swap->updated_at)->format('d-m-Y g:i A'),
                 'old_vehicle' => $this->vehicle_id,
+                'vehicle_return_date' => $swap->vehicle_return_date,
+                'vehicle_type_id' => $swap->vehicle?->vehicle_type_id,
     
             ];
         }
@@ -79,6 +81,7 @@ class VanOutResource extends JsonResource
                 'updated' => Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
                 'old_vehicle' => $this->vehicle_id,
                 'vehicle_return_date' => $this->vehicle_return_date,
+                'vehicle_type_id' => $this->vehicle?->vehicle_type_id,
                 // 'swaps' => $this->swaps,
     
             ];
