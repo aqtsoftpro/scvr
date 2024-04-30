@@ -176,7 +176,7 @@ class VanOutController extends Controller
             }
         }
         $vehicle = Vehicle::find($request->vehicle_id);
-        if ($vehicle->status_id !== 1) {
+        if ($vehicle->status_id == 2 || $vehicle->status_id == 3) {
             return response()->json(['message'=> 'vehicle not available right now']);
         }
 
