@@ -308,8 +308,17 @@ class VehicleController extends Controller
 
     public function vehicle_options(Vehicle $vehicle, Request $request){
 
-        $vehicles = isset($request->type) ? $vehicle->where(['status_id' => 1, 'vehicle_type_id'=> $request->type])->latest()->get() : $vehicle->where('status_id', 1)->latest()->get();
+        // $vehicles = $request->type == null ? $vehicle->where('status_id', 1)->latest()->get() : $vehicle->where(['status_id' => 1, 'vehicle_type_id'=> $request->type])->latest()->get();
         // dd($vehicles);
+
+        if (!isset($request->type) || $request->type == 'null' || $request->type == null) {
+            $vehicles = $vehicle->where('status_id', 1)->latest()->get();
+        }
+        else {
+            $vehicles = $vehicle->where(['status_id' => 1, 'vehicle_type_id'=> $request->type])->latest()->get();
+
+        }
+
         $options = [];
 
 
