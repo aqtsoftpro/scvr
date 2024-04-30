@@ -26,6 +26,7 @@ class VanoutSwapResource extends JsonResource
             $long_term = $swap_data->long_term;
             $location = $swap_data->location->name;
             $location_id = $swap_data->location_id;
+            $out_date = $swap_data->out_date;
             $accessories = (isset($swap_data->accessories)) ? AccessoryResource::collection($swap_data->accessories) : null;
         }
         else {
@@ -39,6 +40,7 @@ class VanoutSwapResource extends JsonResource
             $long_term = $this->long_term;
             $location = $this->location->name;
             $location_id = $this->location_id;
+            $out_date = $this->van_out_date;
             $accessories = (isset($this->accessories)) ? AccessoryResource::collection($this->accessories) : null;
         }
 
@@ -59,6 +61,7 @@ class VanoutSwapResource extends JsonResource
             'amount_frequency' => $amount_frequency,
             'mileage' => $mileage,
             'long_term' => $this->long_term,
+            'van_out_date' => $out_date
         ];
     }
 }

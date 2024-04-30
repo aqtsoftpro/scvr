@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\DemageGallery;
+use App\{Location, VanOut};
+
 
 class VanReturn extends Model
 {
@@ -41,6 +45,11 @@ class VanReturn extends Model
     public function location(): BelongsTo
     {
       return $this->belongsTo(Location::class);
+    }
+
+    public function galleries(): HasMany
+    {
+      return $this->hasMany(DemageGallery::class);
     }
 
     public function van_out(): BelongsTo

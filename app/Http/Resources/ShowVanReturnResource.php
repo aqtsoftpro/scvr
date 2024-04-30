@@ -31,6 +31,7 @@ class ShowVanReturnResource extends JsonResource
             'demage_caused_by_customer' => $this->demage_caused_by_customer,
             'damage_caused_by_customer' => ($this->demage_caused_by_customer == 0) ? 'No' : 'Yes',
             'demage_picture' => $this->demage_picture,
+            'galleries' => $this->galleries,
             'demage_text' => $this->demage_text,
             'total_driven' => $this->total_driven.' (Km)',
             'days_count' => $this->days_count,
