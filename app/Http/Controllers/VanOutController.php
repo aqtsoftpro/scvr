@@ -157,7 +157,6 @@ class VanOutController extends Controller
         return response()->json($res);
     }
 
-
     public function swapStore(Request $request){
         // dd($request->all());
         $booking = VanOut::find($request->booking_id);
@@ -233,6 +232,7 @@ class VanOutController extends Controller
 
         return response()->json($res);
     }
+
     public function swapUpdate(Request $request, Swap $swap){
 
         if ($swap->vehicle_id != $request->vehicle_id) {
