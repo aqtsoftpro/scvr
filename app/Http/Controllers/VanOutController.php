@@ -9,7 +9,7 @@ use App\Models\Customer;
 use App\Models\{DemageGallery, Swap, SwapGallery};
 use Illuminate\Http\Request;
 use App\Http\Resources\VanOutResource;
-use App\Http\Resources\{VanoutOptionsResource, VanoutSwapResource, SingleVanoutResource};
+use App\Http\Resources\{VanoutOptionsResource, VanoutSwapResource, SingleVanoutResource, SwapResource};
 
 class VanOutController extends Controller
 {
@@ -231,7 +231,7 @@ class VanOutController extends Controller
 
         $res = [
             'message' => 'Swapped updated',
-            'data' => $new_swap
+            'data' => new SwapResource($new_swap)
         ];
 
         $new_swap->accessories()->sync($request->accessories);
@@ -312,11 +312,16 @@ class VanOutController extends Controller
 
     public function van_out_options(VanOut $vanOut, Request $request){
 
-        $vanouts = $vanOut->where('status', 1)->with('vehicle')->get();
+        $vanouts = $vanOut->where('status', 1)->with('vehicle', 'swaps')->get();
         $list = [];
 
         foreach($vanouts as $key => $vanout){
-            $list[] = ['id' => $vanout['id'] , 'booking_regnumber' => $vanout['vehicle']['reg_plate_number']];
+            if ($vanout->swaps()->count() > 0) {
+                $swaped_vehicle = $vanout->swaps()->latest()->first();
+                $list[] = ['id' => $vanout['id'] , 'booking_regnumber' => $swaped_vehicle->vehicle?->reg_plate_number];
+            } else {
+                $list[] = ['id' => $vanout['id'] , 'booking_regnumber' => $vanout['vehicle']['reg_plate_number']];
+            }
         }
 
         //return $list;
@@ -326,9 +331,9 @@ class VanOutController extends Controller
 
         return response()->json($vanouts);
 
-        return $vanOut->query()->with(['vehicle' => function($query){
-            $query->select('id', 'reg_plate_number');
-        }])->get(['id', 'vehicle_id']);
+        // return $vanOut->query()->with(['vehicle' => function($query){
+        //     $query->select('id', 'reg_plate_number');
+        // }])->get(['id', 'vehicle_id']);
     }
 
     public function returned_van_out_options(VanOut $vanOut){
