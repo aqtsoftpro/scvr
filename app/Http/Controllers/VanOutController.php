@@ -197,6 +197,10 @@ class VanOutController extends Controller
             'status_id' => 2
         ]);
 
+        $new_swap->vanOut()->update([
+            'reason_of_renting' => 'Swap'
+        ]);
+
         if ($new_swap && $request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $imagePath = $image->store('swaped-gallery', 'public');
@@ -218,7 +222,9 @@ class VanOutController extends Controller
                 'status_id' => 1,
             ]);
             $booking->update([
-                'vehicle_return_date' => $request->out_date
+                'vehicle_return_date' => $request->out_date,
+                'reason_of_renting' => 'Swap',
+                'bond_deposit' => $request->bond_deposit,
             ]);
 
         }

@@ -15,6 +15,10 @@ class SingleVanoutResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $swap = null;
+        if ($this->swaps()->count() > 0) {
+            $swap = $this->swaps()->latest()->first();
+        }
         return [
             'id' => $this->id,
             'booking_id' => $this->booking_id,
@@ -23,7 +27,7 @@ class SingleVanoutResource extends JsonResource
             'customer_id' => $this->customer->id,
             'vehicle' => $this->vehicle->make,
             'vehicle_model' => $this->vehicle->model,
-            'vehicle_id' => $this->vehicle->id,
+            'vehicle_id' => $swap?->vehicle_id ? $swap->vehicle_id : $this->vehicle->id,
             'location' => $this->location->name,
             'location_id' => $this->location->id,
             'reason_of_renting' => $this->reason_of_renting,
@@ -49,6 +53,7 @@ class SingleVanoutResource extends JsonResource
             'vehicle_return_date' => $this->vehicle_return_date,
             'status' => $this->status,
             'video' => $this->video,
+            'old_vehicle_id' => $this->vehicle->id,
         ];
     }
 }

@@ -274,14 +274,32 @@ class VehicleController extends Controller
     // Request $request, Vehicle 
 
     public function get_available_vehicles($id=null, $swap=null, $type=null){
-        if (isset($id) && $id != 'undefined') {
-            $vehicle = Vehicle::find($id);
-            $available_vehicles =isset($type) ? Vehicle::where('status_id', 1)
-            ->where('vehicle_type_id', $type)->where('id', '!=', $id)->get() : Vehicle::where('status_id', 1)
-            ->where('id', '!=', $id)->get();
+        // if (isset($id) && $id != 'undefined') {
+        //     $vehicle = Vehicle::find($id);
+        //     $available_vehicles =isset($type) ? Vehicle::where('status_id', 1)
+        //     ->where('vehicle_type_id', $type)->where('id', '!=', $id)->get() : Vehicle::where('status_id', 1)
+        //     ->where('id', '!=', $id)->get();
+        // } else {
+        //     $available_vehicles = isset($type) ? Vehicle::where(['status_id' => 1, 'vehicle_type_id'=> $type])->get() : Vehicle::where('status_id', 1)->get();
+        // }
+
+
+        if ($id === 'undefined') {
+            if ($type === 'undefined') {
+                $available_vehicles =  Vehicle::where('status_id', 1)->get();
+            } else {
+                $available_vehicles = Vehicle::where(['status_id' => 1, 'vehicle_type_id'=> $type])->get();
+            }
+            
         } else {
-            $available_vehicles = isset($type) ? Vehicle::where(['status_id' => 1, 'vehicle_type_id'=> $type])->get() : Vehicle::where('status_id', 1)->get();
+            if ($type === 'undefined') {
+                $available_vehicles =  Vehicle::where('status_id', 1)->where('id', '!=', $id)->get();
+            } else {
+                $available_vehicles = Vehicle::where('status_id', 1)
+                ->where('vehicle_type_id', $type)->where('id', '!=', $id)->get();
+            }
         }
+        
         
         $filtered_vehicles = [];
 
@@ -291,7 +309,7 @@ class VehicleController extends Controller
         }
 
 
-        if (isset($swap)) {
+        if (isset($swap) && $swap != 'undefined') {
             $swap_vehicle = Vehicle::find($swap);
             if ($swap_vehicle && !in_array($swap_vehicle->id, array_column($filtered_vehicles, 'id'))) {
                 $filtered_vehicles[] = [
