@@ -46,7 +46,6 @@ class VanoutSwapResource extends JsonResource
             // $deposit = $this->bond_deposit;
         }
 
-
         return [
             'id' => $this->id,
             'reg_number' => $reg_number,
