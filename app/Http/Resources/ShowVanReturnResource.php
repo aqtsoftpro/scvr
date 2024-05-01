@@ -17,7 +17,7 @@ class ShowVanReturnResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'vehicle' => $this->van_out ? $this->van_out->vehicle?->reg_plate_number : null,
+            'vehicle_name' => $this->van_out ? $this->van_out->vehicle?->reg_plate_number : null,
             'customer' => ($this->van_out ? $this->van_out->customer?->first_name : '') . ' ' . ($this->van_out ? $this->van_out->customer?->last_name : ''),
             'customer_id' => $this->van_out?->customer?->id,
             'rental_amount' => $this->van_out?->rental_amount?? null,

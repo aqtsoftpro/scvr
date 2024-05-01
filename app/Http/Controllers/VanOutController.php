@@ -198,7 +198,9 @@ class VanOutController extends Controller
         ]);
 
         $new_swap->vanOut()->update([
-            'reason_of_renting' => 'Swap'
+            'reason_of_renting' => 'Swap',
+            'payment_mode' => $inputs['payment_mode'],
+            'bond_deposit' => $inputs['bond_deposit'],
         ]);
 
         if ($new_swap && $request->hasFile('images')) {
@@ -265,6 +267,11 @@ class VanOutController extends Controller
 
         $swap->vehicle()->update([
             'status_id' => 2
+        ]);
+
+        $swap->vanOut()->update([
+            'payment_mode' => $inputs['payment_mode'],
+            'bond_deposit' => $inputs['bond_deposit'],
         ]);
 
         if ($swap && $request->hasFile('images')) {
