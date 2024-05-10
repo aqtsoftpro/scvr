@@ -27,7 +27,7 @@ class ReportsController extends Controller
         $earnings = [];
 
         foreach($bookings as $key => $booking){
-            $earnings['earnings'][$key]['vehicle'] = $booking->vehicle->make . '-' . $booking->vehicle->model . ' (' . $booking->vehicle->reg_plate_number . ')';
+            $earnings['earnings'][$key]['vehicle'] = $booking->vehicle?->make . '-' . $booking->vehicle?->model . ' (' . $booking->vehicle?->reg_plate_number . ')';
             $earnings['earnings'][$key]['customer'] = $booking->customer->first_name . ' ' . $booking->customer->last_name;
             $earnings['earnings'][$key]['date'] = Carbon::parse($booking->created_at)->format('d-m-Y');
             $earnings['earnings'][$key]['amount'] = $booking->rental_amount;
@@ -54,7 +54,7 @@ class ReportsController extends Controller
         $maintenance_entries = [];
 
         foreach($maintenance as $key => $entry){
-            $maintenance_entries['maintenance'][$key]['vehicle'] = $entry->vehicle->make . '-' . $entry->vehicle->model . ' (' . $entry->vehicle->reg_plate_number . ')';
+            $maintenance_entries['maintenance'][$key]['vehicle'] = $entry->vehicle?->make . '-' . $entry->vehicle?->model . ' (' . $entry->vehicle?->reg_plate_number . ')';
             $maintenance_entries['maintenance'][$key]['service'] = $entry->service_type->name;
             $maintenance_entries['maintenance'][$key]['date'] = Carbon::parse($entry->date)->format('d-m-Y');
             $maintenance_entries['maintenance'][$key]['cost'] = $entry->cost;
@@ -73,7 +73,7 @@ class ReportsController extends Controller
         $maintenance_list = [];
 
         foreach($maintenance as $key => $entry){
-            $maintenance_list[$key]['vehicle'] = $entry->vehicle->make . '-' . $entry->vehicle->model . ' (' . $entry->vehicle->reg_plate_number . ')';
+            $maintenance_list[$key]['vehicle'] = $entry->vehicle?->make . '-' . $entry->vehicle?->model . ' (' . $entry->vehicle?->reg_plate_number . ')';
             $maintenance_list[$key]['mileage'] = $entry->mileage;
             $maintenance_list[$key]['date'] = Carbon::parse($entry->date)->format('d-m-Y');
             $maintenance_list[$key]['service_type'] = $entry->service_type->name;
@@ -100,7 +100,7 @@ class ReportsController extends Controller
 
         foreach($vanout as $key => $record){
             $rental_history[$key]['rented_out'] = Carbon::parse($record->created_at)->format('d-m-Y');
-            $rental_history[$key]['vehicle'] = $record->vehicle->make . '-' . $record->vehicle->model . ' (' . $record->vehicle->reg_plate_number . ')';
+            $rental_history[$key]['vehicle'] = $record->vehicle?->make . '-' . $record->vehicle?->model . ' (' . $record->vehicle?->reg_plate_number . ')';
             $rental_history[$key]['customer'] = $record->customer->first_name . ' ' . $record->customer->last_name;
             $rental_history[$key]['returned'] = ($record->van_return) ? Carbon::parse($record->van_return->return_date)->format('d-m-Y') : 'Not returned yet';
         }
@@ -128,7 +128,7 @@ class ReportsController extends Controller
 
         foreach($vanouts as $vanout){
             $pnl[$index]['date'] = Carbon::parse($vanout->created_at)->format('d-m-Y');
-            $pnl[$index]['notes'] = 'Rented out ' . $vanout->vehicle->vehicle_type->name .  ' with reg# '. $vanout->vehicle->reg_plate_number;
+            $pnl[$index]['notes'] = 'Rented out ' . $vanout->vehicle?->vehicle_type->name .  ' with reg# '. $vanout->vehicle?->reg_plate_number;
             $pnl[$index]['cost'] = $vanout->rental_amount;
             $pnl[$index]['tax'] = 0.00;
             $pnl[$index]['maintenance'] = 0.00;

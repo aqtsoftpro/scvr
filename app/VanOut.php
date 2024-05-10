@@ -76,7 +76,7 @@ class VanOut extends Model
 
     public function location(): BelongsTo
     {
-        return $this->belongsTo(Location::class);
+        return $this->belongsTo(Location::class)->withDefault();
     }
 
     public function swapWith(): BelongsTo
