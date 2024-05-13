@@ -159,7 +159,7 @@ class CustomerController extends Controller
             'secondary_id_front_picture' => $sidfImage,
             'secondary_id_back_picture' => $sidbImage,
             'secondary_id_expiry' => $request->secondary_id_expiry,
-            'bond_return_amount' => $request->bond_return_amount
+            // 'bond_return_amount' => $request->bond_return_amount
         ])){
             return response()->json([
                 'status' => 'success',

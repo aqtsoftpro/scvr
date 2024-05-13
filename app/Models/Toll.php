@@ -17,7 +17,8 @@ class Toll extends Model
         'payment_status',
         'due_date',
         'details',
-        'trip_cost'
+        'trip_cost',
+        'v_exist'
     ];
 
     public function customer(){

@@ -42,40 +42,41 @@ class TollsImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
+
+        if(strpos($row['Start Date'],".") > 0){
+            $v = explode('.', $row['Start Date']);
+            $dateTime = $this->convertSerialDate($v[0], $v[1]);
+            $dateTime = \DateTime::createFromFormat('Y-m-d H:i', $dateTime);
+            $day = $dateTime->format('d');
+            $month = $dateTime->format('m');
+            $dateTime->setDate($dateTime->format('Y'), $day, $month);
+            // Format back to the desired format
+            $startDate = $dateTime->format('Y-m-d H:i');
+
+            $startDate = \DateTime::createFromFormat('Y-m-d H:i', $startDate);
+
+        }else{
+            $startDate = \DateTime::createFromFormat('d/m/Y H:i', $row['Start Date']);
+        }
+
+        if(strpos($row['End Date'],".") > 0){
+            $v = explode('.', $row['End Date']);
+            $endTime = $this->convertSerialDate($v[0], $v[1]);
+            $endTime = \DateTime::createFromFormat('Y-m-d H:i', $endTime);
+            $day = $endTime->format('d');
+            $month = $endTime->format('m');
+            $endTime->setDate($endTime->format('Y'), $day, $month);
+            // Format back to the desired format
+            $endDate = $endTime->format('Y-m-d H:i');
+            $endDate = \DateTime::createFromFormat('Y-m-d H:i', $endDate);
+        }else{
+            $endDate = \DateTime::createFromFormat('d/m/Y H:i', $row['End Date']);
+        }
+
         $customer = null;
         $vehicle = Vehicle::where('reg_plate_number', $row['LPN/Tag number'])->first();
+        
         if ($vehicle) {
-
-            if(strpos($row['Start Date'],".") > 0){
-                $v = explode('.', $row['Start Date']);
-                $dateTime = $this->convertSerialDate($v[0], $v[1]);
-                $dateTime = \DateTime::createFromFormat('Y-m-d H:i', $dateTime);
-                $day = $dateTime->format('d');
-                $month = $dateTime->format('m');
-                $dateTime->setDate($dateTime->format('Y'), $day, $month);
-                // Format back to the desired format
-                $startDate = $dateTime->format('Y-m-d H:i');
-
-                $startDate = \DateTime::createFromFormat('Y-m-d H:i', $startDate);
-
-            }else{
-                $startDate = \DateTime::createFromFormat('d/m/Y H:i', $row['Start Date']);
-            }
-
-            if(strpos($row['End Date'],".") > 0){
-                $v = explode('.', $row['End Date']);
-                $endTime = $this->convertSerialDate($v[0], $v[1]);
-                $endTime = \DateTime::createFromFormat('Y-m-d H:i', $endTime);
-                $day = $endTime->format('d');
-                $month = $endTime->format('m');
-                $endTime->setDate($endTime->format('Y'), $day, $month);
-                // Format back to the desired format
-                $endDate = $endTime->format('Y-m-d H:i');
-                $endDate = \DateTime::createFromFormat('Y-m-d H:i', $endDate);
-            }else{
-                $endDate = \DateTime::createFromFormat('d/m/Y H:i', $row['End Date']);
-            }
-
             $vanOut = VanOut::where('vehicle_id', $vehicle->id)
             // ->where(function ($query) use ($startDate) {
             //     $query->where('van_out_date', '<=', $startDate)
@@ -83,7 +84,7 @@ class TollsImport implements ToModel, WithHeadingRow
             // })
             ->orderBy('created_at', 'desc')->first();
             if ($vanOut) {
-                $customer = $vanOut->customer_id;
+                $customer = $vanOut->customer_id ?? null;
                 return new Toll([
                     'toll_number' => $row['Details'],
                     'date' => $startDate ?? 'No Date',
@@ -93,9 +94,23 @@ class TollsImport implements ToModel, WithHeadingRow
                     'due_date' => $endDate,
                     'details' => $row['Details'],
                     'trip_cost' => $row['Trip Cost'],
+                    'v_exist' => 1,
                 ]);
             }
-        }
+        } 
+        // else {
+        //     return new Toll([
+        //         'toll_number' => $row['Details'],
+        //         'date' => $startDate ?? 'No Date',
+        //         'reg_plate_number' => $row['LPN/Tag number'],
+        //         'customer_id' => 2,
+        //         'payment_status' => 'unpaid',
+        //         'due_date' => $endDate,
+        //         'details' => $row['Details'],
+        //         'trip_cost' => $row['Trip Cost'],
+        //         'v_exist' => 0,
+        //     ]);
+        // }
     }
 
     public function convertSerialDate($date,$hr)
