@@ -30,7 +30,8 @@ class VanReturn extends Model
       'bond_return_amount',
       'total_driven',
       'days_count',
-      'video'
+      'video',
+      'bond_comment'
     ];
 
     // protected static function boot()

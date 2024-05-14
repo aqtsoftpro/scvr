@@ -178,8 +178,6 @@ class ReportsController extends Controller
             $sorted_tax_records = collect($pnl)->sortBy('date')->values();
         }
 
-
-
         foreach($sorted_tax_records as $index => $record){
             $final[$index]['date'] = $record['date'];
             $final[$index]['notes'] = $record['notes'];

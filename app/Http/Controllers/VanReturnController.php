@@ -70,7 +70,8 @@ class VanReturnController extends Controller
             'bond_return_amount' => $request->bond_return_amount,
             'total_driven' => $request->total_driven,
             'days_count' => $request->days_count,
-            'video' => $video_url
+            'video' => $video_url,
+            'bond_comment' => $request->bond_comment
         ]);
 
 
@@ -149,7 +150,8 @@ class VanReturnController extends Controller
             'demage_text' => $request->demage_text,
             'bond_deposit' => $request->bond_deposit,
             'payment_mode' => $request->payment_mode,
-            'bond_return_amount' => $request->bond_return_amount
+            'bond_return_amount' => $request->bond_return_amount,
+            'bond_comment' => $request->bond_comment
         ]);
         $booking = VanOut::find($vanReturn->van_out_id);
         $booking->vehicle()->update([
