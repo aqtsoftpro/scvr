@@ -31,7 +31,9 @@ class VanReturn extends Model
       'total_driven',
       'days_count',
       'video',
-      'bond_comment'
+      'bond_comment',
+      'bond_diff',
+      'cust_fine'
     ];
 
     // protected static function boot()

@@ -71,7 +71,9 @@ class VanReturnController extends Controller
             'total_driven' => $request->total_driven,
             'days_count' => $request->days_count,
             'video' => $video_url,
-            'bond_comment' => $request->bond_comment
+            'bond_comment' => $request->bond_comment,
+            'bond_diff' => $request->bond_diff,
+            'cust_fine' => $request->cust_fine ?? 0.00
         ]);
 
 

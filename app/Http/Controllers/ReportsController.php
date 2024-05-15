@@ -129,11 +129,10 @@ class ReportsController extends Controller
         foreach($vanouts as $vanout){
             $pnl[$index]['date'] = Carbon::parse($vanout->created_at)->format('d-m-Y');
             $pnl[$index]['notes'] = 'Rented out ' . $vanout->vehicle?->vehicle_type?->name .  ' with reg# '. $vanout->vehicle?->reg_plate_number;
-            $pnl[$index]['cost'] = $vanout->rental_amount;
+            $pnl[$index]['cost'] = $vanout->rental_amount + $vanout->van_return?->bond_diff ?? 0.00;
             $pnl[$index]['tax'] = 0.00;
             $pnl[$index]['maintenance'] = 0.00;
             $pnl[$index]['operation'] = 'add';
-
             $index += 1;
         }
 
