@@ -45,6 +45,8 @@ class ShowVanReturnResource extends JsonResource
             'updated' => Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
             'van_out' => $this->van_out,
             'swaps' => SwapResource::collection($this->van_out->swaps),
+            'bond_diff' => $this->bond_diff,
+            'bond_comment' => $this->bond_comment
         ];
     }
 }
