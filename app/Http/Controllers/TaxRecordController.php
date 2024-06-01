@@ -42,7 +42,7 @@ class TaxRecordController extends Controller
 
         if($taxRecord->create($request->all())){
             return response()->json([
-                'status' => 'success',
+                'status' => 'Success',
                 'message' => 'Tax record created',
                 'data' => $taxRecord
             ]);
@@ -57,7 +57,7 @@ class TaxRecordController extends Controller
     public function update(Request $request, TaxRecord $taxRecord){
         if($taxRecord->update($request->all())){
             return response()->json([
-               'status' => 'success',
+               'status' => 'Success',
                'message' => 'Tax record updated!',
                'data' => $taxRecord
             ]);
@@ -71,7 +71,7 @@ class TaxRecordController extends Controller
     public function destroy(TaxRecord $taxRecord){
         if($taxRecord->delete()){
             return response()->json([
-                'status' => 'success',
+                'status' => 'Success',
                 'message' => 'Tax record deleted!',
             ]);
         } else {

@@ -81,7 +81,7 @@ class TollController extends Controller
 
 
         $res = [
-            'status' => 'success',
+            'status' => 'Success',
             'message' => 'Toll record created',
             'data' => $newToll
         ];
@@ -129,7 +129,7 @@ class TollController extends Controller
         $toll->save();
 
         $res = [
-            'status' => 'success',
+            'status' => 'Success',
             'message' => 'Toll record updated',
             'data' => $toll
         ];

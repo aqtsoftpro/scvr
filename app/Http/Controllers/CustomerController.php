@@ -97,7 +97,7 @@ class CustomerController extends Controller
             'secondary_id_expiry' => $request->secondary_id_expiry,
         ])){
             return response()->json([
-                'status' => 'success',
+                'status' => 'Success',
                 'message' => 'Customer created!',
                 'data' => $newCustomer
             ]);
@@ -162,7 +162,7 @@ class CustomerController extends Controller
             // 'bond_return_amount' => $request->bond_return_amount
         ])){
             return response()->json([
-                'status' => 'success',
+                'status' => 'Success',
                 'message' => 'Customer updated!',
                 'data' => $customer
             ]);
@@ -172,7 +172,7 @@ class CustomerController extends Controller
     public function destroy(Customer $customer){
         $customer->delete();
         return response()->json([
-            'status' => 'success',
+            'status' => 'Success',
             'message' => 'Customer deleted'
         ]);
     }
@@ -217,7 +217,7 @@ class CustomerController extends Controller
 
         if(Mail::to($email)->send(new CustomerMail($email))){
             return response()->json([
-                ['status' => 'success', 'message' => 'The invication email has been sent']
+                ['status' => 'Success', 'message' => 'The invication email has been sent']
             ]);
         }
     }
@@ -252,7 +252,7 @@ class CustomerController extends Controller
 
         if($message){
             return response()->json([
-                'status' => 'success',
+                'status' => 'Success',
                 'sid' => $message->sid,
                 'message' => 'Your whatsapp client invitation has been sent to number ' . $phoneNumber
             ]);

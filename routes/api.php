@@ -78,7 +78,7 @@ Route::post('/login/token', function (Request $request) {
     }
 
     return response()->json([
-        'status' => 'success',
+        'status' => 'Success',
         'token' => $user->createToken($request->device_name)->plainTextToken,
     ]);
 });

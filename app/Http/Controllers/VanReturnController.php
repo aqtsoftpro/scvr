@@ -120,8 +120,8 @@ class VanReturnController extends Controller
         $booking->save();
 
         $res = [
-            'status' => 'success',
-            'message' => 'Van return record created',
+            'status' => 'Success',
+            'message' => 'Vehicle return record created',
             'data' => $vanReturn
         ];
         return response()->json($res);
@@ -160,7 +160,7 @@ class VanReturnController extends Controller
             'mileage' => $request->mileage
         ]);
         $res = [
-            'message' => 'Van return record updated',
+            'message' => 'Vehicle return record updated',
             'data' => $vanReturn
         ];
         return response()->json($res);
@@ -189,7 +189,7 @@ class VanReturnController extends Controller
         }
         $vanReturn->delete();
         $res = [
-            'message' => 'Van return record deleted',
+            'message' => 'Vehicle return record deleted',
         ];
         return response()->json($res, 204);
     }

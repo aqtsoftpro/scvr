@@ -25,7 +25,7 @@ class AccessoryController extends Controller
 
         if($accessory->create($request->all())){
             return response()->json([
-                'status' => 'success',
+                'status' => 'Success',
                 'message' => 'Accessory created',
                 'data' => $accessory
             ]);
@@ -44,7 +44,7 @@ class AccessoryController extends Controller
     public function update(Request $request, Accessory $accessory){
         $accessory->update($request->all());
         return response()->json([
-            'status' => 'success',
+            'status' => 'Success',
             'message' => 'Accessory updated',
             'data' => $accessory
         ]);

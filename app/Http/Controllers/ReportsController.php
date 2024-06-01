@@ -139,8 +139,8 @@ class ReportsController extends Controller
         //subtact tax payed
 
         foreach($tax_records as $tax){
-            $pnl[$index]['date'] = Carbon::parse($tax->created_at)->format('d-m-Y');
-            $pnl[$index]['notes'] = 'Subtracted Tax Payed';
+            $pnl[$index]['date'] = Carbon::parse($tax->date)->format('d-m-Y');
+            $pnl[$index]['notes'] = 'Subtracted Tax Paid';
             $pnl[$index]['cost'] = $tax->amount;
             $pnl[$index]['tax'] = $tax->amount;
             $pnl[$index]['maintenance'] = 0.00;

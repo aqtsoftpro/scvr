@@ -28,7 +28,7 @@ class MechanicController extends Controller
 
         if($newMechanic = $mechanic->create($request->all())){
             $res = [
-                'status' => 'success',
+                'status' => 'Success',
                 'message' => 'Mechanic record created',
                 'data' => $newMechanic
             ];
@@ -46,7 +46,7 @@ class MechanicController extends Controller
         $mechanic->update($request->all());
         if($mechanic->save()){
             $res = [
-                'status' => 'success',
+                'status' => 'Success',
                 'message' => 'Mechanic record updated',
                 'data' => $mechanic
             ];
@@ -65,7 +65,7 @@ class MechanicController extends Controller
 
         if($mechanic->delete()){
             $res = [
-                'status' => 'success',
+                'status' => 'Success',
                 'message' => 'Mechanic record deleted',
             ];
             return response()->json($res);

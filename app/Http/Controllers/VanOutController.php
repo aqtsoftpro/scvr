@@ -109,7 +109,7 @@ class VanOutController extends Controller
         Send the success message and created object
         */
         $res = [
-            'status' => 'success',
+            'status' => 'Success',
             'message' => 'Booking created',
             'data' => $vanout
         ];
