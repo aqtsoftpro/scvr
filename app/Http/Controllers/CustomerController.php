@@ -200,7 +200,7 @@ class CustomerController extends Controller
     public function all_customer_options(Customer $customer){
 
         $customer_list = [];
-        $customers = $customer->all();
+        $customers = Customer::latest()->get();
         foreach($customers as $key => $customer){
             $customer_list[$key]['id'] = $customer->id;
             $customer_list[$key]['name'] = $customer->first_name . ' ' . $customer->last_name;

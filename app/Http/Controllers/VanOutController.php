@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\VanOut;
 use App\Vehicle;
 use App\Accessory;
+use App\Http\Requests\VanOutRequest;
 use App\Models\Customer;
 use App\Models\{DemageGallery, Swap, SwapGallery};
 use Illuminate\Http\Request;
@@ -21,9 +22,9 @@ class VanOutController extends Controller
     public function index(Request $request, VanOut $vanOut){
 
         if(isset($request->mode) && $request->mode == 'active'){
-            return response()->json(VanOutResource::collection($vanOut->with('swapWith')->where('status', 1)->orderBy('id', 'desc')->get()));
+            return response()->json(VanOutResource::collection($vanOut->with('swapWith')->where('status', 1)->orderBy('updated_at', 'desc')->get()));
         }
-        return response()->json(VanOutResource::collection($vanOut->with('swapWith')->orderBy('id','desc')->get()));
+        return response()->json(VanOutResource::collection($vanOut->with('swapWith')->orderBy('updated_at','desc')->get()));
     }
 
     public function show($vanOut){
@@ -36,28 +37,9 @@ class VanOutController extends Controller
         return response()->json(new VanoutSwapResource($van_out));
     }
 
-    public function store(Request $request, VanOut $vanOut){
+    public function store(VanOutRequest $request, VanOut $vanOut){
+        
 
-
-        /*
-        Create a new booking
-        */
-        $validation = $request->validate([
-            'customer_id' => 'required|integer',
-            'vehicle_id' => 'required|integer',
-            'location_id' => 'required|integer',
-            'reason_of_renting' => 'required',
-            'rental_amount' => 'required',
-            'amount_frequency' => 'required',
-            'mileage' => 'required',
-            'van_out_date' => 'required',
-            'accessories' => 'required'
-        ],
-        [
-            'customer_id.integer' => 'Select Customer',
-            'vehicle_id.integer' => 'Select Vehicle ',
-            'location_id.integer' => 'Select Location',
-        ]);
         //$access_to_be_attached =  array_values($request->accessories);
 
         //$access_to_be_attached = [];
