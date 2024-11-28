@@ -15,21 +15,21 @@ return [
     |
     */
 
-    'paths' => ['*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'], // Limit to specific routes
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['*'], // Allow all HTTP methods (GET, POST, etc.)
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
-    // 'allowed_origins' => ['*'],
+    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:8080')],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => [], // Keep this empty unless you need regex patterns
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => ['*'], // Allow all headers
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => true,
+    'supports_credentials' => true, // Required for cookie-based auth
+
 
 ];

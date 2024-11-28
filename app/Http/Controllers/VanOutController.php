@@ -172,10 +172,13 @@ class VanOutController extends Controller
 
         if ($request->hasFile('video')) {
             $video = $request->file('video')->store('swaped', 'public');
-            $inputs['video'] =url('storage/'.$video);
+            $inputs['video'] = url('storage/'.$video);
+
         }
         // dd($inputs);
         $new_swap = Swap::create($inputs);
+        $new_swap->video = $inputs['video'];
+        $new_swap->save();
         $new_swap->parent()->update([
             'status' => 0,
             'vehicle_return_date' => $new_swap->out_date

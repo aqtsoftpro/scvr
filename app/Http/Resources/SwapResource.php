@@ -40,6 +40,7 @@ class SwapResource extends JsonResource
             'added' => Carbon::parse($this->created_at)->format('d-m-Y g:i A'),
             'updated' => Carbon::parse($this->updated_at)->format('d-m-Y g:i A'),
             'images' => $this->swapImages,
+            'video' => $this->video,
             'vehicle_return_date' => $this->vehicle_return_date,
             'status' => $this->status,
 
