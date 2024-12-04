@@ -29,7 +29,7 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => true, // Required for cookie-based auth
+    'supports_credentials' => false, // Required for cookie-based auth
 
 
 ];
