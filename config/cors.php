@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'], // Allow all HTTP methods (GET, POST, etc.)
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:8080')],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [], // Keep this empty unless you need regex patterns
 
